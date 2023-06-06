@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>2023 Esri User Conference - Designing Apps with Calcite Design System</title>
+
+    <!-- Calcite imports -->
+    <script type="module" src="https://js.arcgis.com/calcite-components/1.4.1/calcite.esm.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.1/calcite.css" />
+
+    <!-- ArcGIS Maps SDK for JavaScript imports -->
+    <script src="https://js.arcgis.com/4.27/"></script>
+    <link id="jsapi-mode-light" rel="stylesheet" <link rel="stylesheet"
+        href="https://js.arcgis.com/4.27/esri/themes/dark/main.css" />
+
+    <!-- Demo imports -->
+    <script src="./app.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <calcite-shell class="calcite-mode-dark">
+        <div id="viewDiv"></div>
+        <calcite-navigation slot="header">
+            <calcite-navigation-logo href="/" thumbnail="./images/logo.svg" alt="Application logo" slot="logo"
+                heading="Alternative Fuel Stations" description="Road trip!"></calcite-navigation-logo>
+            <calcite-action-pad layout="horizontal" expand-disabled slot="content-end">
+                <calcite-action id="toggle-instructions" text="Instructions" icon="lightbulb"></calcite-action>
+                <calcite-action id="toggle-modal" text="About this application" icon="information"></calcite-action>
+            </calcite-action-pad>
+            <calcite-tooltip placement="bottom" reference-element="toggle-instructions" slot="content-end">Use the
+                filters to show or hide park jurisdictions.</calcite-tooltip>
+            <calcite-tooltip placement="bottom" reference-element="toggle-mode" slot="content-end">Change
+                mode</calcite-tooltip>
+            <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
+                this application</calcite-tooltip>
+            <calcite-navigation slot="navigation-secondary">
+                <calcite-chip-group selection-mode="single" slot="content-center">
+                    <calcite-chip>New York to Los Angeles</calcite-chip>
+                    <calcite-chip>Boston to Washington D.C.</calcite-chip>
+                    <calcite-chip>Seattle to Chicago</calcite-chip>
+                    <calcite-chip>Phoenix to Denver</calcite-chip>
+                </calcite-chip-group>
+            </calcite-navigation>
+
+        </calcite-navigation>
+        <calcite-shell-panel slot="panel-start">
+            <calcite-panel heading="Type of Fuel">
+                <calcite-block open style="--calcite-block-padding:0">
+                    <calcite-list id="filter-list" selection-mode="multiple"></calcite-list>
+                </calcite-block>
+            </calcite-panel>
+        </calcite-shell-panel>
+
+        <calcite-alert open icon="effects" placement="bottom-end">
+            <div slot="title">Esri User Conference 2023</div>
+            <div slot="message">Welcome to beautiful San Diego!</div>
+        </calcite-alert>
+
+        <calcite-modal id="modal">
+            <div slot="header">About this application</div>
+            <div slot="content">
+                <calcite-notice open>
+                    <span slot="title">This demonstration application is a companion resource to the "Designing Apps
+                        with
+                        Calcite Design System" technical session at Esri Developer Summit 2023.
+                    </span>
+                </calcite-notice>
+                This example illustrates theming <calcite-link target="_blank"
+                    href="https://github.com/Esri/calcite-components">
+                    Calcite Components</calcite-link>.
+                <ul>
+                    <li>The default Calcite theme variables for both light and dark modes are customized.</li>
+                    <li>Calcite Chip components are themed programmatically and correspond to attribute values.</li>
+                    <li>Calcite Modal components override component-specific variables for scrim.</li>
+                </ul>
+                <calcite-link target="_blank"
+                    href="https://developers.arcgis.com/calcite-design-system/foundations/colors/#theming">
+                    Learn about theming</calcite-link> in the <calcite-link target="_blank"
+                    href="https://developers.arcgis.com/calcite-design-system">
+                    Calcite Design System documentation</calcite-link>.
+                <hr />
+                <calcite-link target="_blank"
+                    href="https://github.com/EsriDevEvents/designing-apps-with-calcite-design-system-2023">Application
+                    source code</calcite-link> is available in the
+                <calcite-link target="_blank" href="https://github.com/EsriDevEvents/">Esri Developer Events
+                    GitHub organization</calcite-link>.
+                <hr />
+                <calcite-link target="_blank"
+                    href="https://www.arcgis.com/home/item.html?id=f092c20803a047cba81fbf1e30eff0b5">USA
+                    Parks data</calcite-link> is sourced from Esri Data and Maps /
+                <calcite-link target="_blank" href="https://livingatlas.arcgis.com/en/home/">ArcGIS Living Atlas of the
+                    World</calcite-link>.
+            </div>
+        </calcite-modal>
+    </calcite-shell>
+
+</body>
+
+</html>
