@@ -6,8 +6,8 @@
     <title>2023 Esri User Conference - Designing Apps with Calcite Design System</title>
 
     <!-- Calcite imports -->
-    <script type="module" src="https://js.arcgis.com/calcite-components/1.4.1/calcite.esm.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.1/calcite.css" />
+    <script type="module" src="https://js.arcgis.com/calcite-components/1.4.2/calcite.esm.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.2/calcite.css" />
 
     <!-- ArcGIS Maps SDK for JavaScript imports -->
     <script src="https://js.arcgis.com/4.27/"></script>
@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <calcite-shell class="calcite-mode-dark">
+    <calcite-shell class="calcite-mode-dark" content-behind>
         <div id="viewDiv"></div>
         <calcite-navigation slot="header">
             <calcite-navigation-logo href="/" thumbnail="./images/logo.svg" alt="Application logo" slot="logo"
@@ -45,8 +45,9 @@
             </calcite-navigation>
 
         </calcite-navigation>
-        <calcite-shell-panel slot="panel-start">
+        <calcite-shell-panel slot="panel-start" display-mode="float">
             <calcite-panel heading="Type of Fuel">
+                <calcite-icon slot="icon" icon="camera-flash-on"></calcite-icon>
                 <calcite-block open style="--calcite-block-padding:0">
                     <calcite-list id="filter-list" selection-mode="multiple"></calcite-list>
                 </calcite-block>
