@@ -3,9 +3,7 @@
 # Building Web Apps with Calcite Design System
 
 ## Repository description
-This repository contains an example application that illustrates the theming capabilities of the Calcite Design System's Calcite Component web component library. To note:
-
-[TODO]
+This repository contains an example application that illustrates the theming capabilities of the Calcite Design System's Calcite Component web component library.
 
 ## Session description
 
