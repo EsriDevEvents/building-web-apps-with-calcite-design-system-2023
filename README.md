@@ -17,4 +17,7 @@ Most of the recordings are uploaded to [2023 Esri User Conference in "mediaspace
 
 ## Related sessions
 
-...
+- [ArcGIS Maps SDK for JavaScript: An Introduction](https://uc2023.esri.com/flow/esri/23uc/eventportal/page/detailed-agenda/session/1679292817411001AKxP)
+- [UX/UI Best Practices: A Brief Overview](https://uc2023.esri.com/flow/esri/23uc/eventportal/page/detailed-agenda/session/1671599315363001peIW)
+- [Web Development Strategies](https://uc2023.esri.com/flow/esri/23uc/eventportal/page/detailed-agenda/session/1679292515260001mKvJ)
+- [ArcGIS Maps SDK for JavaScript: Programming Patterns and API Fundamentals](https://uc2023.esri.com/flow/esri/23uc/eventportal/page/detailed-agenda/session/1671589077394001o9sT)
