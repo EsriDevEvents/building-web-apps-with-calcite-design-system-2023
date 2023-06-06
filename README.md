@@ -1,8 +1,15 @@
 > **Note:** Please follow the [repository conventions](https://github.com/EsriDevEvents/contributor-guides/blob/main/conventions.md#conventions-for-repositories) and [slugify](https://slugify.online/) the title of your repo
 
-# Name of the session
+# Building Web Apps with Calcite Design System
 
-[Description of the session]
+## Repository description
+This repository contains an example application that illustrates the theming capabilities of the Calcite Design System's Calcite Component web component library. To note:
+
+[TODO]
+
+## Session description
+
+Calcite Design System (now out of beta) provides a library of design patterns, icons, and user friendly web components that were built with accessibility in mind. In this session, you'll learn how you can use Calcite with the ArcGIS Maps SDK for JavaScript to quickly create user-friendly web mapping applications.
 
 ## Slides and recording
 
