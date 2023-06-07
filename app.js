@@ -40,7 +40,17 @@ const allTypes = [
 ];
 
 /** Declare  colors to assign to each type - these will also be used in CSS */
-const typeColors = ["#c66a4a", "#7a81ff", "#3cccb4", "#0096ff", "#f260a1"];
+// todo - more colors
+const typeColors = [
+  "#e30e0e",
+  "#e38c0e",
+  "#dce30e",
+  "#43e30e",
+  "#0ee388",
+  "#0ec0e3",
+  "#0e34e3",
+  "#720ee3",
+];
 
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
@@ -63,18 +73,8 @@ require([
     );
 
     const customRenderer = {
-      type: "simple", //
       field: "Fuel_Type",
-      symbol: {
-        type: "simple-marker",
-        size: 6,
-        color: "black",
-        outline: {
-          width: 0.5,
-          color: "gray",
-        },
-      },
-      // not working with coded value format
+      type: "unique-value",
       uniqueValueInfos: assignColorsToTypes(),
     };
 
@@ -116,25 +116,34 @@ require([
     function assignColorsToTypes() {
       let uniqueValueInfos = [];
       allTypes.forEach((type, index) => {
-        console.log("me");
         uniqueValueInfos.push({
-          value: type.name,
+          value: type.code,
           symbol: {
+            type: "simple-marker",
+            size: 3,
             color: typeColors[index],
-            outline: { color: typeColors[index] },
+            outline: { color: typeColors[index], width: 0.5 },
           },
         });
       });
-      console.log(uniqueValueInfos);
       return uniqueValueInfos;
     }
 
-    /** Create the chips to represent each jurisdiction */
-    function createFilterChips() {
-      allTypes.forEach((item) => {
+    /** Create the list items to represent each fuel type */
+    // todo - use the color from array to override calcite ui icon (or in css)
+    function createListItems() {
+      allTypes.forEach((item, index) => {
         const listItem = document.createElement("calcite-list-item");
         listItem.label = item.name;
         listItem.value = item.code;
+        listItem.style.setProperty(
+          "--calcite-ui-icon-color",
+          typeColors[index]
+        );
+        listItem.style.setProperty(
+          "--calcite-ui-focus-color",
+          typeColors[index]
+        );
         listItem.selected = true;
         listItem.id = `list-item-type-${item.name.toLowerCase()}`;
         filterListEl.appendChild(listItem);
@@ -177,7 +186,7 @@ require([
     }
 
     function initializeApp() {
-      createFilterChips();
+      createListItems();
       handleLayerFilter();
     }
 
