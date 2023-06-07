@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>2023 Esri User Conference - Designing Apps with Calcite Design System</title>
+    <title>2023 Esri User Conference - Building Apps with Calcite Design System</title>
 
     <!-- Calcite imports -->
     <script type="module" src="https://js.arcgis.com/calcite-components/1.4.2/calcite.esm.js"></script>
@@ -11,8 +11,7 @@
 
     <!-- ArcGIS Maps SDK for JavaScript imports -->
     <script src="https://js.arcgis.com/4.27/"></script>
-    <link id="jsapi-mode-light" rel="stylesheet" <link rel="stylesheet"
-        href="https://js.arcgis.com/4.27/esri/themes/dark/main.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/dark/main.css" />
 
     <!-- Demo imports -->
     <script src="./app.js" defer></script>
@@ -29,8 +28,9 @@
                 <calcite-action id="toggle-instructions" text="Instructions" icon="lightbulb"></calcite-action>
                 <calcite-action id="toggle-modal" text="About this application" icon="information"></calcite-action>
             </calcite-action-pad>
-            <calcite-tooltip placement="bottom" reference-element="toggle-instructions" slot="content-end">Use the
-                filters to show or hide park jurisdictions.</calcite-tooltip>
+            <calcite-tooltip placement="bottom" reference-element="toggle-instructions" slot="content-end">Use the List
+                Items to show or hide types of alternative fuel stations. Use the Route Chips to highlight a route
+                across the country.</calcite-tooltip>
             <calcite-tooltip placement="bottom" reference-element="toggle-mode" slot="content-end">Change
                 mode</calcite-tooltip>
             <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
@@ -62,9 +62,9 @@
             <div slot="header">About this application</div>
             <div slot="content">
                 <calcite-notice open>
-                    <span slot="title">This demonstration application is a companion resource to the "Designing Apps
+                    <span slot="title">This demonstration application is a companion resource to the "Building Apps
                         with
-                        Calcite Design System" technical session at Esri Developer Summit 2023.
+                        Calcite Design System" presentation at Esri User Conference 2023.
                     </span>
                 </calcite-notice>
                 This example illustrates theming <calcite-link target="_blank"
@@ -82,14 +82,14 @@
                     Calcite Design System documentation</calcite-link>.
                 <hr />
                 <calcite-link target="_blank"
-                    href="https://github.com/EsriDevEvents/designing-apps-with-calcite-design-system-2023">Application
+                    href="https://github.com/EsriDevEvents/building-web-apps-with-calcite-design-system-2023">Application
                     source code</calcite-link> is available in the
                 <calcite-link target="_blank" href="https://github.com/EsriDevEvents/">Esri Developer Events
                     GitHub organization</calcite-link>.
                 <hr />
                 <calcite-link target="_blank"
-                    href="https://www.arcgis.com/home/item.html?id=f092c20803a047cba81fbf1e30eff0b5">USA
-                    Parks data</calcite-link> is sourced from Esri Data and Maps /
+                    href="https://www.arcgis.com/home/item.html?id=4a8305b53ed7416795fc6a129ec989ee">Alternative Fuel
+                    Stations</calcite-link> is sourced from Esri Data and Maps /
                 <calcite-link target="_blank" href="https://livingatlas.arcgis.com/en/home/">ArcGIS Living Atlas of the
                     World</calcite-link>.
             </div>
