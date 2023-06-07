@@ -1,7 +1,11 @@
 /** Declare element variables */
 const toggleModalEl = document.getElementById("toggle-modal");
 const modalEl = document.getElementById("modal");
+const corridorListEl = document.getElementById("corridor-list");
 const filterListEl = document.getElementById("filter-list");
+
+/** Declare expected type values */
+const corridors = ["Signage Pending", "Signage Ready"];
 
 /** Declare expected type values */
 const allTypes = [
@@ -55,7 +59,7 @@ const typeColors = [
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
   types: allTypes,
-  mode: "light",
+  corridors: false,
 };
 
 /** Maps SDK */
@@ -68,8 +72,11 @@ require([
 ], (Map, MapView, FeatureLayer, Home, Locate) =>
   (async () => {
     toggleModalEl.addEventListener("click", () => handleModalChange());
+    corridorListEl.addEventListener("calciteListChange", () => {
+      handleCorridorListChange();
+    });
     filterListEl.addEventListener("calciteListChange", (event) =>
-      handleListChange(event)
+      handleFilterListChange(event)
     );
 
     const customRenderer = {
@@ -87,9 +94,18 @@ require([
       renderer: customRenderer,
     });
 
+    // todo filter the "active" corridor, add filtering for each kind of "pending / ready" with info
+    const corridorLayer = new FeatureLayer({
+      url: "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/Alternative_Fuel_Corridors/FeatureServer/2",
+      outFields: ["*"],
+      minScale: 0,
+      maxScale: 0,
+      visible: false,
+    });
+
     const map = new Map({
       basemap: "streets-night-vector",
-      layers: [layer],
+      layers: [corridorLayer, layer],
     });
 
     const view = new MapView({
@@ -120,9 +136,9 @@ require([
           value: type.code,
           symbol: {
             type: "simple-marker",
-            size: 3,
+            size: 2,
             color: typeColors[index],
-            outline: { color: typeColors[index], width: 0.5 },
+            outline: { color: typeColors[index], width: 1 },
           },
         });
       });
@@ -131,7 +147,7 @@ require([
 
     /** Create the list items to represent each fuel type */
     // todo - use the color from array to override calcite ui icon (or in css)
-    function createListItems() {
+    function createFilterListItems() {
       allTypes.forEach((item, index) => {
         const listItem = document.createElement("calcite-list-item");
         listItem.label = item.name;
@@ -147,6 +163,16 @@ require([
         listItem.selected = true;
         listItem.id = `list-item-type-${item.name.toLowerCase()}`;
         filterListEl.appendChild(listItem);
+      });
+    }
+
+    function createCorridorListItems() {
+      corridors.forEach((item) => {
+        const listItem = document.createElement("calcite-list-item");
+        listItem.label = item;
+        listItem.value = item;
+        listItem.id = `list-item-corridor-${item.toLowerCase()}`;
+        corridorListEl.appendChild(listItem);
       });
     }
 
@@ -172,7 +198,7 @@ require([
       });
     }
 
-    function handleListChange(event) {
+    function handleFilterListChange(event) {
       let items = [];
       event.target.selectedItems.forEach((item) =>
         items.push({ name: item.label, code: item.value })
@@ -185,8 +211,14 @@ require([
       modalEl.open = !modalEl.open;
     }
 
+    function handleCorridorListChange() {
+      appState.corridor = !appState.corridor;
+      corridorLayer.visible = appState.corridor;
+    }
+
     function initializeApp() {
-      createListItems();
+      createFilterListItems();
+      createCorridorListItems();
       handleLayerFilter();
     }
 

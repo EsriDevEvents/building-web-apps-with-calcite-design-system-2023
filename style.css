@@ -33,6 +33,10 @@ calcite-shell.calcite-mode-dark {
   --calcite-ui-border-input: #242e29;
 }
 
+calcite-block {
+  --calcite-block-padding: 0;
+}
+
 #modal hr {
   margin: 1rem 0;
   border: 0;
