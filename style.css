@@ -37,6 +37,9 @@ calcite-block {
   --calcite-block-padding: 0;
 }
 
+calcite-action-pad {
+  margin-inline-end: 1rem;
+}
 #modal hr {
   margin: 1rem 0;
   border: 0;

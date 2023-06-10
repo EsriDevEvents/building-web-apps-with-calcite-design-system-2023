@@ -69,14 +69,32 @@ require([
   "esri/layers/FeatureLayer",
   "esri/widgets/Home",
   "esri/widgets/Locate",
-], (Map, MapView, FeatureLayer, Home, Locate) =>
+  "esri/Graphic",
+  "esri/layers/GraphicsLayer",
+  "esri/rest/route",
+  "esri/rest/support/RouteParameters",
+  "esri/rest/support/FeatureSet",
+  "esri/request",
+], (
+  Map,
+  MapView,
+  FeatureLayer,
+  Home,
+  Locate,
+  Graphic,
+  GraphicsLayer,
+  route,
+  RouteParameters,
+  FeatureSet,
+  esriRequest
+) =>
   (async () => {
     toggleModalEl.addEventListener("click", () => handleModalChange());
     corridorListEl.addEventListener("calciteListChange", () => {
       handleCorridorListChange();
     });
-    filterListEl.addEventListener("calciteListChange", (event) =>
-      handleFilterListChange(event)
+    filterListEl.addEventListener("calciteChipGroupSelect", (event) =>
+      handleFilterChipChange(event)
     );
 
     const customRenderer = {
@@ -85,8 +103,18 @@ require([
       uniqueValueInfos: assignColorsToTypes(),
     };
 
+    // Point the URL to a valid routing service
+    const routeUrl =
+      "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+    // The stops and route result will be stored in this layer
+    const routeLayer = new GraphicsLayer();
+
+    const alternativeFuelLayerURL =
+      "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0";
+
     const layer = new FeatureLayer({
-      url: "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0",
+      url: alternativeFuelLayerURL,
       outFields: ["*"],
       popupTemplate: createPopupTemplate(),
       minScale: 0,
@@ -105,7 +133,7 @@ require([
 
     const map = new Map({
       basemap: "streets-night-vector",
-      layers: [corridorLayer, layer],
+      layers: [corridorLayer, layer, routeLayer],
     });
 
     const view = new MapView({
@@ -128,6 +156,59 @@ require([
       };
     }
 
+    // Setup the route parameters
+    const routeParams = new RouteParameters({
+      // An authorization string used to access the routing service
+      apiKey: "YOUR_API_KEY",
+      stops: new FeatureSet(),
+      outSpatialReference: {
+        // autocasts as new SpatialReference()
+        wkid: 3857,
+      },
+    });
+
+    // Define the symbology used to display the stops
+    const stopSymbol = {
+      type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+      style: "cross",
+      size: 15,
+      outline: {
+        // autocasts as new SimpleLineSymbol()
+        width: 4,
+      },
+    };
+
+    // Define the symbology used to display the route
+    const routeSymbol = {
+      type: "simple-line", // autocasts as SimpleLineSymbol()
+      color: [0, 0, 255, 0.5],
+      width: 5,
+    };
+
+    // Adds a graphic when the user clicks the map. If 2 or more points exist, route is solved.
+    view.on("click", addStop);
+
+    function addStop(event) {
+      // Add a point at the location of the map click
+      const stop = new Graphic({
+        geometry: event.mapPoint,
+        symbol: stopSymbol,
+      });
+      routeLayer.add(stop);
+
+      // Execute the route if 2 or more stops are input
+      routeParams.stops.features.push(stop);
+      if (routeParams.stops.features.length >= 2) {
+        route.solve(routeUrl, routeParams).then(showRoute);
+      }
+    }
+    // Adds the solved route to the map as a graphic
+    function showRoute(data) {
+      const routeResult = data.routeResults[0].route;
+      routeResult.symbol = routeSymbol;
+      routeLayer.add(routeResult);
+    }
+
     /** Assign the color values to expected type values */
     function assignColorsToTypes() {
       let uniqueValueInfos = [];
@@ -144,7 +225,10 @@ require([
       });
       return uniqueValueInfos;
     }
-
+    console.log(
+      layer.fields?.find((field) => field.name === "Date_Last_Update")
+    );
+    console.log(layer);
     /** Create the list items to represent each fuel type */
     // todo - use the color from array to override calcite ui icon (or in css)
     function createFilterListItems() {
@@ -198,7 +282,7 @@ require([
       });
     }
 
-    function handleFilterListChange(event) {
+    function handleFilterChipChange(event) {
       let items = [];
       event.target.selectedItems.forEach((item) =>
         items.push({ name: item.label, code: item.value })
