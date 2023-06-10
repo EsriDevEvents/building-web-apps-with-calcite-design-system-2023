@@ -272,7 +272,7 @@ require([
         const where = `Fuel_Type IS NOT NULL${createWhereArguments()}`;
         featureLayerView.featureEffect = {
           filter: { where },
-          excludedEffect: "opacity(10%) grayscale(100%)",
+          excludedEffect: "opacity(0%)",
           includedEffect: "opacity(100%)",
         };
       });
