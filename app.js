@@ -93,8 +93,8 @@ require([
     corridorListEl.addEventListener("calciteListChange", () => {
       handleCorridorListChange();
     });
-    filterListEl.addEventListener("calciteChipGroupSelect", (event) =>
-      handleFilterChipChange(event)
+    filterListEl.addEventListener("calciteListChange", (event) =>
+      handleStationTypeListChange(event)
     );
 
     const customRenderer = {
@@ -225,10 +225,6 @@ require([
       });
       return uniqueValueInfos;
     }
-    console.log(
-      layer.fields?.find((field) => field.name === "Date_Last_Update")
-    );
-    console.log(layer);
     /** Create the list items to represent each fuel type */
     // todo - use the color from array to override calcite ui icon (or in css)
     function createFilterListItems() {
@@ -282,7 +278,7 @@ require([
       });
     }
 
-    function handleFilterChipChange(event) {
+    function handleStationTypeListChange(event) {
       let items = [];
       event.target.selectedItems.forEach((item) =>
         items.push({ name: item.label, code: item.value })

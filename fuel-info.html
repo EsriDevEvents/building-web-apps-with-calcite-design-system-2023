@@ -20,71 +20,33 @@
 
 <body>
     <calcite-shell class="calcite-mode-dark" content-behind>
-        <div id="viewDiv"></div>
+        <calcite-panel heading="Some other content">
+            <div style="width:80%;margin:2rem auto">
+                Some placeholder content.
+            </div>
+        </calcite-panel>
 
         <calcite-navigation slot="header">
+
             <calcite-navigation-logo href="/" thumbnail="./images/logo.svg" alt="Application logo" slot="logo"
                 heading="Alternative Fuel Station Planner" description="Road trip!"></calcite-navigation-logo>
+
             <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
                 this application</calcite-tooltip>
             <calcite-menu slot="content-end">
-                <calcite-menu-item active icon-start="map" text="Map">
+                <calcite-menu-item href="./index.html" icon-start="map" text="Map">
                 </calcite-menu-item>
-                <calcite-menu-item href="./fuel-info.html" icon-start="education" text="Learn About Alternative Fuel">
+                <calcite-menu-item active icon-start="education" text="Learn about Alternative Fuel">
                 </calcite-menu-item>
             </calcite-menu>
             <calcite-action-pad layout="horizontal" expand-disabled slot="content-end">
                 <calcite-action id="toggle-modal" text="About this application" icon="information"
                     text-enabled></calcite-action>
             </calcite-action-pad>
+
         </calcite-navigation>
 
-        <calcite-shell-panel slot="panel-start">
-            <calcite-panel heading="Map filters">
-                <calcite-action slot="header-actions-end" id="toggle-instructions" text="Instructions"
-                    icon="lightbulb"></calcite-action>
-                <calcite-tooltip placement="right" overlay-positioning="fixed" reference-element="toggle-instructions"
-                    slot="header-actions-end">Use
-                    the
-                    List Items to show or hide types of alternative fuel stations and toggle displayed
-                    corridors.</calcite-tooltip>
 
-                <calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"
-                    collapsible>
-                    <calcite-icon slot="icon" scale="s" icon="exit-highway-right"></calcite-icon>
-                    <calcite-list id="corridor-list" selection-mode="multiple"></calcite-list>
-                </calcite-block>
-                <calcite-block heading="Fuel Types" open collapsible>
-                    <calcite-icon slot="icon" scale="s" icon="camera-flash-on"></calcite-icon>
-                    <calcite-list id="filter-list" selection-mode="multiple"></calcite-list>
-                </calcite-block>
-                <calcite-notice open slot="footer" open collapsible icon="activity-monitor" width="full" scale="s">
-                    <span slot="title">Latest station update:</span>
-                    <span slot="message" id="data-last-updated-text">Get from layer</span>
-                    </calcite-block>
-            </calcite-panel>
-        </calcite-shell-panel>
-
-        <calcite-shell-panel display-mode="float" slot="panel-end">
-            <calcite-panel heading="Preview a Route">
-                <calcite-block heading="Popular routes" open collapsible>
-                    <calcite-list selection-mode="single" selection-appearance="border">
-                        <calcite-list-item label="New York to Los Angeles"></calcite-list-item>
-                        <calcite-list-item label="Boston to Washington D.C."></calcite-list-item>
-                        <calcite-list-item label="Seattle to Chicago"></calcite-list-item>
-                        <calcite-list-item label="Phoenix to Denver"></calcite-list-item>
-                        <calcite-list-item label="San Francisco to St. Louis"></calcite-list-item>
-                    </calcite-list>
-                </calcite-block>
-                <calcite-button slot="footer" width="full" kind="neutral" icon-start="tour-pin-tear">Create custom
-                    route</calcite-button>
-            </calcite-panel>
-        </calcite-shell-panel>
-
-        <calcite-alert open icon="effects" placement="bottom-end">
-            <div slot="title">Esri User Conference 2023</div>
-            <div slot="message">Welcome to beautiful San Diego!</div>
-        </calcite-alert>
 
         <calcite-modal id="modal">
             <div slot="header">About this application</div>

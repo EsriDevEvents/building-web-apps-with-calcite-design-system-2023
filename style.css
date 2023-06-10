@@ -9,28 +9,28 @@ body,
 
 /** Setting custom core Calcite theme variables for light (default) and dark modes */
 calcite-shell.calcite-mode-dark {
-  --calcite-ui-brand: #00dea6;
-  --calcite-ui-brand-hover: #00c997;
-  --calcite-ui-brand-press: #00b386;
-  --calcite-ui-background: #252927;
-  --calcite-ui-foreground-1: #282f2c;
-  --calcite-ui-foreground-2: #2f3633;
-  --calcite-ui-foreground-3: #353b38;
-  --calcite-ui-info: #38deff;
-  --calcite-ui-success: #60fc44;
-  --calcite-ui-warning: #ffca38;
-  --calcite-ui-danger: #ff3639;
-  --calcite-ui-danger-hover: #d93437;
-  --calcite-ui-danger-press: #7c1d13;
-  --calcite-ui-text-1: #f5fffc;
-  --calcite-ui-text-2: #e6fcf6;
-  --calcite-ui-text-3: #d6fff0;
-  --calcite-ui-text-inverse: #1a1c1b;
-  --calcite-ui-text-link: #15e8dd;
-  --calcite-ui-border-1: #202422;
-  --calcite-ui-border-2: #39473f;
-  --calcite-ui-border-3: #2b3d33;
-  --calcite-ui-border-input: #242e29;
+  --calcite-ui-brand: #3cb233;
+  --calcite-ui-brand-hover: #2d8626;
+  --calcite-ui-brand-press: #256f20;
+  --calcite-ui-background: #423b33;
+  --calcite-ui-foreground-1: #332f29;
+  --calcite-ui-foreground-2: #2c2a26;
+  --calcite-ui-foreground-3: #1a1917;
+  --calcite-ui-info: #2d8626;
+  --calcite-ui-success: #36da43;
+  --calcite-ui-warning: #ffc900;
+  --calcite-ui-danger: #fe583e;
+  --calcite-ui-danger-hover: #ff0015;
+  --calcite-ui-danger-press: #d90012;
+  --calcite-ui-text-1: #fdf0d5;
+  --calcite-ui-text-2: #fff6f6;
+  --calcite-ui-text-3: #ffffff;
+  --calcite-ui-text-inverse: #000000;
+  --calcite-ui-text-link: #2d8626;
+  --calcite-ui-border-1: #3a3335;
+  --calcite-ui-border-2: #40383a;
+  --calcite-ui-border-3: #47423e;
+  --calcite-ui-border-input: #4b4245;
 }
 
 calcite-block {
@@ -38,7 +38,7 @@ calcite-block {
 }
 
 calcite-action-pad {
-  margin-inline-end: 1rem;
+  margin-inline: 1rem;
 }
 #modal hr {
   margin: 1rem 0;
