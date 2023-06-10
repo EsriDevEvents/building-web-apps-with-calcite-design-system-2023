@@ -68,16 +68,28 @@
         <calcite-shell-panel display-mode="float" slot="panel-end">
             <calcite-panel heading="Preview a Route">
                 <calcite-block heading="Popular routes" open collapsible>
-                    <calcite-list selection-mode="single" selection-appearance="border">
-                        <calcite-list-item label="New York to Los Angeles"></calcite-list-item>
-                        <calcite-list-item label="Boston to Washington D.C."></calcite-list-item>
-                        <calcite-list-item label="Seattle to Chicago"></calcite-list-item>
-                        <calcite-list-item label="Phoenix to Denver"></calcite-list-item>
-                        <calcite-list-item label="San Francisco to St. Louis"></calcite-list-item>
+                    <!-- todo - generate this from resource -->
+                    <!-- todao - get the distance calculated from route and show when selected -->
+                    <calcite-list selection-mode="single" selection-appearance="border" id="route-list">
+                        <calcite-list-item label="New York to Los Angeles"><calcite-chip slot="content-end"
+                                scale="s">3,402
+                                mi</calcite-chip></calcite-list-item>
+                        <calcite-list-item label="Boston to Washington D.C."><calcite-chip slot="content-end"
+                                scale="s">1,114
+                                mi</calcite-chip></calcite-list-item>
+                        <calcite-list-item label="Seattle to Chicago"><calcite-chip slot="content-end" scale="s">1,922
+                                mi</calcite-chip></calcite-list-item>
+                        <calcite-list-item label="Phoenix to Denver"><calcite-chip slot="content-end" scale="s">982
+                                mi</calcite-chip></calcite-list-item>
+                        <calcite-list-item label="San Francisco to St. Louis"><calcite-chip slot="content-end"
+                                scale="s">1,101
+                                mi</calcite-chip></calcite-list-item>
                     </calcite-list>
                 </calcite-block>
-                <calcite-button slot="footer" width="full" kind="neutral" icon-start="tour-pin-tear">Create custom
+                <calcite-button id="custom-route-button" slot="footer" width="full" kind="neutral"
+                    icon-start="tour-pin-tear">Create custom
                     route</calcite-button>
+                <!-- todo conditionally add a "Creating custom route" block, with start / stop fields populated on click -->
             </calcite-panel>
         </calcite-shell-panel>
 

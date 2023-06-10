@@ -38,6 +38,13 @@ calcite-block {
   --calcite-block-padding: 0;
 }
 
+calcite-list-item calcite-chip {
+  margin-inline-end: 0.5rem;
+}
+
+calcite-list-item:not([selected]) calcite-chip {
+  display: none;
+}
 calcite-action-pad {
   margin-inline: 1rem;
 }
