@@ -1,10 +1,8 @@
-/** Declare element variables */
-const toggleModalEl = document.getElementById("toggle-modal");
-const modalEl = document.getElementById("modal");
-const corridorListEl = document.getElementById("corridor-list");
-const filterListEl = document.getElementById("filter-list");
-const routeListEl = document.getElementById("route-list");
-const customRouteButton = document.getElementById("custom-route-button");
+/**
+ *
+ * RESOURCES
+ *
+ **/
 
 /** Declare expected type values */
 const corridors = ["Signage Pending", "Signage Ready"];
@@ -45,30 +43,96 @@ const allTypes = [
   },
 ];
 
+/** Declare expected type values */
+const suggestedRoutes = [
+  {
+    name: "New York to Los Angeles",
+    stops: [
+      { geometry: { type: "point", x: -118.2437, y: 34.0522 } },
+      { geometry: { type: "point", x: -74.006, y: 40.7128 } },
+    ],
+  },
+  {
+    name: "Boston to Washington D.C.",
+    stops: [
+      { geometry: { type: "point", x: -71.0589, y: 42.3601 } },
+      { geometry: { type: "point", x: -77.0369, y: 38.9072 } },
+    ],
+  },
+  {
+    name: "Seattle to Chicago",
+    stops: [
+      { geometry: { type: "point", x: -122.3321, y: 47.6062 } },
+      { geometry: { type: "point", x: -87.6298, y: 41.8781 } },
+    ],
+  },
+  {
+    name: "Phoenix to Denver",
+    stops: [
+      { geometry: { type: "point", x: -112.074, y: 33.4484 } },
+      { geometry: { type: "point", x: -104.9903, y: 39.7392 } },
+    ],
+  },
+  {
+    name: "San Francisco to St. Louis",
+    stops: [
+      { geometry: { type: "point", x: -122.4194, y: 37.7749 } },
+      { geometry: { type: "point", x: -90.1994, y: 38.627 } },
+    ],
+  },
+];
+
 /** Declare  colors to assign to each type - these will also be used in CSS */
 // todo - more colors
 const typeColors = [
-  "#e30e0e",
+  "#f3413d",
   "#e38c0e",
   "#dce30e",
   "#43e30e",
   "#0ee388",
   "#0ec0e3",
-  "#0e34e3",
-  "#720ee3",
+  "#9f8ff0",
+  "#f072d2",
 ];
+
+/** Declare element variables */
+const toggleModalEl = document.getElementById("toggle-modal");
+const modalEl = document.getElementById("modal");
+const corridorListEl = document.getElementById("corridor-list");
+const filterListEl = document.getElementById("filter-list");
+const suggestedRoutesListEl = document.getElementById("route-list");
+const customRouteEl = document.getElementById("custom-route-button");
+const routeScrim = document.getElementById("route-scrim");
 
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
   types: allTypes,
   corridors: false,
   creatingCustomRouteCurrently: false,
+  suggestedRoutesHaveLoaded: false,
 };
 
-// todo use an appropriate key here
-const apiKey = "";
+/** Not Map Things */
+function handleModalChange() {
+  modalEl.open = !modalEl.open;
+}
 
-/** Maps SDK */
+/** Layer Resources */
+const apiKey =
+  "AAPK414dcaa408934035a8ea3d1636e1232fziiuAv7x3n2_ohMMUElzlsQhizYN4qeLRY-hwlhIyiqPNEf9dlzbNumsYz0dcZQs";
+
+const routeUrl =
+  "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+const alternativeFuelLayerURL =
+  "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0";
+const alternativeFuelCorridorURL =
+  "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/Alternative_Fuel_Corridors/FeatureServer/2";
+
+/**
+ *
+ * MAPS SDK
+ *
+ **/
 require([
   "esri/Map",
   "esri/views/MapView",
@@ -98,14 +162,13 @@ require([
 ) =>
   (async () => {
     toggleModalEl.addEventListener("click", () => handleModalChange());
+    customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
+
     corridorListEl.addEventListener("calciteListChange", () => {
       handleCorridorListChange();
     });
     filterListEl.addEventListener("calciteListChange", (event) =>
       handleStationTypeListChange(event)
-    );
-    routeListEl.addEventListener("calciteListChange", (event) =>
-      handleRouteDisplay(event)
     );
 
     const customRenderer = {
@@ -114,25 +177,16 @@ require([
       uniqueValueInfos: assignColorsToTypes(),
     };
 
-    const routeUrl =
-      "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-    const alternativeFuelLayerURL =
-      "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0";
-    const alternativeFuelCorridorURL =
-      "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/Alternative_Fuel_Corridors/FeatureServer/2";
     const routeLayer = new GraphicsLayer();
 
-    // todo create custom popup or flow item on click
     const layer = new FeatureLayer({
       url: alternativeFuelLayerURL,
       outFields: ["*"],
-      popupTemplate: createPopupTemplate(),
       minScale: 0,
       maxScale: 0,
       renderer: customRenderer,
     });
 
-    // todo limit outfields?
     const corridorLayer = new FeatureLayer({
       url: alternativeFuelCorridorURL,
       outFields: ["*"],
@@ -153,21 +207,53 @@ require([
       zoom: 3,
     });
 
+    function resetMap() {
+      map.layers
+        .filter((layer) => layer.name)
+        .forEach((layer) => {
+          layer.visible = false;
+        });
+      view.goTo({ center: [-100, 45], zoom: 3 });
+    }
+
+    const suggestedRouteListItems = [];
+
+    function createSuggestedRoutesLayers() {
+      suggestedRoutes.forEach((route, index) => {
+        const listItem = document.createElement("calcite-list-item");
+        listItem.label = route.name;
+        listItem.addEventListener("calciteListItemSelect", (event) =>
+          handleRouteDisplay(event)
+        );
+        if (!suggestedRouteListItems.includes(listItem))
+          suggestedRouteListItems.push(listItem);
+
+        suggestedRoutesListEl.appendChild(listItem);
+
+        const drive = new RouteLayer({
+          name: route.name,
+          stops: route.stops,
+          effect: "bloom(1, 0.15px, 0)",
+        });
+
+        drive.solve({ apiKey }).then((results) => {
+          drive.update(results);
+          drive.visible = false;
+          map.add(drive);
+          if (index > 3) {
+            routeScrim.hidden = true;
+            routeScrim.loading = false;
+          }
+        });
+      });
+    }
+
     const locateBtn = new Locate({ view: view });
     const homeWidget = new Home({ view: view });
 
     view.ui.add(homeWidget, "top-left");
     view.ui.add(locateBtn, { position: "top-left" });
 
-    // todo move to flow item, or improve popover, or hide
-    function createPopupTemplate() {
-      return {
-        title: "{NAME}",
-        content: "Station type: {Fuel_Type}",
-      };
-    }
-
-    // todo improve colors
     function assignColorsToTypes() {
       let uniqueValueInfos = [];
       allTypes.forEach((type, index) => {
@@ -184,8 +270,6 @@ require([
       return uniqueValueInfos;
     }
 
-    /** Create the list items to represent each fuel type */
-    // todo - use the color from array to override calcite ui icon (or in css)
     function createFilterListItems() {
       allTypes.forEach((item, index) => {
         const listItem = document.createElement("calcite-list-item");
@@ -200,7 +284,6 @@ require([
           typeColors[index]
         );
         listItem.selected = true;
-        listItem.id = `list-item-type-${item.name.toLowerCase()}`;
         filterListEl.appendChild(listItem);
       });
     }
@@ -209,16 +292,10 @@ require([
       corridors.forEach((item) => {
         const listItem = document.createElement("calcite-list-item");
         listItem.label = item;
-        listItem.value = item;
-        listItem.id = `list-item-corridor-${item.toLowerCase()}`;
         corridorListEl.appendChild(listItem);
       });
     }
 
-    // todo create route items in new function from resource definition
-
-    // todo filter this when there is an active route to limit features to within x_mile_buffer of current route
-    // todo add slider to let user adjust this buffer radius
     function createWhereArguments() {
       let args = [];
       const typesActive = appState.types.length > 0;
@@ -250,142 +327,105 @@ require([
       handleLayerFilter();
     }
 
-    function handleModalChange() {
-      modalEl.open = !modalEl.open;
-    }
-
     function handleCorridorListChange() {
       appState.corridor = !appState.corridor;
       corridorLayer.visible = appState.corridor;
     }
-    // create a RouteLayer for "Driving Time"
 
-    if (appState.creatingCustomRouteCurrently) {
-      // Setup the route parameters
-      const routeParams = new RouteParameters({
-        // An authorization string used to access the routing service
-        apiKey,
-        stops: new FeatureSet(),
-        outSpatialReference: {
-          wkid: 3857,
-        },
+    function handleRouteDisplay(event) {
+      const route = suggestedRoutes.find(
+        (route) => route.name === event.target.label
+      );
+
+      map.layers
+        .filter((layer) => layer.name)
+        .forEach((layer) => {
+          const isMatch = layer.name === route.name;
+          if (!isMatch) {
+            layer.visible = false;
+          } else if (isMatch && !layer.visible) {
+            layer.visible = true;
+            const extent = layer.fullExtent.clone();
+            view.goTo(extent.expand(2));
+          } else if (isMatch) {
+            resetMap();
+          }
+        });
+      // Need to filter station features to a buffer defined by user via slider /default
+    }
+
+    function handleCreateCustomRoute() {
+      /*
+      // More or less working
+      // Need to style route and symbols of this and other route
+      // Need to limit stops to 2, add Notice with directions when in editing mode
+      // Need to allow cancellation and disable all sidebars while editing
+      // Need to add a FAB for stop drawing
+  
+      const originalState = appState.creatingCustomRouteCurrently;
+      resetMap();
+      suggestedRouteListItems.forEach((listItem) => {
+        listItem.disabled = !originalState;
+        listItem.selected = false;
       });
 
-      // todo adjust the custom symbols for creating custom route
-      // todo while creating custom route, de-select any current "popular route", and add "creating route ui"
-      const stopSymbol = {
-        type: "simple-marker",
-        style: "cross",
-        size: 15,
-        outline: {
-          width: 4,
-        },
-      };
+      customRouteEl.kind = !originalState ? "brand" : "neutral";
 
-      const routeSymbol = {
-        type: "simple-line",
-        color: [0, 0, 255, 0.5],
-        width: 5,
-      };
-
-      // Adds a graphic when the user clicks the map. If 2 or more points exist, route is solved.
-      // todo - for demo - maybe limit to two stops?
-      view.on("click", addStop);
-
-      function addStop(event) {
-        const stop = new Graphic({
-          geometry: event.mapPoint,
-          symbol: stopSymbol,
+      if (!originalState) {
+        const routeParams = new RouteParameters({
+          apiKey,
+          stops: new FeatureSet(),
+          outSpatialReference: {
+            wkid: 3857,
+          },
         });
-        routeLayer.add(stop);
 
-        routeParams.stops.features.push(stop);
-        if (routeParams.stops.features.length >= 2) {
-          route.solve(routeUrl, routeParams).then(showRoute);
+        const stopSymbol = {
+          type: "simple-marker",
+          style: "cross",
+          size: 15,
+          outline: {
+            width: 4,
+          },
+        };
+
+        const routeSymbol = {
+          type: "simple-line",
+          color: [0, 0, 255, 0.5],
+          width: 5,
+        };
+
+        view.on("click", addStop);
+
+        function addStop(event) {
+          const stop = new Graphic({
+            geometry: event.mapPoint,
+            symbol: stopSymbol,
+          });
+          routeLayer.add(stop);
+
+          routeParams.stops.features.push(stop);
+          if (routeParams.stops.features.length >= 2) {
+            route.solve(routeUrl, routeParams).then(showRoute);
+          }
+        }
+        function showRoute(data) {
+          const routeResult = data.routeResults[0].route;
+          routeResult.symbol = routeSymbol;
+          routeLayer.add(routeResult);
         }
       }
-      function showRoute(data) {
-        const routeResult = data.routeResults[0].route;
-        routeResult.symbol = routeSymbol;
-        routeLayer.add(routeResult);
-      }
+
+      appState.creatingCustomRouteCurrently = !originalState;
+      */
     }
-
-    // todo - these take awhile to create on click of list item, should probably create these as app load and hide / show each layer
-    // use geocoding for these instead of defined points? Or at least move the pre-defined geometry to reference file
-    function handleRouteDisplay(event) {
-      const requestedRoute = event.target.selectedItems[0]?.label;
-      let requestedRouteStops;
-
-      switch (requestedRoute) {
-        case "New York to Los Angeles":
-          requestedRouteStops = [
-            { geometry: { type: "point", x: -118.2437, y: 34.0522 } },
-            { geometry: { type: "point", x: -74.006, y: 40.7128 } },
-          ];
-          break;
-        case "Boston to Washington D.C.":
-          requestedRouteStops = [
-            { geometry: { type: "point", x: -71.0589, y: 42.3601 } },
-            { geometry: { type: "point", x: -77.0369, y: 38.9072 } },
-          ];
-          break;
-        case "Seattle to Chicago":
-          requestedRouteStops = [
-            { geometry: { type: "point", x: -122.3321, y: 47.6062 } },
-            { geometry: { type: "point", x: -87.6298, y: 41.8781 } },
-          ];
-          break;
-        case "Phoenix to Denver":
-          requestedRouteStops = [
-            { geometry: { type: "point", x: -112.074, y: 33.4484 } },
-            { geometry: { type: "point", x: -104.9903, y: 39.7392 } },
-          ];
-          break;
-        case "San Francisco to St. Louis":
-          requestedRouteStops = [
-            { geometry: { type: "point", x: -122.4194, y: 37.7749 } },
-            { geometry: { type: "point", x: -90.1994, y: 38.627 } },
-          ];
-          break;
-      }
-      // todo better styling for line and start / end points
-      // todo - ability to "flip" route? Maybe not needed for demo
-      const drive = new RouteLayer({
-        stops: requestedRouteStops,
-        effect: "bloom(1, 0.25px, 0)",
-      });
-
-      // todo
-      drive
-        .solve({
-          apiKey,
-        })
-        .then((results) => {
-          drive.update(results);
-          map.remove(drive);
-          map.add(drive);
-          //     else map.remove(drive);
-          const extent = results.routeInfo.geometry.extent.clone();
-          // todo filter station filters to distance in slider
-          view.goTo(extent.expand(1.5));
-        });
-    }
-    // function getSuggestedRoutes();
-    // for [list of routes], generate route and get total mileage
 
     function initializeApp() {
       createFilterListItems();
       createCorridorListItems();
       handleLayerFilter();
-      // get suggested routes
+      createSuggestedRoutesLayers();
     }
-
-    // handle route click
-    // on suggested route click, slowly highlight + create buffer, zoom to fit.
-
-    // on create custom route, open second block, set starting point on first click, end point on second click,
-    //then add as a custom route to a new block section under popular routes called custom routes, add mileage, make selectable, and select
 
     initializeApp();
   })());

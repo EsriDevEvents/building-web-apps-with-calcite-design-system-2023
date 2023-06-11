@@ -34,8 +34,16 @@ calcite-shell.calcite-mode-dark {
   --calcite-ui-border-input: #4b4245;
 }
 
+calcite-loader {
+  color: var(--calcite-ui-brand);
+}
 calcite-block {
   --calcite-block-padding: 0;
+}
+
+#route-scrim {
+  z-index: 9;
+  --calcite-scrim-background: rgba(44, 42, 38, 0.8);
 }
 
 calcite-list-item calcite-chip {
