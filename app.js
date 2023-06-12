@@ -153,6 +153,7 @@ require([
   RouteLayer
 ) =>
   (async () => {
+    esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
     esriConfig.apiKey = apiKey;
     toggleModalEl.addEventListener("click", () => handleModalChange());
     customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
