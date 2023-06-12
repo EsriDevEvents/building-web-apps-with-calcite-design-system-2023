@@ -119,7 +119,7 @@ function handleModalChange() {
 
 /** Layer Resources */
 const apiKey =
-  "AAPK414dcaa408934035a8ea3d1636e1232fziiuAv7x3n2_ohMMUElzlsQhizYN4qeLRY-hwlhIyiqPNEf9dlzbNumsYz0dcZQs";
+  "AAPK930915ff5f15456dbbfa77b4ae41c180GXXMr_3eIL9DvdQHcFVasjxNKfbzymMyo6L9N9JGnYvkyP1myvnevJmBoFYLf2DB";
 
 const routeUrl =
   "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
@@ -134,33 +134,26 @@ const alternativeFuelCorridorURL =
  *
  **/
 require([
+  "esri/config",
   "esri/Map",
   "esri/views/MapView",
   "esri/layers/FeatureLayer",
   "esri/widgets/Home",
   "esri/widgets/Locate",
-  "esri/Graphic",
   "esri/layers/GraphicsLayer",
-  "esri/rest/route",
-  "esri/rest/support/RouteParameters",
-  "esri/rest/support/FeatureSet",
-  "esri/request",
   "esri/layers/RouteLayer",
 ], (
+  esriConfig,
   Map,
   MapView,
   FeatureLayer,
   Home,
   Locate,
-  Graphic,
   GraphicsLayer,
-  route,
-  RouteParameters,
-  FeatureSet,
-  esriRequest,
   RouteLayer
 ) =>
   (async () => {
+    esriConfig.apiKey = apiKey;
     toggleModalEl.addEventListener("click", () => handleModalChange());
     customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
 
@@ -236,7 +229,7 @@ require([
           effect: "bloom(1, 0.15px, 0)",
         });
 
-        drive.solve({ apiKey }).then((results) => {
+        drive.solve().then((results) => {
           drive.update(results);
           drive.visible = false;
           map.add(drive);
@@ -361,7 +354,7 @@ require([
       // Need to limit stops to 2, add Notice with directions when in editing mode
       // Need to allow cancellation and disable all sidebars while editing
       // Need to add a FAB for stop drawing
-  
+
       const originalState = appState.creatingCustomRouteCurrently;
       resetMap();
       suggestedRouteListItems.forEach((listItem) => {
