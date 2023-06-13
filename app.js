@@ -327,7 +327,7 @@ require([
         // console.log(corridorLayer);
         // const where = `EV IS NOT NULL`;
         featureLayerView.featureEffect = {
-          filter: { where },
+          // filter: { where },
           excludedEffect: "opacity(0%)",
           includedEffect: "opacity(100%)",
         };
