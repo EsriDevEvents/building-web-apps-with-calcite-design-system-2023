@@ -52,7 +52,7 @@
                 <calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"
                     collapsible>
                     <calcite-icon slot="icon" scale="s" icon="exit-highway-right"></calcite-icon>
-                    <calcite-list id="corridor-list" selection-mode="multiple"></calcite-list>
+                    <calcite-list id="corridor-list" selection-mode="single-persist"></calcite-list>
                 </calcite-block>
                 <calcite-block heading="Fuel Types" open collapsible>
                     <calcite-icon slot="icon" scale="s" icon="camera-flash-on"></calcite-icon>
@@ -66,8 +66,7 @@
         </calcite-shell-panel>
 
         <calcite-shell-panel display-mode="float" slot="panel-end">
-            <calcite-panel heading="Preview a Route">
-                <calcite-scrim loading id="route-scrim"></calcite-scrim>
+            <calcite-panel heading="Preview a Route" loading disabled id="route-panel">
                 <calcite-block heading="Popular routes" open collapsible>
                     <calcite-list selection-mode="single" selection-appearance="border" id="route-list"></calcite-list>
                 </calcite-block>

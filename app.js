@@ -5,7 +5,7 @@
  **/
 
 /** Declare expected type values */
-const corridors = ["Signage Pending", "Signage Ready"];
+const corridors = ["None", "Signage Pending", "Signage Ready"];
 
 /** Declare expected type values */
 const allTypes = [
@@ -100,14 +100,14 @@ const toggleModalEl = document.getElementById("toggle-modal");
 const modalEl = document.getElementById("modal");
 const corridorListEl = document.getElementById("corridor-list");
 const filterListEl = document.getElementById("filter-list");
-const suggestedRoutesListEl = document.getElementById("route-list");
+const routesListEl = document.getElementById("route-list");
+const routesPanelEl = document.getElementById("route-panel");
 const customRouteEl = document.getElementById("custom-route-button");
-const routeScrim = document.getElementById("route-scrim");
 
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
   types: allTypes,
-  corridors: false,
+  corridors: "None",
   creatingCustomRouteCurrently: false,
   suggestedRoutesHaveLoaded: false,
 };
@@ -158,27 +158,27 @@ require([
     toggleModalEl.addEventListener("click", () => handleModalChange());
     customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
 
-    corridorListEl.addEventListener("calciteListChange", () => {
-      handleCorridorListChange();
+    corridorListEl.addEventListener("calciteListChange", (event) => {
+      handleCorridorListChange(event);
     });
     filterListEl.addEventListener("calciteListChange", (event) =>
       handleStationTypeListChange(event)
     );
 
-    const customRenderer = {
+    const routeLayer = new GraphicsLayer();
+
+    const stationRenderer = {
       field: "Fuel_Type",
       type: "unique-value",
       uniqueValueInfos: assignColorsToTypes(),
     };
 
-    const routeLayer = new GraphicsLayer();
-
-    const layer = new FeatureLayer({
+    const stationLayer = new FeatureLayer({
       url: alternativeFuelLayerURL,
       outFields: ["*"],
       minScale: 0,
       maxScale: 0,
-      renderer: customRenderer,
+      renderer: stationRenderer,
     });
 
     const corridorLayer = new FeatureLayer({
@@ -186,12 +186,12 @@ require([
       outFields: ["*"],
       minScale: 0,
       maxScale: 0,
-      visible: false,
+      // visible: false,
     });
 
     const map = new Map({
       basemap: "streets-night-vector",
-      layers: [corridorLayer, layer, routeLayer],
+      layers: [corridorLayer, stationLayer, routeLayer],
     });
 
     const view = new MapView({
@@ -222,7 +222,7 @@ require([
         if (!suggestedRouteListItems.includes(listItem))
           suggestedRouteListItems.push(listItem);
 
-        suggestedRoutesListEl.appendChild(listItem);
+        routesListEl.appendChild(listItem);
 
         const drive = new RouteLayer({
           name: route.name,
@@ -235,8 +235,8 @@ require([
           drive.visible = false;
           map.add(drive);
           if (index > 3) {
-            routeScrim.hidden = true;
-            routeScrim.loading = false;
+            routesPanelEl.disabled = false;
+            routesPanelEl.loading = false;
           }
         });
       });
@@ -286,11 +286,12 @@ require([
       corridors.forEach((item) => {
         const listItem = document.createElement("calcite-list-item");
         listItem.label = item;
+        listItem.selected = item === appState.corridors;
         corridorListEl.appendChild(listItem);
       });
     }
 
-    function createWhereArguments() {
+    function createStationWhereArguments() {
       let args = [];
       const typesActive = appState.types.length > 0;
       const featureTypes = typesActive ? appState.types : allTypes;
@@ -301,9 +302,9 @@ require([
       return argString;
     }
 
-    async function handleLayerFilter() {
-      await view.whenLayerView(layer).then((featureLayerView) => {
-        const where = `Fuel_Type IS NOT NULL${createWhereArguments()}`;
+    async function handleStationFilter() {
+      await view.whenLayerView(stationLayer).then((featureLayerView) => {
+        const where = `Fuel_Type IS NOT NULL${createStationWhereArguments()}`;
         featureLayerView.featureEffect = {
           filter: { where },
           excludedEffect: "opacity(0%)",
@@ -318,12 +319,24 @@ require([
         items.push({ name: item.label, code: item.value })
       );
       appState.types = items;
-      handleLayerFilter();
+      handleStationFilter();
     }
 
-    function handleCorridorListChange() {
-      appState.corridor = !appState.corridor;
-      corridorLayer.visible = appState.corridor;
+    async function handleCorridorFilter(requestedValue) {
+      await view.whenLayerView(corridorLayer).then((featureLayerView) => {
+        // console.log(corridorLayer);
+        // const where = `EV IS NOT NULL`;
+        featureLayerView.featureEffect = {
+          filter: { where },
+          excludedEffect: "opacity(0%)",
+          includedEffect: "opacity(100%)",
+        };
+      });
+    }
+
+    async function handleCorridorListChange(event) {
+      const requestedValue = event.target.selectedItems[0]?.label;
+      handleCorridorFilter(requestedValue);
     }
 
     function handleRouteDisplay(event) {
@@ -417,7 +430,7 @@ require([
     function initializeApp() {
       createFilterListItems();
       createCorridorListItems();
-      handleLayerFilter();
+      handleStationFilter();
       createSuggestedRoutesLayers();
     }
 
