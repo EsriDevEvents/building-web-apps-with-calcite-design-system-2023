@@ -121,8 +121,9 @@ function handleModalChange() {
 const apiKey =
   "AAPK930915ff5f15456dbbfa77b4ae41c180GXXMr_3eIL9DvdQHcFVasjxNKfbzymMyo6L9N9JGnYvkyP1myvnevJmBoFYLf2DB";
 
-const routeUrl =
-  "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+// const routeUrl =
+//   "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
 const alternativeFuelLayerURL =
   "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0";
 const alternativeFuelCorridorURL =
@@ -133,236 +134,219 @@ const alternativeFuelCorridorURL =
  * MAPS SDK
  *
  **/
-require([
-  "esri/config",
-  "esri/Map",
-  "esri/views/MapView",
-  "esri/layers/FeatureLayer",
-  "esri/widgets/Home",
-  "esri/widgets/Locate",
-  "esri/layers/GraphicsLayer",
-  "esri/layers/RouteLayer",
-], (
-  esriConfig,
-  Map,
-  MapView,
-  FeatureLayer,
-  Home,
-  Locate,
-  GraphicsLayer,
-  RouteLayer
-) =>
-  (async () => {
-    esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
-    esriConfig.apiKey = apiKey;
-    toggleModalEl.addEventListener("click", () => handleModalChange());
-    customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
+import esriConfig from "https://js.arcgis.com/4.27/@arcgis/core/config.js";
+import Map from "https://js.arcgis.com/4.27/@arcgis/core/Map.js";
+import MapView from "https://js.arcgis.com/4.27/@arcgis/core/views/MapView.js";
+import FeatureLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/FeatureLayer.js";
+import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/GraphicsLayer.js";
+import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
+import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
+import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
 
-    corridorListEl.addEventListener("calciteListChange", (event) => {
-      handleCorridorListChange(event);
+esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
+esriConfig.apiKey = apiKey;
+toggleModalEl.addEventListener("click", () => handleModalChange());
+customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
+
+corridorListEl.addEventListener("calciteListChange", (event) => {
+  handleCorridorListChange(event);
+});
+
+filterListEl.addEventListener("calciteListChange", (event) =>
+  handleStationTypeListChange(event)
+);
+
+const routeLayer = new GraphicsLayer();
+
+const stationRenderer = {
+  field: "Fuel_Type",
+  type: "unique-value",
+  uniqueValueInfos: assignColorsToTypes(),
+};
+
+const stationLayer = new FeatureLayer({
+  url: alternativeFuelLayerURL,
+  outFields: ["*"],
+  minScale: 0,
+  maxScale: 0,
+  renderer: stationRenderer,
+});
+
+const corridorLayer = new FeatureLayer({
+  url: alternativeFuelCorridorURL,
+  outFields: ["*"],
+  minScale: 0,
+  maxScale: 0,
+  // visible: false,
+});
+
+const map = new Map({
+  basemap: "streets-night-vector",
+  layers: [corridorLayer, stationLayer, routeLayer],
+});
+
+const view = new MapView({
+  container: "viewDiv",
+  map: map,
+  center: [-100, 45],
+  zoom: 3,
+});
+
+function resetMap() {
+  map.layers
+    .filter((layer) => layer.name)
+    .forEach((layer) => {
+      layer.visible = false;
     });
-    filterListEl.addEventListener("calciteListChange", (event) =>
-      handleStationTypeListChange(event)
+  view.goTo({ center: [-100, 45], zoom: 3 });
+}
+
+const suggestedRouteListItems = [];
+
+async function createSuggestedRoutesLayers() {
+  suggestedRoutes.forEach(async (route, index) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = route.name;
+    listItem.addEventListener("calciteListItemSelect", (event) =>
+      handleRouteDisplay(event)
     );
+    if (!suggestedRouteListItems.includes(listItem))
+      suggestedRouteListItems.push(listItem);
 
-    const routeLayer = new GraphicsLayer();
+    routesListEl.appendChild(listItem);
 
-    const stationRenderer = {
-      field: "Fuel_Type",
-      type: "unique-value",
-      uniqueValueInfos: assignColorsToTypes(),
-    };
-
-    const stationLayer = new FeatureLayer({
-      url: alternativeFuelLayerURL,
-      outFields: ["*"],
-      minScale: 0,
-      maxScale: 0,
-      renderer: stationRenderer,
+    const drive = new RouteLayer({
+      name: route.name,
+      stops: route.stops,
+      effect: "bloom(1, 0.15px, 0)",
     });
 
-    const corridorLayer = new FeatureLayer({
-      url: alternativeFuelCorridorURL,
-      outFields: ["*"],
-      minScale: 0,
-      maxScale: 0,
-      // visible: false,
+    const results = await drive.solve();
+    drive.update(results);
+    drive.visible = false;
+    map.add(drive);
+
+    if (index > 3) {
+      routesPanelEl.disabled = false;
+      routesPanelEl.loading = false;
+    }
+  });
+}
+
+const locateBtn = new Locate({ view: view });
+const homeWidget = new Home({ view: view });
+
+view.ui.add(homeWidget, "top-left");
+view.ui.add(locateBtn, { position: "top-left" });
+
+function assignColorsToTypes() {
+  let uniqueValueInfos = [];
+  allTypes.forEach((type, index) => {
+    uniqueValueInfos.push({
+      value: type.code,
+      symbol: {
+        type: "simple-marker",
+        size: 2,
+        color: typeColors[index],
+        outline: { color: typeColors[index], width: 1 },
+      },
     });
+  });
+  return uniqueValueInfos;
+}
 
-    const map = new Map({
-      basemap: "streets-night-vector",
-      layers: [corridorLayer, stationLayer, routeLayer],
+function createFilterListItems() {
+  allTypes.forEach((item, index) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item.name;
+    listItem.value = item.code;
+    listItem.style.setProperty("--calcite-ui-icon-color", typeColors[index]);
+    listItem.style.setProperty("--calcite-ui-focus-color", typeColors[index]);
+    listItem.selected = true;
+    filterListEl.appendChild(listItem);
+  });
+}
+
+function createCorridorListItems() {
+  corridors.forEach((item) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item;
+    listItem.selected = item === appState.corridors;
+    corridorListEl.appendChild(listItem);
+  });
+}
+
+function createStationWhereArguments() {
+  let args = [];
+  const typesActive = appState.types.length > 0;
+  const featureTypes = typesActive ? appState.types : allTypes;
+  featureTypes.forEach((j) => args.push(`'${j.code}'`));
+  const filtered = ` AND (Fuel_Type = ${args.join(" OR Fuel_Type = ")})`;
+  const unfiltered = ` AND Fuel_Type != ${args.join(" AND Fuel_Type != ")}`;
+  const argString = typesActive ? filtered : unfiltered;
+  return argString;
+}
+
+async function handleStationFilter() {
+  const featureLayerView = await view.whenLayerView(stationLayer);
+  const where = `Fuel_Type IS NOT NULL${createStationWhereArguments()}`;
+  featureLayerView.featureEffect = {
+    filter: { where },
+    excludedEffect: "opacity(0%)",
+    includedEffect: "opacity(100%)",
+  };
+}
+
+function handleStationTypeListChange(event) {
+  let items = [];
+  event.target.selectedItems.forEach((item) =>
+    items.push({ name: item.label, code: item.value })
+  );
+  appState.types = items;
+  handleStationFilter();
+}
+
+async function handleCorridorFilter(requestedValue) {
+  const featureLayerView = await view.whenLayerView(corridorLayer);
+
+  // console.log(corridorLayer);
+  // const where = `EV IS NOT NULL`;
+  featureLayerView.featureEffect = {
+    // filter: { where },
+    excludedEffect: "opacity(0%)",
+    includedEffect: "opacity(100%)",
+  };
+}
+
+async function handleCorridorListChange(event) {
+  const requestedValue = event.target.selectedItems[0]?.label;
+  handleCorridorFilter(requestedValue);
+}
+
+function handleRouteDisplay(event) {
+  const route = suggestedRoutes.find(
+    (route) => route.name === event.target.label
+  );
+
+  map.layers
+    .filter((layer) => layer.name)
+    .forEach((layer) => {
+      const isMatch = layer.name === route.name;
+      if (!isMatch) {
+        layer.visible = false;
+      } else if (isMatch && !layer.visible) {
+        layer.visible = true;
+        const extent = layer.fullExtent.clone();
+        view.goTo(extent.expand(2));
+      } else if (isMatch) {
+        resetMap();
+      }
     });
+  // Need to filter station features to a buffer defined by user via slider /default
+}
 
-    const view = new MapView({
-      container: "viewDiv",
-      map: map,
-      center: [-100, 45],
-      zoom: 3,
-    });
-
-    function resetMap() {
-      map.layers
-        .filter((layer) => layer.name)
-        .forEach((layer) => {
-          layer.visible = false;
-        });
-      view.goTo({ center: [-100, 45], zoom: 3 });
-    }
-
-    const suggestedRouteListItems = [];
-
-    function createSuggestedRoutesLayers() {
-      suggestedRoutes.forEach((route, index) => {
-        const listItem = document.createElement("calcite-list-item");
-        listItem.label = route.name;
-        listItem.addEventListener("calciteListItemSelect", (event) =>
-          handleRouteDisplay(event)
-        );
-        if (!suggestedRouteListItems.includes(listItem))
-          suggestedRouteListItems.push(listItem);
-
-        routesListEl.appendChild(listItem);
-
-        const drive = new RouteLayer({
-          name: route.name,
-          stops: route.stops,
-          effect: "bloom(1, 0.15px, 0)",
-        });
-
-        drive.solve().then((results) => {
-          drive.update(results);
-          drive.visible = false;
-          map.add(drive);
-          if (index > 3) {
-            routesPanelEl.disabled = false;
-            routesPanelEl.loading = false;
-          }
-        });
-      });
-    }
-
-    const locateBtn = new Locate({ view: view });
-    const homeWidget = new Home({ view: view });
-
-    view.ui.add(homeWidget, "top-left");
-    view.ui.add(locateBtn, { position: "top-left" });
-
-    function assignColorsToTypes() {
-      let uniqueValueInfos = [];
-      allTypes.forEach((type, index) => {
-        uniqueValueInfos.push({
-          value: type.code,
-          symbol: {
-            type: "simple-marker",
-            size: 2,
-            color: typeColors[index],
-            outline: { color: typeColors[index], width: 1 },
-          },
-        });
-      });
-      return uniqueValueInfos;
-    }
-
-    function createFilterListItems() {
-      allTypes.forEach((item, index) => {
-        const listItem = document.createElement("calcite-list-item");
-        listItem.label = item.name;
-        listItem.value = item.code;
-        listItem.style.setProperty(
-          "--calcite-ui-icon-color",
-          typeColors[index]
-        );
-        listItem.style.setProperty(
-          "--calcite-ui-focus-color",
-          typeColors[index]
-        );
-        listItem.selected = true;
-        filterListEl.appendChild(listItem);
-      });
-    }
-
-    function createCorridorListItems() {
-      corridors.forEach((item) => {
-        const listItem = document.createElement("calcite-list-item");
-        listItem.label = item;
-        listItem.selected = item === appState.corridors;
-        corridorListEl.appendChild(listItem);
-      });
-    }
-
-    function createStationWhereArguments() {
-      let args = [];
-      const typesActive = appState.types.length > 0;
-      const featureTypes = typesActive ? appState.types : allTypes;
-      featureTypes.forEach((j) => args.push(`'${j.code}'`));
-      const filtered = ` AND (Fuel_Type = ${args.join(" OR Fuel_Type = ")})`;
-      const unfiltered = ` AND Fuel_Type != ${args.join(" AND Fuel_Type != ")}`;
-      const argString = typesActive ? filtered : unfiltered;
-      return argString;
-    }
-
-    async function handleStationFilter() {
-      await view.whenLayerView(stationLayer).then((featureLayerView) => {
-        const where = `Fuel_Type IS NOT NULL${createStationWhereArguments()}`;
-        featureLayerView.featureEffect = {
-          filter: { where },
-          excludedEffect: "opacity(0%)",
-          includedEffect: "opacity(100%)",
-        };
-      });
-    }
-
-    function handleStationTypeListChange(event) {
-      let items = [];
-      event.target.selectedItems.forEach((item) =>
-        items.push({ name: item.label, code: item.value })
-      );
-      appState.types = items;
-      handleStationFilter();
-    }
-
-    async function handleCorridorFilter(requestedValue) {
-      await view.whenLayerView(corridorLayer).then((featureLayerView) => {
-        // console.log(corridorLayer);
-        // const where = `EV IS NOT NULL`;
-        featureLayerView.featureEffect = {
-          // filter: { where },
-          excludedEffect: "opacity(0%)",
-          includedEffect: "opacity(100%)",
-        };
-      });
-    }
-
-    async function handleCorridorListChange(event) {
-      const requestedValue = event.target.selectedItems[0]?.label;
-      handleCorridorFilter(requestedValue);
-    }
-
-    function handleRouteDisplay(event) {
-      const route = suggestedRoutes.find(
-        (route) => route.name === event.target.label
-      );
-
-      map.layers
-        .filter((layer) => layer.name)
-        .forEach((layer) => {
-          const isMatch = layer.name === route.name;
-          if (!isMatch) {
-            layer.visible = false;
-          } else if (isMatch && !layer.visible) {
-            layer.visible = true;
-            const extent = layer.fullExtent.clone();
-            view.goTo(extent.expand(2));
-          } else if (isMatch) {
-            resetMap();
-          }
-        });
-      // Need to filter station features to a buffer defined by user via slider /default
-    }
-
-    function handleCreateCustomRoute() {
-      /*
+function handleCreateCustomRoute() {
+  /*
       // More or less working
       // Need to style route and symbols of this and other route
       // Need to limit stops to 2, add Notice with directions when in editing mode
@@ -425,14 +409,9 @@ require([
 
       appState.creatingCustomRouteCurrently = !originalState;
       */
-    }
+}
 
-    function initializeApp() {
-      createFilterListItems();
-      createCorridorListItems();
-      handleStationFilter();
-      createSuggestedRoutesLayers();
-    }
-
-    initializeApp();
-  })());
+createFilterListItems();
+createCorridorListItems();
+handleStationFilter();
+createSuggestedRoutesLayers();
