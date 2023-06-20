@@ -37,6 +37,7 @@ calcite-shell.calcite-mode-dark {
 calcite-loader {
   color: var(--calcite-ui-brand);
 }
+
 calcite-block {
   --calcite-block-padding: 0;
 }
@@ -53,9 +54,11 @@ calcite-list-item calcite-chip {
 calcite-list-item:not([selected]) calcite-chip {
   display: none;
 }
+
 calcite-action-pad {
   margin-inline: 1rem;
 }
+
 #modal hr {
   margin: 1rem 0;
   border: 0;
