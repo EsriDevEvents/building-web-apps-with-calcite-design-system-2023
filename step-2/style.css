@@ -8,6 +8,10 @@ body,
   background-color: #353535;
 }
 
+calcite-action-pad {
+  margin-inline: 1rem;
+}
+
 #modal hr {
   margin: 1rem 0;
   border: 0;
