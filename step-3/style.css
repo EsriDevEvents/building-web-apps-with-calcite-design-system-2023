@@ -1,0 +1,48 @@
+html,
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #353535;
+}
+
+calcite-loader {
+  color: var(--calcite-ui-brand);
+}
+
+calcite-block {
+  --calcite-block-padding: 0;
+}
+
+#route-scrim {
+  z-index: 9;
+  --calcite-scrim-background: rgba(44, 42, 38, 0.8);
+}
+
+calcite-list-item calcite-chip {
+  margin-inline-end: 0.5rem;
+}
+
+calcite-list-item:not([selected]) calcite-chip {
+  display: none;
+}
+
+calcite-action-pad {
+  margin-inline: 1rem;
+}
+
+#modal hr {
+  margin: 1rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--calcite-ui-border-3);
+}
+
+#modal ul li {
+  margin-bottom: 0.5rem;
+}
+
+#modal calcite-notice {
+  margin-bottom: 1.25rem;
+}
