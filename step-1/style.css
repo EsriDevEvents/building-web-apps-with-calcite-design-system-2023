@@ -12,6 +12,11 @@ calcite-action-pad {
   margin-inline: 1rem;
 }
 
+calcite-navigation > calcite-chip {
+  align-self: center;
+  margin: 0 1rem;
+}
+
 #modal hr {
   margin: 1rem 0;
   border: 0;

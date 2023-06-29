@@ -6,8 +6,8 @@
     <title>2023 Esri User Conference - Building Apps with Calcite Design System</title>
 
     <!-- Calcite imports -->
-    <script type="module" src="https://js.arcgis.com/calcite-components/1.4.2/calcite.esm.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.2/calcite.css" />
+    <script type="module" src="https://js.arcgis.com/calcite-components/1.4.3/calcite.esm.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.3/calcite.css" />
 
     <!-- ArcGIS Maps SDK for JavaScript imports -->
     <link rel="stylesheet" href="https://js.arcgis.com/4.27/@arcgis/core/assets/esri/themes/dark/main.css">
@@ -22,30 +22,29 @@
 
         <calcite-navigation slot="header">
             <calcite-navigation-logo href="../" thumbnail="../images/logo.svg" alt="Application logo" slot="logo"
-                heading="Alternative Fuel Stations" description="Demo Part 1 - Road trip!"></calcite-navigation-logo>
+                heading="Alternative Fuel Stations"></calcite-navigation-logo>
             <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
                 this application</calcite-tooltip>
-            <calcite-menu slot="content-start">
-                <calcite-menu-item href="../" icon-start="effects" text="Complete Demo">
-                </calcite-menu-item>
-            </calcite-menu>
+            <calcite-chip appearance="outline" slot="content-end">
+                Demo steps
+            </calcite-chip>
             <calcite-menu slot="content-end">
-                <calcite-menu-item active icon-start="number-circle-1" text="Part I">
+                <calcite-menu-item active icon-start="number-circle-1-f" text="Layout">
                 </calcite-menu-item>
-                <calcite-menu-item href="../step-2" icon-start="number-circle-2" text="Part II">
+                <calcite-menu-item href="../step-2" icon-start="number-circle-2" text="Content">
                 </calcite-menu-item>
-                <calcite-menu-item href="../step-3" icon-start="number-circle-3" text="Part III">
+                <calcite-menu-item href="../step-3" icon-start="number-circle-3" text="Interaction">
                 </calcite-menu-item>
-                <calcite-menu-item href="../step-4" icon-start="number-circle-4" text="Part IV">
+                <calcite-menu-item href="../step-4" icon-start="number-circle-4" text="Theming">
                 </calcite-menu-item>
             </calcite-menu>
-            <calcite-action-pad layout="horizontal" expand-disabled slot="content-end">
+            <calcite-action-pad layout=" horizontal" expand-disabled slot="content-end">
                 <calcite-action id="toggle-modal" text="About this application" icon="information"
                     text-enabled></calcite-action>
             </calcite-action-pad>
         </calcite-navigation>
 
-        <calcite-alert open icon="number-circle-1">
+        <calcite-alert open icon="number-circle-1-f">
             <div slot="title">Demo Step 1</div>
             <div slot="message">Adding a map and application layout</div>
         </calcite-alert>
