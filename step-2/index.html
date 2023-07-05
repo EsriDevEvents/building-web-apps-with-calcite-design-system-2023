@@ -19,14 +19,13 @@
 <body>
     <calcite-shell class="calcite-mode-dark" content-behind>
         <div id="viewDiv"></div>
-
         <calcite-navigation slot="header">
             <calcite-navigation-logo href="../" thumbnail="../images/logo.svg" alt="Application logo" slot="logo"
                 heading="Alternative Fuel Stations"></calcite-navigation-logo>
             <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
                 this application</calcite-tooltip>
             <calcite-chip appearance="outline" slot="content-end">
-                Demo steps
+                Demo
             </calcite-chip>
             <calcite-menu slot="content-end">
                 <calcite-menu-item href="../step-1" icon-start="number-circle-1" text="Layout">
@@ -71,46 +70,34 @@
             </calcite-panel>
         </calcite-shell-panel>
 
-        <calcite-alert open icon="number-circle-2-f" placement="bottom-end">
-            <div slot="title">Demo Step 2</div>
-            <div slot="message">Add layout components from Calcite Components</div>
-        </calcite-alert>
-
-        <calcite-modal id="modal">
-            <div slot="header">About this application</div>
+        <calcite-modal aria-labelledby="modal-title" id="modal" open slot="modals">
+            <div slot="header" id="modal-title">
+                Step 2: Construct our application layout
+            </div>
             <div slot="content">
-                <calcite-notice open>
-                    <span slot="title">This demonstration application is a companion resource to the "Building Apps
-                        with Calcite Design System" presentation at Esri User Conference 2023.
-                    </span>
-                </calcite-notice>
-                This example illustrates theming <calcite-link target="_blank"
-                    href="https://github.com/Esri/calcite-components">
-                    Calcite Components</calcite-link>.
+                <h3>
+                    Calcite Components
+                </h3>
                 <ul>
-                    <li>The default Calcite theme variables for both light and dark modes are customized.</li>
-                    <li>Calcite Chip components are themed programmatically and correspond to attribute values.</li>
-                    <li>Calcite Modal components override component-specific variables for scrim.</li>
+                    <li>Use the concept of slots to add a map, <calcite-chip appearance="outline-fill">Calcite
+                            Panel</calcite-chip>and <calcite-chip appearance="outline-fill">Calcite
+                            Block</calcite-chip> components.
+                    </li>
+                    <li>Add placeholder for, <calcite-chip appearance="outline-fill">Calcite
+                            List</calcite-chip> and <calcite-chip appearance="outline-fill">Calcite
+                            Block</calcite-chip> components.
+                    </li>
                 </ul>
-                <calcite-link target="_blank"
-                    href="https://developers.arcgis.com/calcite-design-system/foundations/colors/#theming">
-                    Learn about theming</calcite-link> in the <calcite-link target="_blank"
-                    href="https://developers.arcgis.com/calcite-design-system">
-                    Calcite Design System documentation</calcite-link>.
-                <hr />
-                <calcite-link target="_blank"
-                    href="https://github.com/EsriDevEvents/building-web-apps-with-calcite-design-system-2023">Application
-                    source code</calcite-link> is available in the
-                <calcite-link target="_blank" href="https://github.com/EsriDevEvents/">Esri Developer Events
-                    GitHub organization</calcite-link>.
-                <hr />
-                <calcite-link target="_blank"
-                    href="https://www.arcgis.com/home/item.html?id=4a8305b53ed7416795fc6a129ec989ee">Alternative Fuel
-                    Stations</calcite-link> and <calcite-link target="_blank"
-                    href="https://www.arcgis.com/home/item.html?id=3a7ecb0dfede4ddea3abc9584328631a">Alternative Fuel
-                    Corridor</calcite-link> data is sourced from Esri Data and Maps /
-                <calcite-link target="_blank" href="https://livingatlas.arcgis.com/en/home/">ArcGIS Living Atlas of the
-                    World</calcite-link>.
+                <h3>
+                    Maps SDK for JavaScript
+                </h3>
+                <p>
+                <ul>
+                    <li>Use <calcite-chip appearance="outline-fill">Feature Layer</calcite-chip> data to
+                        generate <calcite-chip appearance="outline-fill">Calcite
+                            List Item</calcite-chip> components
+                    </li>
+                </ul>
             </div>
         </calcite-modal>
     </calcite-shell>

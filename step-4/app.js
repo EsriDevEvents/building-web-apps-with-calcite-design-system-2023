@@ -106,8 +106,31 @@ const customRouteEl = document.getElementById("custom-route-button");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
 
+var basemap = "navigation";
+
+const rangerStyle =
+  "https://esriinc.maps.arcgis.com/sharing/rest/content/items/c5f34b0301a44cd2a0f95823608a3c34/resources/styles/root.json";
+
+let vectormap = new VectorTileLayer(
+  "https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer"
+);
+
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   body.classList = event.target.selectedItems[0].value;
+  console.log(event.target.selectedItems[0].value);
+  switch (event.target.selectedItems[0].value) {
+    case "lavender":
+      map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
+      break;
+    case "ranger":
+      vectormap.setStyle(rangerStyle);
+      break;
+    case "mint":
+      map.basemap = "osm-standard-relief";
+      break;
+    default:
+      map.basemap = "streets-night-vector";
+  }
 });
 
 /** Create a simple state object and set the default filter to allTypes */
@@ -145,6 +168,8 @@ import Map from "https://js.arcgis.com/4.27/@arcgis/core/Map.js";
 import MapView from "https://js.arcgis.com/4.27/@arcgis/core/views/MapView.js";
 import FeatureLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/FeatureLayer.js";
 import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/GraphicsLayer.js";
+import VectorTileLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/VectorTileLayer.js";
+
 import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
 import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
 import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
@@ -187,7 +212,7 @@ const corridorLayer = new FeatureLayer({
 });
 
 const map = new Map({
-  basemap: "streets-night-vector",
+  basemap,
   layers: [corridorLayer, stationLayer, routeLayer],
 });
 

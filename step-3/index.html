@@ -5,6 +5,11 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>2023 Esri User Conference - Building Apps with Calcite Design System</title>
 
+    <!-- Demo syntax highlight import -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/dark.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
     <!-- Calcite imports -->
     <script type="module" src="https://js.arcgis.com/calcite-components/1.4.3/calcite.esm.js"></script>
     <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.4.3/calcite.css" />
@@ -14,6 +19,8 @@
     <!-- Demo imports -->
     <script src="./app.js" defer type="module"></script>
     <link rel="stylesheet" href="./style.css">
+
+
 </head>
 
 <body>
@@ -26,7 +33,7 @@
             <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
                 this application</calcite-tooltip>
             <calcite-chip appearance="outline" slot="content-end">
-                Demo steps
+                Demo
             </calcite-chip>
             <calcite-menu slot="content-end">
                 <calcite-menu-item href="../step-1" icon-start="number-circle-1" text="Layout">
@@ -76,51 +83,45 @@
             </calcite-panel>
         </calcite-shell-panel>
 
-        <calcite-alert open icon="number-circle-3-f" placement="bottom-end">
-            <div slot="title">Demo Step 3</div>
-            <div slot="message">Add map layers and use feature / layer GIS data to create interactive Calcite Components
-                and their Events to interact with
-                Map</div>
-        </calcite-alert>
-
-        <calcite-modal id="modal">
-            <div slot="header">About this application</div>
+        <calcite-modal aria-labelledby="modal-title" id="modal" open slot="modals">
+            <div slot="header" id="modal-title">
+                Step 3: Wire it up!
+            </div>
             <div slot="content">
-                <calcite-notice open>
-                    <span slot="title">This demonstration application is a companion resource to the "Building Apps
-                        with Calcite Design System" presentation at Esri User Conference 2023.
-                    </span>
-                </calcite-notice>
-                This example illustrates theming <calcite-link target="_blank"
-                    href="https://github.com/Esri/calcite-components">
-                    Calcite Components</calcite-link>.
+                <h3>
+                    Calcite Components
+                </h3>
+                <p>
                 <ul>
-                    <li>The default Calcite theme variables for both light and dark modes are customized.</li>
-                    <li>Calcite Chip components are themed programmatically and correspond to attribute values.</li>
-                    <li>Calcite Modal components override component-specific variables for scrim.</li>
+                    <li>Add a <calcite-chip appearance="outline-fill">Calcite List</calcite-chip> and
+                        <calcite-chip appearance="outline-fill">Calcite
+                            List Item</calcite-chip> component to contain our application.
+                    </li>
                 </ul>
-                <calcite-link target="_blank"
-                    href="https://developers.arcgis.com/calcite-design-system/foundations/colors/#theming">
-                    Learn about theming</calcite-link> in the <calcite-link target="_blank"
-                    href="https://developers.arcgis.com/calcite-design-system">
-                    Calcite Design System documentation</calcite-link>.
-                <hr />
-                <calcite-link target="_blank"
-                    href="https://github.com/EsriDevEvents/building-web-apps-with-calcite-design-system-2023">Application
-                    source code</calcite-link> is available in the
-                <calcite-link target="_blank" href="https://github.com/EsriDevEvents/">Esri Developer Events
-                    GitHub organization</calcite-link>.
-                <hr />
-                <calcite-link target="_blank"
-                    href="https://www.arcgis.com/home/item.html?id=4a8305b53ed7416795fc6a129ec989ee">Alternative Fuel
-                    Stations</calcite-link> and <calcite-link target="_blank"
-                    href="https://www.arcgis.com/home/item.html?id=3a7ecb0dfede4ddea3abc9584328631a">Alternative Fuel
-                    Corridor</calcite-link> data is sourced from Esri Data and Maps /
-                <calcite-link target="_blank" href="https://livingatlas.arcgis.com/en/home/">ArcGIS Living Atlas of the
-                    World</calcite-link>.
+                <h3>
+                    Maps SDK for JavaScript
+                </h3>
+                <p>
+                <ul>
+                    <li>Use <calcite-chip appearance="outline-fill">Living Atlas</calcite-chip> live data
+                        to populate our Layers
+                        <pre><code class="language-html">&lt;calcite-list&gt;Example&lt;/calcite-list&gt;</code></pre>
+                        <pre><code class="language-js">const stationRenderer = {
+        field: "Fuel_Type",
+        type: "unique-value",
+        uniqueValueInfos: assignColorsToTypes(),
+    };</code></pre>
+                    </li>
+                    <li>Use <calcite-chip appearance="outline-fill">Symbol Styler</calcite-chip> styling to
+                        match Calcite theming to Features
+                    </li>
+                </ul>
+                </p>
             </div>
         </calcite-modal>
     </calcite-shell>
+
+
 
 </body>
 

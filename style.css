@@ -8,18 +8,27 @@ body {
 }
 
 calcite-action-pad {
-  margin-inline: 1rem;
+  margin-inline: 0.5rem;
+}
+
+calcite-navigation {
+  --calcite-navigation-border-color: transparent;
 }
 
 calcite-navigation > calcite-chip {
   align-self: center;
-  margin: 0 1rem;
+  margin: 0 0.5rem;
 }
 
 p {
   display: block;
   font-size: 18px;
   margin: 2rem auto;
+}
+
+#modal {
+  --calcite-modal-content-background: var(--calcite-ui-background);
+  --calcite-modal-scrim-background: rgba(75, 75, 75, 0.75);
 }
 
 #modal hr {

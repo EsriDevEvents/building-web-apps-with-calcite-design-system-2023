@@ -110,21 +110,42 @@ calcite-block {
   --calcite-scrim-background: rgba(44, 42, 38, 0.8);
 }
 
-calcite-list-item calcite-chip {
-  margin-inline-end: 0.5rem;
-}
-
 calcite-list-item:not([selected]) calcite-chip {
   display: none;
 }
 
 calcite-action-pad {
-  margin-inline: 1rem;
+  margin-inline: 0.5rem;
 }
 
 calcite-navigation > calcite-chip {
   align-self: center;
-  margin: 0 1rem;
+  margin: 0 0.5rem;
+}
+
+ul li {
+  font-size: 18px;
+  color: var(--calcite-ui-text-2);
+  margin: 0.75rem 0;
+}
+ul {
+  margin: 0 0 2rem;
+}
+
+ul li calcite-chip {
+  margin: 0 0.175rem;
+}
+h3 {
+  font-size: 18px;
+
+  margin: 0 0 1rem;
+  color: var(--calcite-ui-text-1);
+  font-weight: 500;
+}
+
+#modal {
+  --calcite-modal-content-background: var(--calcite-ui-background);
+  --calcite-modal-scrim-background: rgba(75, 75, 75, 0.75);
 }
 
 #modal hr {
