@@ -24,26 +24,33 @@ calcite-navigation > calcite-chip {
 ul li {
   font-size: 18px;
   color: var(--calcite-ui-text-2);
-  margin: 0.75rem 0;
+  margin: 1.75rem 0;
 }
 ul {
-  margin: 0 0 2rem;
+  margin: 0 0 3rem;
 }
 
 ul li calcite-chip {
   margin: 0 0.175rem;
 }
+
 h3 {
   font-size: 18px;
-
-  margin: 0 0 1rem;
+  margin: 0 0 2rem;
   color: var(--calcite-ui-text-1);
   font-weight: 500;
 }
 
+pre {
+  font-size: 14px !important;
+  margin: 1rem 0 0 !important;
+}
+
 #modal {
   --calcite-modal-content-background: var(--calcite-ui-background);
-  --calcite-modal-scrim-background: rgba(75, 75, 75, 0.75);
+  --calcite-modal-scrim-background: rgba(75, 75, 75, 0.9);
+  --calcite-modal-height: 70vh;
+  --calcite-modal-width: 60vw;
 }
 
 #modal hr {
