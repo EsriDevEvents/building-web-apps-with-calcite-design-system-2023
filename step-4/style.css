@@ -124,37 +124,34 @@ calcite-navigation > calcite-chip {
 }
 
 ul li {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--calcite-ui-text-2);
   margin: 1.75rem 0;
+  padding: 0 1rem 0.25rem;
 }
 ul {
-  margin: 0 0 3rem;
+  margin: 0;
 }
 
 ul li calcite-chip {
   margin: 0 0.175rem;
 }
 
-h3 {
-  font-size: 18px;
-  margin: 0 0 2rem;
-  color: var(--calcite-ui-text-1);
-  font-weight: 500;
-}
-
 pre {
   font-size: 14px !important;
-  margin: 1rem 0 0 !important;
 }
 
 #modal {
   --calcite-modal-content-background: var(--calcite-ui-background);
   --calcite-modal-scrim-background: rgba(75, 75, 75, 0.9);
-  --calcite-modal-height: 70vh;
+  --calcite-modal-height: 80vh;
   --calcite-modal-width: 60vw;
 }
 
+calcite-accordion {
+  --calcite-ui-foreground-1: transparent;
+  --calcite-block-padding: 0;
+}
 #modal hr {
   margin: 1rem 0;
   border: 0;

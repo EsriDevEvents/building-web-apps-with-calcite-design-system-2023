@@ -15,6 +15,7 @@
 
     <!-- ArcGIS Maps SDK for JavaScript imports -->
     <link rel="stylesheet" href="https://js.arcgis.com/4.27/@arcgis/core/assets/esri/themes/dark/main.css">
+
     <!-- Demo imports -->
     <script src="./app.js" defer type="module"></script>
     <link rel="stylesheet" href="./style.css">
@@ -87,35 +88,52 @@
                 Step 3: Wire it up!
             </div>
             <div slot="content">
-                <h3>
-                    Calcite Components
-                </h3>
-                <p>
-                <ul>
-                    <li>Add a <calcite-chip appearance="outline-fill">Calcite List</calcite-chip> and
-                        <calcite-chip appearance="outline-fill">Calcite
-                            List Item</calcite-chip> component to contain our application.
-                    </li>
-                </ul>
-                <h3>
-                    Maps SDK for JavaScript
-                </h3>
-                <p>
-                <ul>
-                    <li>Use <calcite-chip appearance="outline-fill">Living Atlas</calcite-chip> live data
-                        to populate our Layers
-                        <pre><code class="language-html">&lt;calcite-list&gt;Example&lt;/calcite-list&gt;</code></pre>
-                        <pre><code class="language-js">const stationRenderer = {
-        field: "Fuel_Type",
-        type: "unique-value",
-        uniqueValueInfos: assignColorsToTypes(),
-    };</code></pre>
-                    </li>
-                    <li>Use <calcite-chip appearance="outline-fill">Symbol Styler</calcite-chip> styling to
-                        match Calcite theming to Features
-                    </li>
-                </ul>
-                </p>
+                <calcite-accordion scale="l" open collapsible>
+                    <calcite-accordion-item icon-start="multiple-variables" heading="Calcite Components" expanded>
+                        <ul>
+                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
+                                component to contain our application and map container.
+                                <pre><code class="language-html">&lt;calcite-shell&gt;
+                &lt;div id="viewDiv"&gt;&lt;/div&gt;
+            &lt;/calcite-shell&gt;</code></pre>
+                            </li>
+                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip> and
+                                <calcite-chip appearance="outline-fill">Calcite Navigation Logo</calcite-chip>
+                                components.
+                                <pre><code class="language-html">&lt;calcite-shell&gt;
+                &lt;calcite-navigation&gt;
+                    &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
+                    &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
+                &lt;/calcite-navigation&gt;
+                &lt;div id="viewDiv"&gt;&lt;/div&gt;
+            &lt;/calcite-shell&gt;
+            </code></pre>
+                            </li>
+                        </ul>
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="map" heading="Maps SDK for JavaScript">
+                        <p>
+                        <ul>
+                            <li>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
+                                    appearance="outline-fill">MapView</calcite-chip> in the
+                                default slot of <calcite-chip appearance="outline-fill">Calcite
+                                    Shell</calcite-chip>
+
+                                <pre><code class="language-js">const map = new Map({
+                basemap: "streets-night-vector",
+            });
+            
+            const view = new MapView({
+                container: "viewDiv",
+                map: map,
+                center: [-100, 45],
+                zoom: 3,
+            });
+            </code></pre>
+                            </li>
+                        </ul>
+                    </calcite-accordion-item>
+                </calcite-accordion>
             </div>
         </calcite-modal>
     </calcite-shell>
