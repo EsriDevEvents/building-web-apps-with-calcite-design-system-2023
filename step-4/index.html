@@ -102,7 +102,32 @@
             </div>
             <div slot="content">
                 <calcite-accordion scale="l" open collapsible>
-                    <calcite-accordion-item expanded icon-start="palette-check" heading="Fuel Types theming">
+                    <calcite-accordion-item icon-start="toggle" heading="Switching Themes">
+                        <p>
+                        <ul>
+                            <li>TODO
+
+                                <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
+    &lt;calcite-chip-group slot=&quot;content-center&quot; label=&quot;demo-group-label&quot; selection-mode=&quot;single-persist&quot;
+        id=&quot;theme-chips&quot;&gt;
+        &lt;calcite-chip selected value=&quot;default&quot;&gt;Default&lt;/calcite-chip&gt;
+        &lt;calcite-chip value=&quot;lavender&quot;&gt;
+            Lavender Field
+        &lt;/calcite-chip&gt;
+        &lt;calcite-chip value=&quot;ranger&quot;&gt;Ranger Station&lt;/calcite-chip&gt;
+        &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
+    &lt;/calcite-chip-group&gt;
+&lt;/calcite-navigation&gt;</code></pre>
+                            </li>
+                            <li>TODO
+
+                                <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
+    body.classList = event.target.selectedItems[0].value;
+});</code></pre>
+                            </li>
+                        </ul>
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="palette-check" heading="Fuel Types">
                         Sets Calcite CSS Custom Properties to style the
                         fuel types to match the layer's unique value renderer.
                         <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
@@ -121,47 +146,25 @@
 }
 </code></pre>
                     </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="toggle" heading="Maps SDK for JavaScript">
+                    <calcite-accordion-item icon-start="layer-basemap" heading="Basemaps">
                         <p>
                         <ul>
-                            <li>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
-                                    appearance="outline-fill">MapView</calcite-chip> in the
-                                default slot of <calcite-chip appearance="outline-fill">Calcite
-                                    Shell</calcite-chip>
+                            <li>TODO
 
-                                <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
-    &lt;calcite-chip-group slot=&quot;content-center&quot; label=&quot;demo-group-label&quot; selection-mode=&quot;single-persist&quot;
-        id=&quot;theme-chips&quot;&gt;
-        &lt;calcite-chip selected value=&quot;default&quot;&gt;Default&lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;lavender&quot;&gt;
-            Lavender Field
-        &lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;ranger&quot;&gt;Ranger Station&lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
-    &lt;/calcite-chip-group&gt;
-&lt;/calcite-navigation&gt;</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="palette" heading="Maps SDK for JavaScript">
-                        <p>
-                        <ul>
-                            <li>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
-                                    appearance="outline-fill">MapView</calcite-chip> in the
-                                default slot of <calcite-chip appearance="outline-fill">Calcite
-                                    Shell</calcite-chip>
-
-                                <pre><code class="language-js">const map = new Map({
-                basemap: "streets-night-vector",
-            });
-
-            const view = new MapView({
-                container: "viewDiv",
-                map: map,
-                center: [-100, 45],
-                zoom: 3,
-            });
-            </code></pre>
+                                <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
+    case "lavender":
+    map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
+    break;
+    case "ranger":
+    map.basemap = vectormap;
+    vectormap.setStyle(rangerStyle);
+    break;
+    case "mint":
+    map.basemap = "osm-standard-relief";
+    break;
+    default:
+    map.basemap = "streets-night-vector";
+}</code></pre>
                             </li>
                         </ul>
                     </calcite-accordion-item>
