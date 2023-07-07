@@ -120,7 +120,7 @@ chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
       map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
       break;
     case "ranger":
-      map.basemap = "streets-night-vector";
+      map.basemap = vectormap;
       vectormap.setStyle(rangerStyle);
       break;
     case "mint":
@@ -447,3 +447,5 @@ createFilterListItems();
 createCorridorListItems();
 handleStationFilter();
 createSuggestedRoutesLayers();
+
+window.onload = () => window.setTimeout(() => Prism?.highlightAll(), 500);
