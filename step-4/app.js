@@ -104,22 +104,28 @@ const routesPanelEl = document.getElementById("route-panel");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
 
+
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
-  body.classList = event.target.selectedItems[0].value;
-  console.log(event.target.selectedItems[0].value);
-  switch (event.target.selectedItems[0].value) {
+  const themeName = event.target.selectedItems[0].value;
+  body.classList = themeName;
+  console.log({themeName, body});
+  let id = "";
+  switch (themeName) {
     case "lavender":
-      map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
+      id = "b163970539704b46b126547f0f8279f6";
       break;
     case "ranger":
-      map.basemap = "streets-night-vector";
+      id = "5151c8965866478c93b847fe30ce49fb";
       break;
     case "mint":
-      map.basemap = "osm-standard-relief";
+      id = "85a1850262844350a4a8a9623694ff9e";
       break;
-    default:
-      map.basemap = "streets-night-vector";
   }
+  map.basemap = id ? new Basemap({
+    baseLayers: [ new VectorTileLayer({ portalItem: { id } })
+    ]
+  }) : "streets-night-vector";
+
 });
 
 /** Create a simple state object and set the default filter to allTypes */
@@ -157,6 +163,8 @@ import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/Graphi
 import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
 import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
 import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
+import Basemap from "https://js.arcgis.com/4.27/@arcgis/core/Basemap.js";
+import VectorTileLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/VectorTileLayer.js";
 
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
