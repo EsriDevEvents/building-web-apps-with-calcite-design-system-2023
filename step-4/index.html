@@ -6,8 +6,12 @@
     <title>2023 Esri User Conference - Building Apps with Calcite Design System</title>
 
     <!-- Demo syntax highlight import -->
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-highlight/prism-line-highlight.min.css"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
 
     <!-- Calcite imports -->
     <script type="module" src="https://js.arcgis.com/calcite-components/1.4.3/calcite.esm.js"></script>
@@ -98,13 +102,25 @@
             </div>
             <div slot="content">
                 <calcite-accordion scale="l" open collapsible>
-                    <calcite-accordion-item icon-start="multiple-variables" heading="Calcite Components" expanded>
+                    <calcite-accordion-item icon-start="multiple-variables" heading="Fuel Types theming">
                         <ul>
-                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
-                                component to contain our application and map container.
-                                <pre><code class="language-html">&lt;calcite-shell&gt;
-                &lt;div id="viewDiv"&gt;&lt;/div&gt;
-            &lt;/calcite-shell&gt;</code></pre>
+                            <li>Sets Calcite CSS Custom Properties to style the
+                                fuel types to match the layer's unique value renderer.
+                                <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
+    const iconProp = "--calcite-ui-icon-color";
+    const focusProp = "--calcite-ui-focus-color";
+    allTypes.forEach((item, index) => {
+        const listItem = document.createElement("calcite-list-item");
+        listItem.label = item.name;
+        listItem.value = item.code;
+        const style = listItem.style;
+        style.setProperty(iconProp, typeColors[index]);
+        style.setProperty(focusProp, typeColors[index]);
+        listItem.selected = true;
+        filterListEl.appendChild(listItem);
+    });
+}
+</code></pre>
                             </li>
                             <li>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip> and
                                 <calcite-chip appearance="outline-fill">Calcite Navigation Logo</calcite-chip>
@@ -131,7 +147,7 @@
                                 <pre><code class="language-js">const map = new Map({
                 basemap: "streets-night-vector",
             });
-            
+
             const view = new MapView({
                 container: "viewDiv",
                 map: map,

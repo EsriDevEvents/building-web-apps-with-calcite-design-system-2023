@@ -285,12 +285,15 @@ function assignColorsToTypes() {
 }
 
 function createFilterListItems() {
+  const iconProp = "--calcite-ui-icon-color";
+  const focusProp = "--calcite-ui-focus-color";
   allTypes.forEach((item, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
-    listItem.style.setProperty("--calcite-ui-icon-color", typeColors[index]);
-    listItem.style.setProperty("--calcite-ui-focus-color", typeColors[index]);
+    const style = listItem.style;
+    style.setProperty(iconProp, typeColors[index]);
+    style.setProperty(focusProp, typeColors[index]);
     listItem.selected = true;
     filterListEl.appendChild(listItem);
   });
