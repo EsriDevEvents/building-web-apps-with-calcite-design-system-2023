@@ -104,31 +104,28 @@ const routesPanelEl = document.getElementById("route-panel");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
 
-const lavenderVTL = new VectorTileLayer({
-  portalItem: { id: "b163970539704b46b126547f0f8279f6" },
-});
-lavenderVTL.load();
-
 const lavenderBasemap = new Basemap({
-  baseLayers: [lavenderVTL],
+  baseLayers: [
+    new VectorTileLayer({
+      portalItem: { id: "b163970539704b46b126547f0f8279f6" },
+    }),
+  ],
 });
-
-const rangerVTL = new VectorTileLayer({
-  portalItem: { id: "5151c8965866478c93b847fe30ce49fb" },
-});
-rangerVTL.load();
 
 const rangerBasemap = new Basemap({
-  baseLayers: [rangerVTL],
+  baseLayers: [
+    new VectorTileLayer({
+      portalItem: { id: "5151c8965866478c93b847fe30ce49fb" },
+    }),
+  ],
 });
-
-const mintVTL = new VectorTileLayer({
-  portalItem: { id: "85a1850262844350a4a8a9623694ff9e" },
-});
-mintVTL.load();
 
 const mintBasemap = new Basemap({
-  baseLayers: [mintVTL],
+  baseLayers: [
+    new VectorTileLayer({
+      portalItem: { id: "85a1850262844350a4a8a9623694ff9e" },
+    }),
+  ],
 });
 
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
