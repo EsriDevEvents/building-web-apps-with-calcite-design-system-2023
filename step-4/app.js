@@ -108,7 +108,7 @@ const chipGroupEl = document.getElementById("theme-chips");
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   const themeName = event.target.selectedItems[0].value;
   body.classList = themeName;
-  console.log({themeName, body});
+  console.log({themeName}, body);
   let id = "";
   switch (themeName) {
     case "lavender":
