@@ -105,8 +105,7 @@
                     <calcite-accordion-item icon-start="toggle" heading="Switching Themes">
                         <p>
                         <ul>
-                            <li>TODO
-
+                            <li>By toggling a class on the body of the document, we can set our Calcite theme colors.
                                 <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
     &lt;calcite-chip-group slot=&quot;content-center&quot; label=&quot;demo-group-label&quot; selection-mode=&quot;single-persist&quot;
         id=&quot;theme-chips&quot;&gt;
@@ -119,11 +118,18 @@
     &lt;/calcite-chip-group&gt;
 &lt;/calcite-navigation&gt;</code></pre>
                             </li>
-                            <li>TODO
+                            <li>Setting class on the body.
 
                                 <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
     body.classList = event.target.selectedItems[0].value;
 });</code></pre>
+                            </li>
+                            <li>Theming specific styles.
+                                <pre><code class="language-css">body.lavender calcite-shell {
+    --calcite-ui-brand: #d6b9eb;
+    --calcite-ui-background: #3e3342;
+    /* ... and more! */
+}</code></pre>
                             </li>
                         </ul>
                     </calcite-accordion-item>
@@ -149,8 +155,7 @@
                     <calcite-accordion-item icon-start="layer-basemap" heading="Basemaps">
                         <p>
                         <ul>
-                            <li>TODO
-
+                            <li>We can also switch basemaps when switching a theme.
                                 <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
     case "lavender":
     map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";

@@ -448,4 +448,4 @@ createCorridorListItems();
 handleStationFilter();
 createSuggestedRoutesLayers();
 
-window.onload = () => window.setTimeout(() => Prism?.highlightAll(), 500);
+//window.onload = () => window.setTimeout(() => Prism?.highlightAll(), 500);
