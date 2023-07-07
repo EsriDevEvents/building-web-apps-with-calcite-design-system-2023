@@ -155,22 +155,21 @@
                 <calcite-stepper-item heading="Basemaps" description="Matching the basemap with theme">
                     <h2>We can also switch basemaps when switching a theme.
                     </h2>
-                    <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
-    const themeName = event.target.selectedItems[0].value;
-    body.className = themeName;
-    let id = "";
-    switch (themeName) {
-        case "lavender":
-            id = "b163970539704b46b126547f0f8279f6";
-            break;
-        case "ranger":
-            id = "5151c8965866478c93b847fe30ce49fb";
-            break;
-        case "mint":
-            id = "85a1850262844350a4a8a9623694ff9e";
-            break;
-    }
-}</code></pre>
+                    <pre><code class="language-js">let id = "";
+switch (themeName) {
+    case "lavender":
+        id = "b163970539704b46b126547f0f8279f6";
+        break;
+    case "ranger":
+        id = "5151c8965866478c93b847fe30ce49fb";
+        break;
+    case "mint":
+        id = "85a1850262844350a4a8a9623694ff9e";
+        break;
+}
+map.basemap = id ? new Basemap({
+    baseLayers: [ new VectorTileLayer({ portalItem: { id } })]
+}) : "streets-night-vector";</code></pre>
                 </calcite-stepper-item>
             </calcite-stepper>
         </calcite-modal>
