@@ -131,9 +131,7 @@ chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
   types: allTypes,
-  corridors: "None",
-  creatingCustomRouteCurrently: false,
-  suggestedRoutesHaveLoaded: false,
+  corridors: "None"
 };
 
 /** Not Map Things */
