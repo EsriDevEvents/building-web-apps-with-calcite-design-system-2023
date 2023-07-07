@@ -105,8 +105,6 @@ const customRouteEl = document.getElementById("custom-route-button");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
 
-const basemap = "navigation";
-
 const rangerStyle =
   "https://esriinc.maps.arcgis.com/sharing/rest/content/items/c5f34b0301a44cd2a0f95823608a3c34/resources/styles/root.json";
 
@@ -122,7 +120,7 @@ chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
       map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
       break;
     case "ranger":
-      map.basemap = basemap;
+      map.basemap = "streets-night-vector";
       vectormap.setStyle(rangerStyle);
       break;
     case "mint":
@@ -212,7 +210,7 @@ const corridorLayer = new FeatureLayer({
 });
 
 const map = new Map({
-  basemap,
+  basemap: "streets-night-vector",
   layers: [corridorLayer, stationLayer, routeLayer],
 });
 
