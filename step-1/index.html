@@ -80,13 +80,12 @@
                     </h2>
 
                     <pre><code class="language-html">&lt;calcite-shell&gt;
-                        &lt;calcite-navigation&gt;
-                            &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
-                            &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
-                        &lt;/calcite-navigation&gt;
-                        &lt;div id="viewDiv"&gt;&lt;/div&gt;
-                    &lt;/calcite-shell&gt;
-                    </code></pre>
+    &lt;calcite-navigation&gt;
+        &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
+        &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
+    &lt;/calcite-navigation&gt;
+    &lt;div id="viewDiv"&gt;&lt;/div&gt;
+&lt;/calcite-shell&gt;</code></pre>
                 </calcite-stepper-item>
                 <calcite-stepper-item heading="Add a map" description="Using Maps SDK for Javascript">
                     <h2>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
@@ -95,16 +94,15 @@
                             Shell</calcite-chip>
                     </h2>
                     <pre><code class="language-js">const map = new Map({
-        basemap: "streets-night-vector",
-    });
-    
-    const view = new MapView({
-        container: "viewDiv",
-        map: map,
-        center: [-100, 45],
-        zoom: 3,
-    });
-    </code></pre>
+    basemap: "streets-night-vector",
+});
+
+const view = new MapView({
+    container: "viewDiv",
+    map: map,
+    center: [-100, 45],
+    zoom: 3,
+});</code></pre>
                 </calcite-stepper-item>
             </calcite-stepper>
         </calcite-modal>
