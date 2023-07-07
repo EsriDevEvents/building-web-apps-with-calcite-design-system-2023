@@ -101,16 +101,8 @@ const corridorListEl = document.getElementById("corridor-list");
 const filterListEl = document.getElementById("filter-list");
 const routesListEl = document.getElementById("route-list");
 const routesPanelEl = document.getElementById("route-panel");
-const customRouteEl = document.getElementById("custom-route-button");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
-
-const rangerStyle =
-  "https://esriinc.maps.arcgis.com/sharing/rest/content/items/c5f34b0301a44cd2a0f95823608a3c34/resources/styles/root.json";
-
-let vectormap = new VectorTileLayer(
-  "https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer"
-);
 
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   body.classList = event.target.selectedItems[0].value;
@@ -120,8 +112,7 @@ chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
       map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
       break;
     case "ranger":
-      map.basemap = vectormap;
-      vectormap.setStyle(rangerStyle);
+      map.basemap = "streets-night-vector";
       break;
     case "mint":
       map.basemap = "osm-standard-relief";
@@ -148,9 +139,6 @@ function handleModalChange() {
 const apiKey =
   "AAPK930915ff5f15456dbbfa77b4ae41c180GXXMr_3eIL9DvdQHcFVasjxNKfbzymMyo6L9N9JGnYvkyP1myvnevJmBoFYLf2DB";
 
-// const routeUrl =
-//   "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
-
 const alternativeFuelLayerURL =
   "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Alternate_Fuel/FeatureServer/0";
 const alternativeFuelCorridorURL =
@@ -166,8 +154,6 @@ import Map from "https://js.arcgis.com/4.27/@arcgis/core/Map.js";
 import MapView from "https://js.arcgis.com/4.27/@arcgis/core/views/MapView.js";
 import FeatureLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/FeatureLayer.js";
 import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/GraphicsLayer.js";
-import VectorTileLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/VectorTileLayer.js";
-
 import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
 import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
 import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
@@ -175,7 +161,6 @@ import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
 toggleModalEl.addEventListener("click", () => handleModalChange());
-customRouteEl.addEventListener("click", () => handleCreateCustomRoute());
 
 corridorListEl.addEventListener("calciteListChange", (event) => {
   handleCorridorListChange(event);
@@ -206,7 +191,6 @@ const corridorLayer = new FeatureLayer({
   outFields: ["*"],
   minScale: 0,
   maxScale: 0,
-  // visible: false,
 });
 
 const map = new Map({
@@ -338,13 +322,10 @@ function handleStationTypeListChange(event) {
   handleStationFilter();
 }
 
-async function handleCorridorFilter(requestedValue) {
+async function handleCorridorFilter() {
   const featureLayerView = await view.whenLayerView(corridorLayer);
 
-  // console.log(corridorLayer);
-  // const where = `EV IS NOT NULL`;
   featureLayerView.featureEffect = {
-    // filter: { where },
     excludedEffect: "opacity(0%)",
     includedEffect: "opacity(100%)",
   };
@@ -374,73 +355,6 @@ function handleRouteDisplay(event) {
         resetMap();
       }
     });
-  // Need to filter station features to a buffer defined by user via slider /default
-}
-
-function handleCreateCustomRoute() {
-  /*
-      // More or less working
-      // Need to style route and symbols of this and other route
-      // Need to limit stops to 2, add Notice with directions when in editing mode
-      // Need to allow cancellation and disable all sidebars while editing
-      // Need to add a FAB for stop drawing
-
-      const originalState = appState.creatingCustomRouteCurrently;
-      resetMap();
-      suggestedRouteListItems.forEach((listItem) => {
-        listItem.disabled = !originalState;
-        listItem.selected = false;
-      });
-
-      customRouteEl.kind = !originalState ? "brand" : "neutral";
-
-      if (!originalState) {
-        const routeParams = new RouteParameters({
-          apiKey,
-          stops: new FeatureSet(),
-          outSpatialReference: {
-            wkid: 3857,
-          },
-        });
-
-        const stopSymbol = {
-          type: "simple-marker",
-          style: "cross",
-          size: 15,
-          outline: {
-            width: 4,
-          },
-        };
-
-        const routeSymbol = {
-          type: "simple-line",
-          color: [0, 0, 255, 0.5],
-          width: 5,
-        };
-
-        view.on("click", addStop);
-
-        function addStop(event) {
-          const stop = new Graphic({
-            geometry: event.mapPoint,
-            symbol: stopSymbol,
-          });
-          routeLayer.add(stop);
-
-          routeParams.stops.features.push(stop);
-          if (routeParams.stops.features.length >= 2) {
-            route.solve(routeUrl, routeParams).then(showRoute);
-          }
-        }
-        function showRoute(data) {
-          const routeResult = data.routeResults[0].route;
-          routeResult.symbol = routeSymbol;
-          routeLayer.add(routeResult);
-        }
-      }
-
-      appState.creatingCustomRouteCurrently = !originalState;
-      */
 }
 
 createFilterListItems();
