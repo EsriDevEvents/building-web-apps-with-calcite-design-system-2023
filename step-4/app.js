@@ -390,6 +390,8 @@ createCorridorListItems();
 handleStationFilter();
 createSuggestedRoutesLayers();
 
-window.onload = () => {
+function updatePrism() {
   window.setTimeout(() => Prism?.highlightAll(), 500);
-};
+}
+document.body.addEventListener("calciteStepperItemChange", updatePrism);
+window.onload = () => updatePrism();
