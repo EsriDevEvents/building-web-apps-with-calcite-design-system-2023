@@ -100,14 +100,12 @@
             <div slot="header" id="modal-title">
                 Step 4: Theme it!
             </div>
-            <div slot="content">
-                <calcite-accordion scale="l" open collapsible>
-                    <calcite-accordion-item icon-start="toggle" heading="Switching Themes">
-                        <p>
-                        <ul>
-                            <li>By toggling a class on the body of the document, we can set our Calcite theme colors.
-                                <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
-    &lt;calcite-chip-group slot=&quot;content-center&quot; label=&quot;demo-group-label&quot; selection-mode=&quot;single-persist&quot;
+            <calcite-stepper slot="content">
+                <calcite-stepper-item heading="Switching Themes" description="TODO">
+                    <h2>By toggling a class on the body of the document, we can set our Calcite theme colors.
+                    </h2>
+                    <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
+    &lt;calcite-chip-group slot=&quot;content-center&quot;
         id=&quot;theme-chips&quot;&gt;
         &lt;calcite-chip selected value=&quot;default&quot;&gt;Default&lt;/calcite-chip&gt;
         &lt;calcite-chip value=&quot;lavender&quot;&gt;
@@ -117,26 +115,29 @@
         &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
     &lt;/calcite-chip-group&gt;
 &lt;/calcite-navigation&gt;</code></pre>
-                            </li>
-                            <li>Setting class on the body.
-
-                                <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
+                    <!-- <calcite-notice open width="full" icon>
+                        <span slot="title">Calcite Shell
+                        </span>
+                        <span slot="message">Calcite Shell is a foundational layout component that contains your
+                            application or experience. It can be full-screen or embedded in narrative content like a
+                            blog article.</span>
+                    </calcite-notice> -->
+                    Setting class on the body.
+                    <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
     body.classList = event.target.selectedItems[0].value;
 });</code></pre>
-                            </li>
-                            <li>Theming specific styles.
-                                <pre><code class="language-css">body.lavender calcite-shell {
+                    Theming specific styles.
+                    <pre><code class="language-css">body.lavender calcite-shell {
     --calcite-ui-brand: #d6b9eb;
     --calcite-ui-background: #3e3342;
     /* ... and more! */
 }</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="palette-check" heading="Fuel Types">
-                        Sets Calcite CSS Custom Properties to style the
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Fuel Types" description="TODO">
+                    <h2>Sets Calcite CSS Custom Properties to style the
                         fuel types to match the layer's unique value renderer.
-                        <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
+                    </h2>
+                    <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
     const iconProp = "--calcite-ui-icon-color";
     const focusProp = "--calcite-ui-focus-color";
     allTypes.forEach((item, index) => {
@@ -151,12 +152,11 @@
     });
 }
 </code></pre>
-                    </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="layer-basemap" heading="Basemaps">
-                        <p>
-                        <ul>
-                            <li>We can also switch basemaps when switching a theme.
-                                <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Basemaps" description="TODO">
+                    <h2>We can also switch basemaps when switching a theme.
+                    </h2>
+                    <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
     case "lavender":
     map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
     break;
@@ -170,11 +170,8 @@
     default:
     map.basemap = "streets-night-vector";
 }</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                </calcite-accordion>
-            </div>
+                </calcite-stepper-item>
+            </calcite-stepper>
         </calcite-modal>
     </calcite-shell>
 

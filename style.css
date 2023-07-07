@@ -67,6 +67,7 @@ body.mint calcite-shell {
   --calcite-ui-border-3: #2b3d33;
   --calcite-ui-border-input: #242e29;
 }
+
 body.ranger {
   --calcite-ui-brand: #3cb233;
 }
@@ -118,7 +119,7 @@ calcite-action-pad {
   margin-inline: 0.5rem;
 }
 
-calcite-navigation > calcite-chip {
+calcite-navigation>calcite-chip {
   align-self: center;
   margin: 0 0.5rem;
 }
@@ -142,9 +143,10 @@ h2 {
   font-weight: 400;
 }
 
-code {
+pre {
   font-size: 18px !important;
 }
+
 .text-container {
   width: 760px;
   max-width: 90vw;
@@ -163,6 +165,7 @@ calcite-accordion {
   --calcite-ui-foreground-1: transparent;
   --calcite-block-padding: 0;
 }
+
 #modal hr {
   margin: 1rem 0;
   border: 0;

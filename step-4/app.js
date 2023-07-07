@@ -362,4 +362,6 @@ createCorridorListItems();
 handleStationFilter();
 createSuggestedRoutesLayers();
 
-//window.onload = () => window.setTimeout(() => Prism?.highlightAll(), 500);
+document.body.addEventListener("calciteStepperItemChange", () => {
+  window.setTimeout(() => Prism?.highlightAll(), 150);
+});
