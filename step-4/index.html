@@ -99,7 +99,26 @@
                 Step 4: Theme it!
             </div>
             <calcite-stepper slot="content">
-                <calcite-stepper-item heading="Switching Themes" description="Toggling between themes">
+                <calcite-stepper-item heading="Fuel Types" description="Theming the 'Fuel Types' items">
+                    <h2>Sets Calcite CSS Custom Properties to match the layer's unique value renderer.
+                    </h2>
+                    <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
+    const iconProp = "--calcite-ui-icon-color";
+    const focusProp = "--calcite-ui-focus-color";
+    allTypes.forEach((item, index) => {
+        const listItem = document.createElement("calcite-list-item");
+        listItem.label = item.name;
+        listItem.value = item.code;
+        const style = listItem.style;
+        style.setProperty(iconProp, typeColors[index]);
+        style.setProperty(focusProp, typeColors[index]);
+        listItem.selected = true;
+        filterListEl.appendChild(listItem);
+    });
+}
+</code></pre>
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Switching Theme" description="Toggling between themes">
                     <calcite-accordion scale="l" open collapsible selection-mode="single">
                         <calcite-accordion-item expanded icon-start="code" heading="Add Calcite Component">
                             <h2>Add a <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
@@ -133,27 +152,8 @@
                         </calcite-accordion-item>
                     </calcite-accordion>
                 </calcite-stepper-item>
-                <calcite-stepper-item heading="Fuel Types" description="Theming the 'Fuel Types' items">
-                    <h2>Sets Calcite CSS Custom Properties to match the layer's unique value renderer.
-                    </h2>
-                    <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
-    const iconProp = "--calcite-ui-icon-color";
-    const focusProp = "--calcite-ui-focus-color";
-    allTypes.forEach((item, index) => {
-        const listItem = document.createElement("calcite-list-item");
-        listItem.label = item.name;
-        listItem.value = item.code;
-        const style = listItem.style;
-        style.setProperty(iconProp, typeColors[index]);
-        style.setProperty(focusProp, typeColors[index]);
-        listItem.selected = true;
-        filterListEl.appendChild(listItem);
-    });
-}
-</code></pre>
-                </calcite-stepper-item>
-                <calcite-stepper-item heading="Basemaps" description="Matching the basemap with theme">
-                    <h2>We can also switch basemaps when switching a theme.
+                <calcite-stepper-item heading="Styling Basemap" description="Matching the basemap with theme">
+                    <h2>We can also switch basemap styles when switching a theme.
                     </h2>
                     <pre><code class="language-js">let id = "";
 switch (themeName) {
