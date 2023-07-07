@@ -101,41 +101,42 @@
                 Step 4: Theme it!
             </div>
             <calcite-stepper slot="content">
-                <calcite-stepper-item heading="Switching Themes" description="TODO">
-                    <h2>By toggling a class on the body of the document, we can set our Calcite theme colors.
-                    </h2>
-                    <pre><code class="language-html">&lt;calcite-navigation slot=&quot;navigation-secondary&quot;&gt;
-    &lt;calcite-chip-group slot=&quot;content-center&quot;
-        id=&quot;theme-chips&quot;&gt;
-        &lt;calcite-chip selected value=&quot;default&quot;&gt;Default&lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;lavender&quot;&gt;
-            Lavender Field
-        &lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;ranger&quot;&gt;Ranger Station&lt;/calcite-chip&gt;
-        &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
-    &lt;/calcite-chip-group&gt;
-&lt;/calcite-navigation&gt;</code></pre>
-                    <!-- <calcite-notice open width="full" icon>
-                        <span slot="title">Calcite Shell
-                        </span>
-                        <span slot="message">Calcite Shell is a foundational layout component that contains your
-                            application or experience. It can be full-screen or embedded in narrative content like a
-                            blog article.</span>
-                    </calcite-notice> -->
-                    Setting class on the body.
-                    <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
+                <calcite-stepper-item heading="Switching Themes" description="Toggling between themes">
+                    <calcite-accordion scale="l" open collapsible>
+                        <calcite-accordion-item icon-start="code" heading="Add Calcite Component">
+                            <h2>Add a <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
+                                component to switch between themes
+                            </h2>
+                            <pre><code class="language-html">&lt;calcite-chip-group slot=&quot;content-center&quot;
+    id=&quot;theme-chips&quot;&gt;
+    &lt;calcite-chip selected value=&quot;default&quot;&gt;Default&lt;/calcite-chip&gt;
+    &lt;calcite-chip value=&quot;lavender&quot;&gt;
+        Lavender Field
+    &lt;/calcite-chip&gt;
+    &lt;calcite-chip value=&quot;ranger&quot;&gt;Ranger Station&lt;/calcite-chip&gt;
+    &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
+&lt;/calcite-chip-group&gt;</code></pre>
+                        </calcite-accordion-item>
+                        <calcite-accordion-item icon-start="recurrence" heading="Add Chip Event Listener">
+                            <h2>Listen to the <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
+                                to
+                                change the class on the body</h2>
+                            <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
     body.classList = event.target.selectedItems[0].value;
 });</code></pre>
-                    Theming specific styles.
-                    <pre><code class="language-css">body.lavender calcite-shell {
+                        </calcite-accordion-item>
+                        <calcite-accordion-item icon-start="palette" heading="Add CSS Styles">
+                            <h2>Setup the theme class styles in CSS</h2>
+                            <pre><code class="language-css">body.lavender calcite-shell {
     --calcite-ui-brand: #d6b9eb;
     --calcite-ui-background: #3e3342;
     /* ... and more! */
 }</code></pre>
+                        </calcite-accordion-item>
+                    </calcite-accordion>
                 </calcite-stepper-item>
-                <calcite-stepper-item heading="Fuel Types" description="TODO">
-                    <h2>Sets Calcite CSS Custom Properties to style the
-                        fuel types to match the layer's unique value renderer.
+                <calcite-stepper-item heading="Fuel Types" description="Theming the 'Fuel Types' items">
+                    <h2>Sets Calcite CSS Custom Properties to match the layer's unique value renderer.
                     </h2>
                     <pre data-line="2,3,8,9,10"><code class="language-js">function createFilterListItems() {
     const iconProp = "--calcite-ui-icon-color";
@@ -153,22 +154,11 @@
 }
 </code></pre>
                 </calcite-stepper-item>
-                <calcite-stepper-item heading="Basemaps" description="TODO">
+                <calcite-stepper-item heading="Basemaps" description="Matching the basemap with theme">
                     <h2>We can also switch basemaps when switching a theme.
                     </h2>
                     <pre><code class="language-js">switch (event.target.selectedItems[0].value) {
-    case "lavender":
-    map.basemap = "c5f34b0301a44cd2a0f95823608a3c34";
-    break;
-    case "ranger":
-    map.basemap = vectormap;
-    vectormap.setStyle(rangerStyle);
-    break;
-    case "mint":
-    map.basemap = "osm-standard-relief";
-    break;
-    default:
-    map.basemap = "streets-night-vector";
+    // TODO
 }</code></pre>
                 </calcite-stepper-item>
             </calcite-stepper>
