@@ -127,7 +127,6 @@ ul li {
   font-size: 16px;
   color: var(--calcite-ui-text-2);
   margin: 1.75rem 0;
-  padding: 0 1rem 0.25rem;
 }
 
 ul {
@@ -138,6 +137,14 @@ ul li calcite-chip {
   margin: 0 0.175rem;
 }
 
+h2 {
+  color: var(--calcite-ui-text-2);
+  font-weight: 400;
+}
+
+code {
+  font-size: 18px !important;
+}
 .text-container {
   width: 760px;
   max-width: 90vw;
@@ -148,7 +155,7 @@ ul li calcite-chip {
 #modal {
   --calcite-modal-content-background: var(--calcite-ui-background);
   --calcite-modal-scrim-background: rgba(75, 75, 75, 0.9);
-  --calcite-modal-height: 80vh;
+  --calcite-modal-height: 70vh;
   --calcite-modal-width: 60vw;
 }
 
