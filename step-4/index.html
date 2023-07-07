@@ -120,7 +120,7 @@
                 </calcite-stepper-item>
                 <calcite-stepper-item heading="Switching Theme" description="Toggling between themes">
                     <calcite-accordion scale="l" open collapsible selection-mode="single">
-                        <calcite-accordion-item expanded icon-start="code" heading="Add Calcite Component">
+                        <calcite-accordion-item expanded icon-start="code" heading="1. Add Calcite Component">
                             <h2>Add a <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
                                 component to switch between themes
                             </h2>
@@ -134,15 +134,16 @@
     &lt;calcite-chip value=&quot;mint&quot;&gt;Mint Glacier&lt;/calcite-chip&gt;
 &lt;/calcite-chip-group&gt;</code></pre>
                         </calcite-accordion-item>
-                        <calcite-accordion-item icon-start="recurrence" heading="Add Chip Event Listener">
+                        <calcite-accordion-item icon-start="recurrence" heading="2. Add Chip Event Listener">
                             <h2>Listen to the <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
                                 to
                                 change the class on the body</h2>
                             <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
-    body.classList = event.target.selectedItems[0].value;
+    const themeName = event.target.selectedItems[0].value;
+    body.className = themeName;
 });</code></pre>
                         </calcite-accordion-item>
-                        <calcite-accordion-item icon-start="palette" heading="Add CSS Styles">
+                        <calcite-accordion-item icon-start="palette" heading="3. Add CSS Styles">
                             <h2>Setup the theme class styles in CSS</h2>
                             <pre><code class="language-css">body.lavender calcite-shell {
     --calcite-ui-brand: #d6b9eb;
