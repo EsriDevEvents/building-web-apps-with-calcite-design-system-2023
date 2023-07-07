@@ -104,33 +104,56 @@ const routesPanelEl = document.getElementById("route-panel");
 const body = document.querySelector("body");
 const chipGroupEl = document.getElementById("theme-chips");
 
+const lavenderVTL = new VectorTileLayer({
+  portalItem: { id: "b163970539704b46b126547f0f8279f6" },
+});
+lavenderVTL.load();
+
+const lavenderBasemap = new Basemap({
+  baseLayers: [lavenderVTL],
+});
+
+const rangerVTL = new VectorTileLayer({
+  portalItem: { id: "5151c8965866478c93b847fe30ce49fb" },
+});
+rangerVTL.load();
+
+const rangerBasemap = new Basemap({
+  baseLayers: [rangerVTL],
+});
+
+const mintVTL = new VectorTileLayer({
+  portalItem: { id: "85a1850262844350a4a8a9623694ff9e" },
+});
+mintVTL.load();
+
+const mintBasemap = new Basemap({
+  baseLayers: [mintVTL],
+});
 
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   const themeName = event.target.selectedItems[0].value;
   body.className = themeName;
-  let id = "";
   switch (themeName) {
     case "lavender":
-      id = "b163970539704b46b126547f0f8279f6";
+      map.basemap = lavenderBasemap;
       break;
     case "ranger":
-      id = "5151c8965866478c93b847fe30ce49fb";
+      map.basemap = rangerBasemap;
       break;
     case "mint":
-      id = "85a1850262844350a4a8a9623694ff9e";
+      map.basemap = mintBasemap;
       break;
+    default:
+      map.basemap = "streets-night-vector";
   }
-  map.basemap = id ? new Basemap({
-    baseLayers: [ new VectorTileLayer({ portalItem: { id } })
-    ]
-  }) : "streets-night-vector";
-  console.log({themeName}, body);
+  console.log({ themeName }, body);
 });
 
 /** Create a simple state object and set the default filter to allTypes */
 const appState = {
   types: allTypes,
-  corridors: "None"
+  corridors: "None",
 };
 
 /** Not Map Things */
@@ -367,6 +390,6 @@ createCorridorListItems();
 handleStationFilter();
 createSuggestedRoutesLayers();
 
-window.onload= () => {
+window.onload = () => {
   window.setTimeout(() => Prism?.highlightAll(), 500);
-}
+};
