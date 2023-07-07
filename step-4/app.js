@@ -107,8 +107,7 @@ const chipGroupEl = document.getElementById("theme-chips");
 
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   const themeName = event.target.selectedItems[0].value;
-  body.classList = themeName;
-  console.log({themeName}, body);
+  body.className = themeName;
   let id = "";
   switch (themeName) {
     case "lavender":
@@ -125,7 +124,7 @@ chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
     baseLayers: [ new VectorTileLayer({ portalItem: { id } })
     ]
   }) : "streets-night-vector";
-
+  console.log({themeName}, body);
 });
 
 /** Create a simple state object and set the default filter to allTypes */
