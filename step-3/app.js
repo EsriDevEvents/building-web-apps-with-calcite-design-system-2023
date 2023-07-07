@@ -83,7 +83,6 @@ const suggestedRoutes = [
 ];
 
 /** Declare  colors to assign to each type - these will also be used in CSS */
-// todo - more colors
 const typeColors = [
   "#f3413d",
   "#e38c0e",
@@ -260,8 +259,6 @@ function createFilterListItems() {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
-    listItem.style.setProperty("--calcite-ui-icon-color", typeColors[index]);
-    listItem.style.setProperty("--calcite-ui-focus-color", typeColors[index]);
     listItem.selected = true;
     filterListEl.appendChild(listItem);
   });

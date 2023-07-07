@@ -83,7 +83,6 @@ const suggestedRoutes = [
 ];
 
 /** Declare  colors to assign to each type - these will also be used in CSS */
-// todo - more colors
 const typeColors = [
   "#f3413d",
   "#e38c0e",
