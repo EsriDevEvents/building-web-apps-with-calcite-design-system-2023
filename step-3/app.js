@@ -44,7 +44,7 @@ const allTypes = [
 ];
 
 /** Declare expected type values */
-const suggestedRoutes = [
+const popularRoutes = [
   {
     name: "New York to Los Angeles",
     stops: [
@@ -139,11 +139,11 @@ import Portal from "https://js.arcgis.com/4.27/@arcgis/core/portal/Portal.js";
 
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
+
 toggleModalEl.addEventListener("click", handleModalChange);
-
 corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
-
 filterListEl.addEventListener("calciteListChange", handleStationTypeListChange);
+routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
 const routeLayer = new GraphicsLayer();
 
@@ -187,20 +187,13 @@ function resetMap() {
   view.goTo({ center: [-100, 45], zoom: 3 });
 }
 
-const suggestedRouteListItems = [];
-
-async function createSuggestedRoutesLayers() {
+async function createPopularRoutesLayers() {
   const portal = Portal.getDefault();
   await portal.load();
 
-  suggestedRoutes.forEach(async (route, index) => {
+  popularRoutes.forEach(async (route, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
-    listItem.addEventListener("calciteListItemSelect", handleRouteDisplay);
-    if (!suggestedRouteListItems.includes(listItem)) {
-      suggestedRouteListItems.push(listItem);
-    }
-
     routesListEl.append(listItem);
 
     const drive = new RouteLayer({
@@ -305,15 +298,15 @@ async function handleCorridorFilter(corridorType) {
   };
 }
 
-function handleRouteDisplay(event) {
-  const route = suggestedRoutes.find(
-    (route) => route.name === event.target.label
+function handleRoutesListChange(event) {
+  const route = popularRoutes.find(
+    (route) => route.name === event.target.selectedItems[0]?.label
   );
 
   map.layers
     .filter((layer) => layer.name)
     .forEach((layer) => {
-      const isMatch = layer.name === route.name;
+      const isMatch = layer.name === route?.name;
       if (!isMatch) {
         layer.visible = false;
       } else if (isMatch && !layer.visible) {
@@ -329,4 +322,4 @@ function handleRouteDisplay(event) {
 createFilterListItems();
 createCorridorListItems();
 handleStationFilter();
-createSuggestedRoutesLayers();
+createPopularRoutesLayers();
