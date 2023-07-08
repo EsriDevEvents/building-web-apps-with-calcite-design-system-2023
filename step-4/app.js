@@ -98,7 +98,7 @@ const typeColors = [
 const toggleModalEl = document.getElementById("toggle-modal");
 const modalEl = document.getElementById("modal");
 const corridorListEl = document.getElementById("corridor-list");
-const filterListEl = document.getElementById("filter-list");
+const fuelTypeListEl = document.getElementById("fuel-type-list");
 const routesListEl = document.getElementById("route-list");
 const routesPanelEl = document.getElementById("route-panel");
 const body = document.querySelector("body");
@@ -188,7 +188,7 @@ esriConfig.apiKey = apiKey;
 
 toggleModalEl.addEventListener("click", handleModalChange);
 corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
-filterListEl.addEventListener("calciteListChange", handleStationTypeListChange);
+fuelTypeListEl.addEventListener("calciteListChange", handleStationTypeListChange);
 routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
 const routeLayer = new GraphicsLayer();
@@ -256,13 +256,13 @@ function createCorridorListItems() {
   });
 }
 
-function createFilterListItems() {
+function createFuelTypeListItems() {
   allTypes.forEach((item, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
     listItem.selected = true;
-    filterListEl.append(listItem);
+    fuelTypeListEl.append(listItem);
   });
 }
 
@@ -315,10 +315,10 @@ async function handleCorridorFilter(corridorType) {
 function handleStationTypeListChange(event) {
   const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
   appState.types = items;
-  updateStationFilter();
+  updateFuelTypeFilter();
 }
 
-async function updateStationFilter() {
+async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
   const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
 
@@ -368,9 +368,9 @@ function resetMap() {
 
 function init() {
   createCorridorListItems();
-  createFilterListItems();
+  createFuelTypeListItems();
   createPopularRoutesLayers();
-  updateStationFilter();
+  updateFuelTypeFilter();
 }
 
 init();

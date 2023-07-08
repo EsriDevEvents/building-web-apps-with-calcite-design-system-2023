@@ -98,7 +98,7 @@ const typeColors = [
 const toggleModalEl = document.getElementById("toggle-modal");
 const modalEl = document.getElementById("modal");
 const corridorListEl = document.getElementById("corridor-list");
-const filterListEl = document.getElementById("filter-list");
+const fuelTypeListEl = document.getElementById("fuel-type-list");
 const routesListEl = document.getElementById("route-list");
 const routesPanelEl = document.getElementById("route-panel");
 
@@ -142,7 +142,7 @@ esriConfig.apiKey = apiKey;
 
 toggleModalEl.addEventListener("click", handleModalChange);
 corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
-filterListEl.addEventListener("calciteListChange", handleStationTypeListChange);
+fuelTypeListEl.addEventListener("calciteListChange", handleFuelTypeListChange);
 routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
 const routeLayer = new GraphicsLayer();
@@ -209,13 +209,13 @@ function createCorridorListItems() {
   });
 }
 
-function createFilterListItems() {
+function createFuelTypeListItems() {
   allTypes.forEach((item, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
     listItem.selected = true;
-    filterListEl.append(listItem);
+    fuelTypeListEl.append(listItem);
   });
 }
 
@@ -265,15 +265,15 @@ async function handleCorridorFilter(corridorType) {
   };
 }
 
-function handleStationTypeListChange(event) {
+function handleFuelTypeListChange(event) {
   const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
   appState.types = items;
-  updateStationFilter();
+  updateFuelTypeFilter();
 }
 
-async function updateStationFilter() {
+async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
+  const where = `Fuel_Type IS NOT NULL${createFuelTypeWhereClause()}`;
 
   featureLayerView.featureEffect = {
     filter: { where },
@@ -282,7 +282,7 @@ async function updateStationFilter() {
   };
 }
 
-function createStationWhereClause() {
+function createFuelTypeWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
   const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
@@ -321,9 +321,9 @@ function resetMap() {
 
 function init() {
   createCorridorListItems();
-  createFilterListItems();
+  createFuelTypeListItems();
   createPopularRoutesLayers();
-  updateStationFilter();
+  updateFuelTypeFilter();
 }
 
 init();
