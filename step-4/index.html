@@ -168,18 +168,17 @@
 // ...</code></pre>
                         </calcite-accordion-item>
                         <calcite-accordion-item icon-start="toggle" heading="2. Toggle basemap with theme">
-                            <pre><code class="language-js">switch (themeName) {
-    case "lavender":
-        map.basemap = lavenderBasemap;
-        break;
-    case "ranger":
-        map.basemap = rangerBasemap;
-        break;
-    case "mint":
-        map.basemap = mintBasemap;
-        break;
-    default:
-        map.basemap = "streets-night-vector";
+                            <pre><code class="language-js">if (themeName === "lavender") {
+  map.basemap = lavenderBasemap;
+}
+else if (themeName === "ranger") {
+  map.basemap = rangerBasemap;
+}
+else if (themeName === "mint") {
+  map.basemap = mintBasemap;
+}
+else {
+  map.basemap = "streets-night-vector";
 }</code></pre>
                         </calcite-accordion-item>
                     </calcite-accordion>

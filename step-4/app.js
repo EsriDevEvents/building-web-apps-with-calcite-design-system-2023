@@ -131,18 +131,17 @@ const mintBasemap = new Basemap({
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
   const themeName = event.target.selectedItems[0].value;
   body.className = themeName;
-  switch (themeName) {
-    case "lavender":
-      map.basemap = lavenderBasemap;
-      break;
-    case "ranger":
-      map.basemap = rangerBasemap;
-      break;
-    case "mint":
-      map.basemap = mintBasemap;
-      break;
-    default:
-      map.basemap = "streets-night-vector";
+  if (themeName === "lavender") {
+    map.basemap = lavenderBasemap;
+  }
+  else if (themeName === "ranger") {
+    map.basemap = rangerBasemap;
+  }
+  else if (themeName === "mint") {
+    map.basemap = mintBasemap;
+  }
+  else {
+    map.basemap = "streets-night-vector";
   }
   console.log({ themeName }, body);
 });
