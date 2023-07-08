@@ -179,7 +179,6 @@ import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/Graphi
 import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
 import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
 import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
-import Portal from "https://js.arcgis.com/4.27/@arcgis/core/portal/Portal.js";
 import Basemap from "https://js.arcgis.com/4.27/@arcgis/core/Basemap.js";
 import VectorTileLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/VectorTileLayer.js";
 
@@ -267,9 +266,6 @@ function createFuelTypeListItems() {
 }
 
 async function createPopularRoutesLayers() {
-  const portal = Portal.getDefault();
-  await portal.load();
-
   popularRoutes.forEach(async (route, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
