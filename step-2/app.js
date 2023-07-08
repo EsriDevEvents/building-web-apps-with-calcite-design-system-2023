@@ -47,3 +47,4 @@ const locateWidget = new Locate({ view });
 const homeWidget = new Home({ view });
 
 view.ui.add([homeWidget, locateWidget], "top-left");
+view.padding.left = 383;
