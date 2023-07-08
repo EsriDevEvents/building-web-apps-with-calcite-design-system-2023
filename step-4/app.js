@@ -199,6 +199,21 @@ const stationRenderer = {
   uniqueValueInfos: assignColorsToTypes(),
 };
 
+function assignColorsToTypes() {
+  return allTypes.map((type, index) =>
+    ({
+        value: type.code,
+        symbol: {
+          type: "simple-marker",
+          size: 2,
+          color: typeColors[index],
+          outline: { color: typeColors[index], width: 1 },
+        }
+      }
+    ));
+}
+
+
 const stationLayer = new FeatureLayer({
   url: alternativeFuelLayerURL,
   outFields: ["*"],
@@ -226,11 +241,29 @@ const view = new MapView({
   zoom: 3,
 });
 
-function resetMap() {
-  map.layers
-    .filter((layer) => layer.name)
-    .forEach((layer) => layer.visible = false);
-  view.goTo({ center: [-100, 45], zoom: 3 });
+const locateWidget = new Locate({ view });
+const homeWidget = new Home({ view });
+
+view.ui.add([homeWidget, locateWidget], "top-left");
+view.padding.left = 383;
+
+function createCorridorListItems() {
+  corridors.forEach((item) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item;
+    listItem.selected = item === appState.corridors;
+    corridorListEl.append(listItem);
+  });
+}
+
+function createFilterListItems() {
+  allTypes.forEach((item, index) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item.name;
+    listItem.value = item.code;
+    listItem.selected = true;
+    filterListEl.append(listItem);
+  });
 }
 
 async function createPopularRoutesLayers() {
@@ -260,76 +293,6 @@ async function createPopularRoutesLayers() {
   });
 }
 
-const locateWidget = new Locate({ view });
-const homeWidget = new Home({ view });
-
-view.ui.add([homeWidget, locateWidget], "top-left");
-view.padding.left = 383;
-
-function assignColorsToTypes() {
-  return allTypes.map((type, index) =>
-    ({
-        value: type.code,
-        symbol: {
-          type: "simple-marker",
-          size: 2,
-          color: typeColors[index],
-          outline: { color: typeColors[index], width: 1 },
-        }
-      }
-    ));
-}
-
-function createFilterListItems() {
-  const iconProp = "--calcite-ui-icon-color";
-  const focusProp = "--calcite-ui-focus-color";
-  allTypes.forEach((item, index) => {
-    const listItem = document.createElement("calcite-list-item");
-    listItem.label = item.name;
-    listItem.value = item.code;
-    const style = listItem.style;
-    style.setProperty(iconProp, typeColors[index]);
-    style.setProperty(focusProp, typeColors[index]);
-    listItem.selected = true;
-    filterListEl.append(listItem);
-  });
-}
-
-function createCorridorListItems() {
-  corridors.forEach((item) => {
-    const listItem = document.createElement("calcite-list-item");
-    listItem.label = item;
-    listItem.selected = item === appState.corridors;
-    corridorListEl.append(listItem);
-  });
-}
-
-function createStationWhereClause() {
-  const typesActive = appState.types.length > 0;
-  const featureTypes = typesActive ? appState.types : allTypes;
-  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
-  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
-  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
-  return typesActive ? filtered : unfiltered;
-}
-
-async function handleStationFilter() {
-  const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
-  featureLayerView.featureEffect = {
-    filter: { where },
-    excludedEffect: "opacity(0%)",
-    includedEffect: "opacity(100%)",
-  };
-}
-
-function handleStationTypeListChange(event) {
-  const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
-  appState.types = items;
-  handleStationFilter();
-}
-
-
 async function handleCorridorListChange(event) {
   const corridorType = event.target.selectedItems[0]?.label;
   appState.corridors = corridorType;
@@ -347,6 +310,32 @@ async function handleCorridorFilter(corridorType) {
     excludedEffect: "opacity(0%)",
     includedEffect: "opacity(100%)",
   };
+}
+
+function handleStationTypeListChange(event) {
+  const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
+  appState.types = items;
+  updateStationFilter();
+}
+
+async function updateStationFilter() {
+  const featureLayerView = await view.whenLayerView(stationLayer);
+  const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
+
+  featureLayerView.featureEffect = {
+    filter: { where },
+    excludedEffect: "opacity(0%)",
+    includedEffect: "opacity(100%)",
+  };
+}
+
+function createStationWhereClause() {
+  const typesActive = appState.types.length > 0;
+  const featureTypes = typesActive ? appState.types : allTypes;
+  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
+  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
+  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
+  return typesActive ? filtered : unfiltered;
 }
 
 function handleRoutesListChange(event) {
@@ -370,10 +359,21 @@ function handleRoutesListChange(event) {
     });
 }
 
-createFilterListItems();
-createCorridorListItems();
-handleStationFilter();
-createPopularRoutesLayers();
+function resetMap() {
+  map.layers
+    .filter((layer) => layer.name)
+    .forEach((layer) => layer.visible = false);
+  view.goTo({ center: [-100, 45], zoom: 3 });
+}
+
+function init() {
+  createCorridorListItems();
+  createFilterListItems();
+  createPopularRoutesLayers();
+  updateStationFilter();
+}
+
+init();
 
 function updatePrism() {
   window.setTimeout(() => Prism?.highlightAll(), 500);
