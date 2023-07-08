@@ -230,9 +230,7 @@ const view = new MapView({
 function resetMap() {
   map.layers
     .filter((layer) => layer.name)
-    .forEach((layer) => {
-      layer.visible = false;
-    });
+    .forEach((layer) => layer.visible = false);
   view.goTo({ center: [-100, 45], zoom: 3 });
 }
 
@@ -250,7 +248,7 @@ async function createSuggestedRoutesLayers() {
       suggestedRouteListItems.push(listItem);
     }
 
-    routesListEl.appendChild(listItem);
+    routesListEl.append(listItem);
 
     const drive = new RouteLayer({
       name: route.name,
@@ -277,19 +275,17 @@ view.ui.add([homeWidget, locateWidget], "top-left");
 view.padding.left = 383;
 
 function assignColorsToTypes() {
-  let uniqueValueInfos = [];
-  allTypes.forEach((type, index) => {
-    uniqueValueInfos.push({
-      value: type.code,
-      symbol: {
-        type: "simple-marker",
-        size: 2,
-        color: typeColors[index],
-        outline: { color: typeColors[index], width: 1 },
-      },
-    });
-  });
-  return uniqueValueInfos;
+  return allTypes.map((type, index) =>
+    ({
+        value: type.code,
+        symbol: {
+          type: "simple-marker",
+          size: 2,
+          color: typeColors[index],
+          outline: { color: typeColors[index], width: 1 },
+        }
+      }
+    ));
 }
 
 function createFilterListItems() {
@@ -303,7 +299,7 @@ function createFilterListItems() {
     style.setProperty(iconProp, typeColors[index]);
     style.setProperty(focusProp, typeColors[index]);
     listItem.selected = true;
-    filterListEl.appendChild(listItem);
+    filterListEl.append(listItem);
   });
 }
 
@@ -312,24 +308,22 @@ function createCorridorListItems() {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item;
     listItem.selected = item === appState.corridors;
-    corridorListEl.appendChild(listItem);
+    corridorListEl.append(listItem);
   });
 }
 
-function createStationWhereArguments() {
-  let args = [];
+function createStationWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
-  featureTypes.forEach((type) => args.push(`'${type.code}'`));
-  const filtered = ` AND (Fuel_Type = ${args.join(" OR Fuel_Type = ")})`;
-  const unfiltered = ` AND Fuel_Type != ${args.join(" AND Fuel_Type != ")}`;
-  const argString = typesActive ? filtered : unfiltered;
-  return argString;
+  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
+  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
+  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
+  return typesActive ? filtered : unfiltered;
 }
 
 async function handleStationFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = `Fuel_Type IS NOT NULL${createStationWhereArguments()}`;
+  const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
   featureLayerView.featureEffect = {
     filter: { where },
     excludedEffect: "opacity(0%)",
@@ -338,13 +332,11 @@ async function handleStationFilter() {
 }
 
 function handleStationTypeListChange(event) {
-  let items = [];
-  event.target.selectedItems.forEach((item) =>
-    items.push({ name: item.label, code: item.value })
-  );
+  const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
   appState.types = items;
   handleStationFilter();
 }
+
 
 async function handleCorridorFilter() {
   const featureLayerView = await view.whenLayerView(corridorLayer);
@@ -356,8 +348,8 @@ async function handleCorridorFilter() {
 }
 
 async function handleCorridorListChange(event) {
-  const requestedValue = event.target.selectedItems[0]?.label;
-  handleCorridorFilter(requestedValue);
+  const corridorType = event.target.selectedItems[0]?.label;
+  handleCorridorFilter(corridorType);
 }
 
 function handleRouteDisplay(event) {
