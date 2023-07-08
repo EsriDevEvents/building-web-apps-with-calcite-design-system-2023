@@ -338,6 +338,12 @@ function handleStationTypeListChange(event) {
 }
 
 
+async function handleCorridorListChange(event) {
+  const corridorType = event.target.selectedItems[0]?.label;
+  appState.corridors = corridorType;
+  handleCorridorFilter(corridorType);
+}
+
 async function handleCorridorFilter(corridorType) {
   const featureLayerView = await view.whenLayerView(corridorLayer);
 
@@ -349,12 +355,6 @@ async function handleCorridorFilter(corridorType) {
     excludedEffect: "opacity(0%)",
     includedEffect: "opacity(100%)",
   };
-}
-
-async function handleCorridorListChange(event) {
-  const corridorType = event.target.selectedItems[0]?.label;
-  appState.corridors = corridorType;
-  handleCorridorFilter(corridorType);
 }
 
 function handleRouteDisplay(event) {
