@@ -139,15 +139,11 @@ import Portal from "https://js.arcgis.com/4.27/@arcgis/core/portal/Portal.js";
 
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
-toggleModalEl.addEventListener("click", () => handleModalChange());
+toggleModalEl.addEventListener("click", handleModalChange);
 
-corridorListEl.addEventListener("calciteListChange", (event) => {
-  handleCorridorListChange(event);
-});
+corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
 
-filterListEl.addEventListener("calciteListChange", (event) =>
-  handleStationTypeListChange(event)
-);
+filterListEl.addEventListener("calciteListChange", handleStationTypeListChange);
 
 const routeLayer = new GraphicsLayer();
 
@@ -202,9 +198,7 @@ async function createSuggestedRoutesLayers() {
   suggestedRoutes.forEach(async (route, index) => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
-    listItem.addEventListener("calciteListItemSelect", (event) =>
-      handleRouteDisplay(event)
-    );
+    listItem.addEventListener("calciteListItemSelect", handleRouteDisplay);
     if (!suggestedRouteListItems.includes(listItem))
       suggestedRouteListItems.push(listItem);
 

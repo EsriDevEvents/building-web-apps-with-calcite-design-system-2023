@@ -30,7 +30,7 @@ import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
 
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
-toggleModalEl.addEventListener("click", () => handleModalChange());
+
 
 const map = new Map({
   basemap: "streets-night-vector",
