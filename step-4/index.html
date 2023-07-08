@@ -156,15 +156,19 @@
                 <calcite-stepper-item heading="Styling Basemap" description="Matching the basemap with theme">
                     <h2>We can also switch basemap styles when switching a theme.
                     </h2>
-                    <pre><code class="language-js">const lavenderBasemap = new Basemap({
+                    <calcite-accordion scale="l" open collapsible selection-mode="single">
+                        <calcite-accordion-item expanded icon-start="layer-basemap" heading="1. Create themed basemaps">
+                            <pre><code class="language-js">const lavenderBasemap = new Basemap({
     baseLayers: [
         new VectorTileLayer({
             portalItem: { id: "b163970539704b46b126547f0f8279f6" },
         }),
     ],
 });
-// ...
-switch (themeName) {
+// ...</code></pre>
+                        </calcite-accordion-item>
+                        <calcite-accordion-item icon-start="toggle" heading="2. Toggle basemap with theme">
+                            <pre><code class="language-js">switch (themeName) {
     case "lavender":
         map.basemap = lavenderBasemap;
         break;
@@ -177,6 +181,8 @@ switch (themeName) {
     default:
         map.basemap = "streets-night-vector";
 }</code></pre>
+                        </calcite-accordion-item>
+                    </calcite-accordion>
                 </calcite-stepper-item>
             </calcite-stepper>
         </calcite-modal>
