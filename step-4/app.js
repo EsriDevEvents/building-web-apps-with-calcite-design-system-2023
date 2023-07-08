@@ -338,8 +338,12 @@ function handleStationTypeListChange(event) {
 }
 
 
-async function handleCorridorFilter() {
+async function handleCorridorFilter(corridorType) {
   const featureLayerView = await view.whenLayerView(corridorLayer);
+
+  featureLayerView.filter = corridorType === "None" ? null : {
+    where: `ELECTRICVE = '${corridorType}'`
+  };
 
   featureLayerView.featureEffect = {
     excludedEffect: "opacity(0%)",
@@ -349,6 +353,7 @@ async function handleCorridorFilter() {
 
 async function handleCorridorListChange(event) {
   const corridorType = event.target.selectedItems[0]?.label;
+  appState.corridors = corridorType;
   handleCorridorFilter(corridorType);
 }
 
