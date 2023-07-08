@@ -179,7 +179,7 @@ const map = new Map({
 
 const view = new MapView({
   container: "viewDiv",
-  map: map,
+  map,
   center: [-100, 45],
   zoom: 3,
 });
@@ -228,8 +228,8 @@ async function createSuggestedRoutesLayers() {
   });
 }
 
-const locateBtn = new Locate({ view: view });
-const homeWidget = new Home({ view: view });
+const locateBtn = new Locate({ view });
+const homeWidget = new Home({ view });
 
 view.ui.add(homeWidget, "top-left");
 view.ui.add(locateBtn, { position: "top-left" });
