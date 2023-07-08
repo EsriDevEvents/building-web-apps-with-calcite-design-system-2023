@@ -246,8 +246,9 @@ async function createSuggestedRoutesLayers() {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
     listItem.addEventListener("calciteListItemSelect", handleRouteDisplay);
-    if (!suggestedRouteListItems.includes(listItem))
+    if (!suggestedRouteListItems.includes(listItem)) {
       suggestedRouteListItems.push(listItem);
+    }
 
     routesListEl.appendChild(listItem);
 
@@ -269,11 +270,10 @@ async function createSuggestedRoutesLayers() {
   });
 }
 
-const locateBtn = new Locate({ view });
+const locateWidget = new Locate({ view });
 const homeWidget = new Home({ view });
 
-view.ui.add(homeWidget, "top-left");
-view.ui.add(locateBtn, { position: "top-left" });
+view.ui.add([homeWidget, locateWidget], "top-left");
 
 function assignColorsToTypes() {
   let uniqueValueInfos = [];
@@ -319,7 +319,7 @@ function createStationWhereArguments() {
   let args = [];
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
-  featureTypes.forEach((j) => args.push(`'${j.code}'`));
+  featureTypes.forEach((type) => args.push(`'${type.code}'`));
   const filtered = ` AND (Fuel_Type = ${args.join(" OR Fuel_Type = ")})`;
   const unfiltered = ` AND Fuel_Type != ${args.join(" AND Fuel_Type != ")}`;
   const argString = typesActive ? filtered : unfiltered;
