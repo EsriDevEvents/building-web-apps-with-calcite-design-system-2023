@@ -119,7 +119,7 @@ calcite-action-pad {
   margin-inline: 0.5rem;
 }
 
-calcite-navigation>calcite-chip {
+calcite-navigation > calcite-chip {
   align-self: center;
   margin: 0 0.5rem;
 }
@@ -152,6 +152,12 @@ pre {
   max-width: 90vw;
   font-size: 18px;
   margin: 2rem auto;
+}
+
+calcite-shell-panel[slot="panel-start"] {
+  --calcite-shell-panel-min-width: 340px;
+  --calcite-shell-panel-width: 340px;
+  --calcite-shell-panel-max-width: 340px;
 }
 
 #modal {
