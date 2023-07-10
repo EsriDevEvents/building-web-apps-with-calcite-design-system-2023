@@ -46,9 +46,10 @@
                 <calcite-menu-item href="../step-4" icon-start="number-circle-4" text="Theming">
                 </calcite-menu-item>
             </calcite-menu>
-            <calcite-action-pad layout=" horizontal" expand-disabled slot="content-end">
-                <calcite-action id="toggle-modal" text="About this application" icon="information"
-                    text-enabled></calcite-action>
+            <calcite-action-pad expanded layout="horizontal" expand-disabled slot="content-end">
+                <calcite-action id="toggle-modal" text="Code" icon="code" text-enabled>
+                    <calcite-tooltip placement="bottom" slot="tooltip">View code snippets</calcite-tooltip>
+                </calcite-action>
             </calcite-action-pad>
         </calcite-navigation>
 
@@ -79,7 +80,7 @@
             </calcite-panel>
         </calcite-shell-panel>
 
-        <calcite-modal aria-labelledby="modal-title" id="modal" open slot="modals">
+        <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals">
             <div slot="header" id="modal-title">
                 Step 2: Construct our application layout
             </div>
