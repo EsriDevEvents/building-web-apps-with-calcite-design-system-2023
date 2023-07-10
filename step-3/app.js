@@ -144,6 +144,11 @@ corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
 fuelTypeListEl.addEventListener("calciteListChange", handleFuelTypeListChange);
 routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
+const initialMapViewOptions = {
+  center: [-100, 45],
+  zoom: 3
+}
+
 const routeLayer = new GraphicsLayer();
 
 const stationRenderer = {
@@ -189,8 +194,7 @@ const map = new Map({
 const view = new MapView({
   container: "viewDiv",
   map,
-  center: [-100, 45],
-  zoom: 3,
+  ...initialMapViewOptions
 });
 
 const locateWidget = new Locate({ view });
@@ -257,8 +261,8 @@ async function updateCorridorFilter() {
 }
 
 function handleFuelTypeListChange(event) {
-  const items = event.target.selectedItems.map(item =>
-    ({ name: item.label, code: item.value, }));
+  const selectedItems = event.target.selectedItems;
+  const items = selectedItems.map(item => ({ name: item.label, code: item.value }));
   appState.types = items;
   updateFuelTypeFilter();
 }
@@ -280,17 +284,14 @@ function createFuelTypeWhereClause() {
 }
 
 function handleRoutesListChange(event) {
-  const route = popularRoutes.find(
-    route => route.name === event.target.selectedItems[0]?.label
-  );
-
+  const selectedItems = event.target.selectedItems;
+  const route = popularRoutes.find(route => route.name === selectedItems[0]?.label);
   let selectedLayer;
 
   map.layers
     .filter(layer => layer.name)
     .forEach(layer => {
       const matched = layer.name === route?.name;
-
       if (!matched) {
         layer.visible = false;
       }
@@ -304,7 +305,7 @@ function handleRoutesListChange(event) {
     view.goTo(selectedLayer.fullExtent.clone().expand(2));
   }
   else {
-    view.goTo({ center: [-100, 45], zoom: 3 });
+    view.goTo(initialMapViewOptions);
   }
 }
 
