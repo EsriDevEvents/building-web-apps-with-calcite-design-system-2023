@@ -87,52 +87,157 @@
             <div slot="header" id="modal-title">
                 Step 3: Wire it up!
             </div>
-            <div slot="content">
-                <calcite-accordion scale="l" open collapsible>
-                    <calcite-accordion-item icon-start="multiple-variables" heading="Calcite Components" expanded>
-                        <ul>
-                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
-                                component to contain our application and map container.
-                                <pre><code class="language-html">&lt;calcite-shell&gt;
-    &lt;div id="viewDiv"&gt;&lt;/div&gt;
-&lt;/calcite-shell&gt;</code></pre>
-                            </li>
-                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip> and
-                                <calcite-chip appearance="outline-fill">Calcite Navigation Logo</calcite-chip>
-                                components.
-                                <pre><code class="language-html">&lt;calcite-shell&gt;
-    &lt;calcite-navigation&gt;
-        &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
-        &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
-    &lt;/calcite-navigation&gt;
-    &lt;div id="viewDiv"&gt;&lt;/div&gt;
-&lt;/calcite-shell&gt;</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="map" heading="Maps SDK for JavaScript">
-                        <p>
-                        <ul>
-                            <li>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
-                                    appearance="outline-fill">MapView</calcite-chip> in the
-                                default slot of <calcite-chip appearance="outline-fill">Calcite
-                                    Shell</calcite-chip>
+            <calcite-stepper slot="content">
+                <calcite-stepper-item heading="Alternative Fuel Corridors" description="Check the status of corridors">
+                    <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each corridor type.</h2>
+                    <pre><code class="language-js">function createCorridorListItems() {
+  corridors.forEach((item) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item;
+    listItem.selected = item === appState.corridors;
+    corridorListEl.append(listItem);
+  });
+}</code></pre>
+                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to update the corridor filter.</h2>
+                  <pre><code class="language-js">corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
 
-                                <pre><code class="language-js">const map = new Map({
-    basemap: "streets-night-vector",
-});
+async function handleCorridorListChange(event) {
+  const corridorType = event.target.selectedItems[0]?.label;
+  appState.corridors = corridorType;
+  updateCorridorFilter();
+}
 
-const view = new MapView({
-    container: "viewDiv",
-    map,
-    center: [-100, 45],
-    zoom: 3,
-});</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                </calcite-accordion>
-            </div>
+async function updateCorridorFilter() {
+  const featureLayerView = await view.whenLayerView(corridorLayer);
+  const corridorType = appState.corridors;
+
+  featureLayerView.filter = {
+    where: corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
+  };
+}</code></pre>
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Fuel Types" description="Focus on the fuel type you want">
+                  <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each fuel type.</h2>
+                    <pre><code class="language-js">function createFuelTypeListItems() {
+  allTypes.forEach((item, index) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = item.name;
+    listItem.value = item.code;
+    listItem.selected = true;
+    fuelTypeListEl.append(listItem);
+  });
+}}</code></pre>
+                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to update the fuel type filter.</h2>
+                  <pre><code class="language-js">fuelTypeListEl.addEventListener("calciteListChange", handleFuelTypeListChange);
+
+function handleFuelTypeListChange(event) {
+  const items = event.target.selectedItems.map((item) => ({
+    name: item.label,
+    code: item.value,
+  }));
+  appState.types = items;
+  updateFuelTypeFilter();
+}
+
+async function updateFuelTypeFilter() {
+  const featureLayerView = await view.whenLayerView(stationLayer);
+  const where = createFuelTypeWhereClause();
+
+  featureLayerView.featureEffect = {
+    filter: { where },
+    excludedEffect: "opacity(0%)",
+    includedEffect: "opacity(100%)",
+  };
+}
+
+function createFuelTypeWhereClause() {
+  const typesActive = appState.types.length > 0;
+  const featureTypes = typesActive ? appState.types : allTypes;
+  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
+  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
+  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
+  return `Fuel_Type IS NOT NULL${typesActive ? filtered : unfiltered}`;
+}</code></pre>
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Preview a Route" description="See which corridors and fuel stations are near popular routes">
+                  <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each route.</h2>
+                    <pre><code class="language-js">async function createPopularRoutesLayers() {
+  const solvedRoutes = popularRoutes.map(async (route) => {
+    const listItem = document.createElement("calcite-list-item");
+    listItem.label = route.name;
+    routesListEl.append(listItem);
+
+    // ...
+  });
+}</code></pre>
+                  <h2>Set up a <calcite-chip appearance="outline-fill">Route Layer</calcite-chip> for each route.</h2>
+                  <pre><code class="language-js">async function createPopularRoutesLayers() {
+  popularRoutes.forEach(async (route, index) => {
+    // ...
+
+    const drive = new RouteLayer({
+      name: route.name,
+      stops: route.stops,
+      effect: "bloom(1, 0.15px, 0)",
+    });
+
+    const results = await drive.solve();
+    drive.update(results);
+    drive.visible = false;
+    map.add(drive);
+  });
+
+  // ...
+}</code></pre>
+                  <h2>Enable <calcite-chip appearance="outline-fill">Panel</calcite-chip> after all routes are ready.</h2>
+                  <pre><code class="language-js">async function createPopularRoutesLayers() {
+  popularRoutes.forEach(async (route, index) => {
+    // ...
+  });
+
+  await Promise.all(solvedRoutes);
+  routesPanelEl.disabled = false;
+  routesPanelEl.loading = false;
+}</code></pre>
+                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a route.</h2>
+                  <pre><code class="language-js">routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
+
+function handleRoutesListChange(event) {
+  const route = popularRoutes.find(
+    (route) => route.name === event.target.selectedItems[0]?.label
+  );
+
+  let selectedLayer;
+
+  map.layers
+    .filter((layer) => layer.name)
+    .forEach((layer) => {
+      const matched = layer.name === route?.name;
+
+      if (!matched) {
+        layer.visible = false;
+      }
+      else if (!layer.visible) {
+        layer.visible = true;
+        selectedLayer = layer;
+      }
+    });
+
+  // ...
+}</code></pre>
+                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a route.</h2>
+                  <pre><code class="language-js">function handleRoutesListChange(event) {
+  // ...
+
+  if (selectedLayer) {
+    view.goTo(layer.fullExtent.clone().expand(2));
+  }
+  else {
+    view.goTo({ center: [-100, 45], zoom: 3 });
+  }
+}</code></pre>
+                </calcite-stepper-item>
+            </calcite-stepper>
         </calcite-modal>
     </calcite-shell>
 
