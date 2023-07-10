@@ -113,10 +113,9 @@ async function handleCorridorListChange(event) {
 
 async function updateCorridorFilter() {
   const featureLayerView = await view.whenLayerView(corridorLayer);
-  const corridorType = appState.corridors;
 
   featureLayerView.filter = {
-    where: corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
+    where: createCorridorWhereClause()
   };
 }</code></pre>
                     </calcite-accordion-item>
@@ -153,14 +152,6 @@ async function updateFuelTypeFilter() {
   featureLayerView.filter = {
      where: createFuelTypeWhereClause()
   };
-}
-
-function createFuelTypeWhereClause() {
-  const typesActive = appState.types.length > 0;
-  const featureTypes = typesActive ? appState.types : allTypes;
-  const fuelTypes = featureTypes.map(type => (`'${type.code}'`));
-  const showSelected = `Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")}`;
-  return typesActive ? showSelected : `NOT (${showSelected})`;
 }</code></pre>
                     </calcite-accordion-item>
                   </calcite-accordion>

@@ -253,11 +253,15 @@ async function handleCorridorListChange(event) {
 
 async function updateCorridorFilter() {
   const featureLayerView = await view.whenLayerView(corridorLayer);
-  const corridorType = appState.corridors;
 
   featureLayerView.filter = {
-    where: corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
+    where: createCorridorWhereClause()
   };
+}
+
+function createCorridorWhereClause() {
+  const corridorType = appState.corridors;
+  return corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
 }
 
 function handleFuelTypeListChange(event) {
