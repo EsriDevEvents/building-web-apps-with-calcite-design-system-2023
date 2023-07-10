@@ -200,7 +200,7 @@ view.ui.add([homeWidget, locateWidget], "top-left");
 view.padding.left = 340;
 
 function createCorridorListItems() {
-  corridors.forEach((item) => {
+  corridors.forEach(item => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item;
     listItem.selected = item === appState.corridors;
@@ -219,7 +219,7 @@ function createFuelTypeListItems() {
 }
 
 async function createPopularRoutesLayers() {
-  const solvedRoutes = popularRoutes.map(async (route) => {
+  const solvedRoutes = popularRoutes.map(async route => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
     routesListEl.append(listItem);
@@ -257,10 +257,8 @@ async function updateCorridorFilter() {
 }
 
 function handleFuelTypeListChange(event) {
-  const items = event.target.selectedItems.map((item) => ({
-    name: item.label,
-    code: item.value,
-  }));
+  const items = event.target.selectedItems.map(item =>
+    ({ name: item.label, code: item.value, }));
   appState.types = items;
   updateFuelTypeFilter();
 }
@@ -276,21 +274,21 @@ async function updateFuelTypeFilter() {
 function createFuelTypeWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
-  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
+  const fuelTypes = featureTypes.map(type => `'${type.code}'`);
   const showSelected = `Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")}`;
   return typesActive ? showSelected : `NOT (${showSelected})`;
 }
 
 function handleRoutesListChange(event) {
   const route = popularRoutes.find(
-    (route) => route.name === event.target.selectedItems[0]?.label
+    route => route.name === event.target.selectedItems[0]?.label
   );
 
   let selectedLayer;
 
   map.layers
-    .filter((layer) => layer.name)
-    .forEach((layer) => {
+    .filter(layer => layer.name)
+    .forEach(layer => {
       const matched = layer.name === route?.name;
 
       if (!matched) {
