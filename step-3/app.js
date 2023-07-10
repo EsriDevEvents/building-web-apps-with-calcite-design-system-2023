@@ -267,12 +267,9 @@ function handleFuelTypeListChange(event) {
 
 async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = createFuelTypeWhereClause();
 
-  featureLayerView.featureEffect = {
-    filter: { where },
-    excludedEffect: "opacity(0%)",
-    includedEffect: "opacity(100%)",
+  featureLayerView.filter = {
+     where: createFuelTypeWhereClause()
   };
 }
 
@@ -280,9 +277,8 @@ function createFuelTypeWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
   const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
-  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
-  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
-  return `Fuel_Type IS NOT NULL${typesActive ? filtered : unfiltered}`;
+  const showSelected = `Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")}`;
+  return typesActive ? showSelected : `NOT (${showSelected})`;
 }
 
 function handleRoutesListChange(event) {
