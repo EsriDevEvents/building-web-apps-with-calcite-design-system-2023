@@ -187,8 +187,13 @@ esriConfig.apiKey = apiKey;
 
 toggleModalEl.addEventListener("click", handleModalChange);
 corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
-fuelTypeListEl.addEventListener("calciteListChange", handleStationTypeListChange);
+fuelTypeListEl.addEventListener("calciteListChange", handleFuelTypeListChange);
 routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
+
+const initialMapViewOptions = {
+  center: [-100, 45],
+  zoom: 3
+}
 
 const routeLayer = new GraphicsLayer();
 
@@ -236,8 +241,7 @@ const map = new Map({
 const view = new MapView({
   container: "viewDiv",
   map,
-  center: [-100, 45],
-  zoom: 3,
+  ...initialMapViewOptions
 });
 
 const locateWidget = new Locate({ view });
@@ -271,7 +275,7 @@ function createFuelTypeListItems() {
 }
 
 async function createPopularRoutesLayers() {
-  popularRoutes.forEach(async (route, index) => {
+  const solvedRoutes = popularRoutes.map(async route => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
     routesListEl.append(listItem);
@@ -286,91 +290,82 @@ async function createPopularRoutesLayers() {
     drive.update(results);
     drive.visible = false;
     map.add(drive);
-
-    if (index > 3) {
-      routesPanelEl.disabled = false;
-      routesPanelEl.loading = false;
-    }
   });
+
+  await Promise.all(solvedRoutes);
+  routesPanelEl.disabled = false;
+  routesPanelEl.loading = false;
 }
 
 async function handleCorridorListChange(event) {
   const corridorType = event.target.selectedItems[0]?.label;
   appState.corridors = corridorType;
-  handleCorridorFilter(corridorType);
+  updateCorridorFilter();
 }
 
-async function handleCorridorFilter(corridorType) {
+async function updateCorridorFilter() {
   const featureLayerView = await view.whenLayerView(corridorLayer);
+  const corridorType = appState.corridors;
 
-  featureLayerView.filter = corridorType === "None" ? null : {
-    where: `ELECTRICVE = '${corridorType}'`
-  };
-
-  featureLayerView.featureEffect = {
-    excludedEffect: "opacity(0%)",
-    includedEffect: "opacity(100%)",
+  featureLayerView.filter = {
+    where: corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
   };
 }
 
-function handleStationTypeListChange(event) {
-  const items = event.target.selectedItems.map((item) => ({ name: item.label, code: item.value }));
+function handleFuelTypeListChange(event) {
+  const selectedItems = event.target.selectedItems;
+  const items = selectedItems.map(item => ({ name: item.label, code: item.value }));
   appState.types = items;
   updateFuelTypeFilter();
 }
 
 async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = `Fuel_Type IS NOT NULL${createStationWhereClause()}`;
 
-  featureLayerView.featureEffect = {
-    filter: { where },
-    excludedEffect: "opacity(0%)",
-    includedEffect: "opacity(100%)",
+  featureLayerView.filter = {
+    where: createFuelTypeWhereClause()
   };
 }
 
-function createStationWhereClause() {
+function createFuelTypeWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
-  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
-  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
-  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
-  return typesActive ? filtered : unfiltered;
+  const fuelTypes = featureTypes.map(type => `'${type.code}'`);
+  const showSelected = `Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")}`;
+  return typesActive ? showSelected : `NOT (${showSelected})`;
 }
 
 function handleRoutesListChange(event) {
-  const route = popularRoutes.find(
-    (route) => route.name === event.target.selectedItems[0]?.label
-  );
+  const selectedItems = event.target.selectedItems;
+  const route = popularRoutes.find(route => route.name === selectedItems[0]?.label);
+  let selectedLayer;
 
   map.layers
-    .filter((layer) => layer.name)
-    .forEach((layer) => {
-      const isMatch = layer.name === route?.name;
-      if (!isMatch) {
+    .filter(layer => layer.name)
+    .forEach(layer => {
+      const matched = layer.name === route?.name;
+      if (!matched) {
         layer.visible = false;
-      } else if (isMatch && !layer.visible) {
+      }
+      else if (!layer.visible) {
         layer.visible = true;
-        const extent = layer.fullExtent.clone();
-        view.goTo(extent.expand(2));
-      } else if (isMatch) {
-        resetMap();
+        selectedLayer = layer;
       }
     });
-}
 
-function resetMap() {
-  map.layers
-    .filter((layer) => layer.name)
-    .forEach((layer) => layer.visible = false);
-  view.goTo({ center: [-100, 45], zoom: 3 });
+  if (selectedLayer) {
+    view.goTo(selectedLayer.fullExtent.clone().expand(2));
+  }
+  else {
+    view.goTo(initialMapViewOptions);
+  }
 }
 
 function init() {
   createCorridorListItems();
   createFuelTypeListItems();
   createPopularRoutesLayers();
+  updateCorridorFilter()
   updateFuelTypeFilter();
 }
 

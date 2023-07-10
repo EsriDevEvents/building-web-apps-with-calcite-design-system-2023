@@ -138,7 +138,7 @@
                             <h2>Listen to the <calcite-chip appearance="outline-fill">Calcite Chip Group</calcite-chip>
                                 to
                                 change the class on the body</h2>
-                            <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
+                            <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", event => {
     const themeName = event.target.selectedItems[0].value;
     body.className = themeName;
 });</code></pre>
