@@ -89,15 +89,19 @@
             </div>
             <calcite-stepper slot="content">
                 <calcite-stepper-item heading="Alternative Fuel Corridors" description="Check the status of corridors">
+                  <calcite-accordion scale="l" open collapsible selection-mode="single">
+                    <calcite-accordion-item expanded icon-start="code" heading="1. Add Calcite Component">
                     <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each corridor type.</h2>
                     <pre><code class="language-js">function createCorridorListItems() {
-  corridors.forEach((item) => {
+  corridors.forEach(item => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item;
     listItem.selected = item === appState.corridors;
     corridorListEl.append(listItem);
   });
 }</code></pre>
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="cursor-click" heading="2. Add List Event Listener">
                   <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to update the corridor filter.</h2>
                   <pre><code class="language-js">corridorListEl.addEventListener("calciteListChange", handleCorridorListChange);
 
@@ -115,11 +119,15 @@ async function updateCorridorFilter() {
     where: corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
   };
 }</code></pre>
+                    </calcite-accordion-item>
+                  </calcite-accordion>
                 </calcite-stepper-item>
                 <calcite-stepper-item heading="Fuel Types" description="Focus on the fuel type you want">
+                  <calcite-accordion scale="l" open collapsible selection-mode="single">
+                    <calcite-accordion-item expanded icon-start="code" heading="1. Add Calcite Component">
                   <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each fuel type.</h2>
                     <pre><code class="language-js">function createFuelTypeListItems() {
-  allTypes.forEach((item, index) => {
+  allTypes.forEach(item => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
@@ -127,42 +135,42 @@ async function updateCorridorFilter() {
     fuelTypeListEl.append(listItem);
   });
 }}</code></pre>
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="cursor-click" heading="2. Add List Event Listener">
                   <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to update the fuel type filter.</h2>
                   <pre><code class="language-js">fuelTypeListEl.addEventListener("calciteListChange", handleFuelTypeListChange);
 
 function handleFuelTypeListChange(event) {
-  const items = event.target.selectedItems.map((item) => ({
-    name: item.label,
-    code: item.value,
-  }));
+  const selectedItems = event.target.selectedItems;
+  const items = selectedItems.map(item => ({ name: item.label, code: item.value }));
   appState.types = items;
   updateFuelTypeFilter();
 }
 
 async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
-  const where = createFuelTypeWhereClause();
 
-  featureLayerView.featureEffect = {
-    filter: { where },
-    excludedEffect: "opacity(0%)",
-    includedEffect: "opacity(100%)",
+  featureLayerView.filter = {
+     where: createFuelTypeWhereClause()
   };
 }
 
 function createFuelTypeWhereClause() {
   const typesActive = appState.types.length > 0;
   const featureTypes = typesActive ? appState.types : allTypes;
-  const fuelTypes = featureTypes.map((type) => (`'${type.code}'`));
-  const filtered = ` AND (Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")})`;
-  const unfiltered = ` AND Fuel_Type != ${fuelTypes.join(" AND Fuel_Type != ")}`;
-  return `Fuel_Type IS NOT NULL${typesActive ? filtered : unfiltered}`;
+  const fuelTypes = featureTypes.map(type => (`'${type.code}'`));
+  const showSelected = `Fuel_Type = ${fuelTypes.join(" OR Fuel_Type = ")}`;
+  return typesActive ? showSelected : `NOT (${showSelected})`;
 }</code></pre>
+                    </calcite-accordion-item>
+                  </calcite-accordion>
                 </calcite-stepper-item>
                 <calcite-stepper-item heading="Preview a Route" description="See which corridors and fuel stations are near popular routes">
-                  <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each route.</h2>
+                  <calcite-accordion scale="l" open collapsible selection-mode="single">
+                    <calcite-accordion-item expanded icon-start="code" heading="1. Add Calcite Component">
+                    <h2>Create a <calcite-chip appearance="outline-fill">List Item</calcite-chip> for each route.</h2>
                     <pre><code class="language-js">async function createPopularRoutesLayers() {
-  const solvedRoutes = popularRoutes.map(async (route) => {
+  const solvedRoutes = popularRoutes.map(async route => {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = route.name;
     routesListEl.append(listItem);
@@ -170,9 +178,11 @@ function createFuelTypeWhereClause() {
     // ...
   });
 }</code></pre>
-                  <h2>Set up a <calcite-chip appearance="outline-fill">Route Layer</calcite-chip> for each route.</h2>
-                  <pre><code class="language-js">async function createPopularRoutesLayers() {
-  popularRoutes.forEach(async (route, index) => {
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="tour" heading="2. Set up routes">
+                    <h2>Set up a <calcite-chip appearance="outline-fill">Route Layer</calcite-chip> for each route.</h2>
+                    <pre><code class="language-js">async function createPopularRoutesLayers() {
+  const solvedRoutes = popularRoutes.map(async route => {
     // ...
 
     const drive = new RouteLayer({
@@ -189,9 +199,11 @@ function createFuelTypeWhereClause() {
 
   // ...
 }</code></pre>
-                  <h2>Enable <calcite-chip appearance="outline-fill">Panel</calcite-chip> after all routes are ready.</h2>
-                  <pre><code class="language-js">async function createPopularRoutesLayers() {
-  popularRoutes.forEach(async (route, index) => {
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="toggle-on" heading="3. Enable routes">
+                    <h2>Enable <calcite-chip appearance="outline-fill">Panel</calcite-chip> after all routes are ready.</h2>
+                    <pre><code class="language-js">async function createPopularRoutesLayers() {
+  const solvedRoutes = popularRoutes.map(async route => {
     // ...
   });
 
@@ -199,21 +211,20 @@ function createFuelTypeWhereClause() {
   routesPanelEl.disabled = false;
   routesPanelEl.loading = false;
 }</code></pre>
-                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a route.</h2>
-                  <pre><code class="language-js">routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
+                    </calcite-accordion-item>
+                    <calcite-accordion-item icon-start="cursor-click" heading="4. Add List Event Listener">
+                    <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a route.</h2>
+                    <pre><code class="language-js">routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
 function handleRoutesListChange(event) {
-  const route = popularRoutes.find(
-    (route) => route.name === event.target.selectedItems[0]?.label
-  );
-
+  const selectedItems = event.target.selectedItems;
+  const route = popularRoutes.find(route => route.name === selectedItems[0]?.label);
   let selectedLayer;
 
   map.layers
-    .filter((layer) => layer.name)
-    .forEach((layer) => {
+    .filter(layer => layer.name)
+    .forEach(layer => {
       const matched = layer.name === route?.name;
-
       if (!matched) {
         layer.visible = false;
       }
@@ -223,26 +234,19 @@ function handleRoutesListChange(event) {
       }
     });
 
-  // ...
-}</code></pre>
-                  <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a route.</h2>
-                  <pre><code class="language-js">function handleRoutesListChange(event) {
-  // ...
-
   if (selectedLayer) {
-    view.goTo(layer.fullExtent.clone().expand(2));
+    view.goTo(selectedLayer.fullExtent.clone().expand(2));
   }
   else {
-    view.goTo({ center: [-100, 45], zoom: 3 });
+    view.goTo(initialMapViewOptions);
   }
 }</code></pre>
+                    </calcite-accordion-item>
+                  </calcite-accordion>
                 </calcite-stepper-item>
             </calcite-stepper>
         </calcite-modal>
     </calcite-shell>
-
-
-
 </body>
 
 </html>
