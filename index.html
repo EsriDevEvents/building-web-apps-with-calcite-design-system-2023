@@ -20,8 +20,6 @@
         <calcite-navigation slot="header">
             <calcite-navigation-logo thumbnail="./images/logo.svg" alt="Application logo" slot="logo"
                 heading="Alternative Fuel Stations"></calcite-navigation-logo>
-            <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click slot="content-end">About
-                this application</calcite-tooltip>
             <calcite-chip appearance="outline" slot="content-end">
                 Demo
             </calcite-chip>
@@ -35,9 +33,10 @@
                 <calcite-menu-item href="./step-4" icon-start="number-circle-4" text="Theming">
                 </calcite-menu-item>
             </calcite-menu>
-            <calcite-action-pad layout=" horizontal" expand-disabled slot="content-end">
-                <calcite-action id="toggle-modal" text="About this application" icon="information"
-                    text-enabled></calcite-action>
+            <calcite-action-pad expanded layout=" horizontal" expand-disabled slot="content-end">
+                <calcite-action id="toggle-modal" text="About" icon="information" text-enabled>
+                    <calcite-tooltip placement="bottom" slot="tooltip" close-on-click slot="content-end">About
+                        this application</calcite-tooltip></calcite-action>
             </calcite-action-pad>
         </calcite-navigation>
 
