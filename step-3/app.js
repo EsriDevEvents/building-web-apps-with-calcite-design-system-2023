@@ -305,10 +305,26 @@ function handleRoutesListChange(event) {
       }
     });
 
-  if (selectedLayer) {
-    view.goTo(selectedLayer.fullExtent.clone().expand(2));
+  highlightFuelStationsAlongRoute(selectedLayer);
+}
+
+async function highlightFuelStationsAlongRoute(routeLayer) {
+  const featureLayerView = await view.whenLayerView(stationLayer);
+
+  if (routeLayer) {
+    featureLayerView.featureEffect = {
+      filter: {
+        geometry: routeLayer.routeInfo.geometry,
+        distance: 50,
+        units: "miles"
+      },
+      excludedEffect: "grayscale(75%) opacity(15%)"
+    };
+
+    view.goTo(routeLayer.fullExtent.clone().expand(1.75));
   }
   else {
+    featureLayerView.featureEffect =  null;
     view.goTo(initialMapViewOptions);
   }
 }
