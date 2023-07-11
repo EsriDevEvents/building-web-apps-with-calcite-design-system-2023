@@ -72,10 +72,8 @@
     </calcite-shell-panel>
 
     <calcite-shell-panel display-mode="float" slot="panel-end">
-      <calcite-panel heading="Preview a Route" loading disabled id="route-panel">
-        <calcite-block heading="Popular routes" open collapsible>
-          <calcite-list selection-mode="single" selection-appearance="border" id="route-list"></calcite-list>
-        </calcite-block>
+      <calcite-panel heading="Popular routes" loading disabled id="route-panel">
+        <calcite-list selection-mode="single" selection-appearance="border" id="route-list"></calcite-list>
       </calcite-panel>
     </calcite-shell-panel>
 
@@ -154,7 +152,7 @@ async function updateFuelTypeFilter() {
             </calcite-accordion-item>
           </calcite-accordion>
         </calcite-stepper-item>
-        <calcite-stepper-item heading="Preview a Route"
+        <calcite-stepper-item heading="Popular Routes"
           description="See which corridors and fuel stations are near popular routes">
           <calcite-accordion scale="l" open collapsible selection-mode="single">
             <calcite-accordion-item expanded icon-start="code" heading="1. Add Calcite Component">
@@ -203,7 +201,7 @@ async function updateFuelTypeFilter() {
 }</code></pre>
             </calcite-accordion-item>
             <calcite-accordion-item icon-start="cursor-click" heading="4. Add List Event Listener">
-              <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to preview a
+              <h2>Listen for <calcite-chip appearance="outline-fill">List</calcite-chip> change events to display a
                 route.</h2>
               <pre><code class="language-js">routesListEl.addEventListener("calciteListChange", handleRoutesListChange);
 
