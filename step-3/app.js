@@ -288,24 +288,23 @@ function createFuelTypeWhereClause() {
 }
 
 function handleRoutesListChange(event) {
-  const selectedItems = event.target.selectedItems;
-  const route = popularRoutes.find(route => route.name === selectedItems[0]?.label);
-  let selectedLayer;
+  const selectedRouteName = event.target.selectedItems[0]?.label;
+  let selectedRouteLayer;
 
   map.layers
-    .filter(layer => layer.name)
+    .filter(layer => layer.type === "route")
     .forEach(layer => {
-      const matched = layer.name === route?.name;
+      const matched = layer.name === selectedRouteName;
       if (!matched) {
         layer.visible = false;
       }
       else if (!layer.visible) {
         layer.visible = true;
-        selectedLayer = layer;
+        selectedRouteLayer = layer;
       }
     });
 
-  highlightFuelStationsAlongRoute(selectedLayer);
+  highlightFuelStationsAlongRoute(selectedRouteLayer);
 }
 
 async function highlightFuelStationsAlongRoute(routeLayer) {
