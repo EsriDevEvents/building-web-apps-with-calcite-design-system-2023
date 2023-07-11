@@ -119,11 +119,11 @@
         const listItem = document.createElement("calcite-list-item");
         listItem.label = item.name;
         listItem.value = item.code;
-        const style = listItem.style;
-        style.setProperty(iconProp, typeColors[index]);
-        style.setProperty(focusProp, typeColors[index]);
+        const color = typeColors[index];
+        listItem.style.setProperty(iconProp, color);
+        listItem.style.setProperty(focusProp, color);
         listItem.selected = true;
-        filterListEl.append(listItem);
+        fuelTypeListEl.append(listItem);
     });
 }
 </code></pre>
@@ -149,6 +149,7 @@
                                 to
                                 change the class on the body</h2>
                             <pre><code class="language-js">chipGroupEl.addEventListener("calciteChipGroupSelect", event => {
+    // selected chip value: lavender, ranger, mint, or default.
     const themeName = event.target.selectedItems[0].value;
     body.className = themeName;
 });</code></pre>
@@ -171,6 +172,8 @@
                             <pre><code class="language-js">const lavenderBasemap = new Basemap({
     baseLayers: [
         new VectorTileLayer({
+            // Created using: Vector Tile Style Editor
+            // From: "streets-night-vector" style
             portalItem: { id: "b163970539704b46b126547f0f8279f6" },
         }),
     ],

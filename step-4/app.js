@@ -107,6 +107,7 @@ const chipGroupEl = document.getElementById("theme-chips");
 const lavenderBasemap = new Basemap({
   baseLayers: [
     new VectorTileLayer({
+      // Created using: Vector Tile Style Editor
       portalItem: { id: "b163970539704b46b126547f0f8279f6" },
     }),
   ],
@@ -129,6 +130,7 @@ const mintBasemap = new Basemap({
 });
 
 chipGroupEl.addEventListener("calciteChipGroupSelect", (event) => {
+  // selected chip value: lavender, ranger, mint, or default.
   const themeName = event.target.selectedItems[0].value;
   body.className = themeName;
   if (themeName === "lavender") {
@@ -266,9 +268,9 @@ function createFuelTypeListItems() {
     const listItem = document.createElement("calcite-list-item");
     listItem.label = item.name;
     listItem.value = item.code;
-    const style = listItem.style;
-    style.setProperty(iconProp, typeColors[index]);
-    style.setProperty(focusProp, typeColors[index]);
+    const color = typeColors[index];
+    listItem.style.setProperty(iconProp, color);
+    listItem.style.setProperty(focusProp, color);
     listItem.selected = true;
     fuelTypeListEl.append(listItem);
   });
