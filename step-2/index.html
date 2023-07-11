@@ -26,11 +26,12 @@
 </head>
 
 <body>
-    <calcite-shell class="calcite-mode-dark" content-behind>
-        <div id="viewDiv"></div>
+    <calcite-shell class="calcite-mode-dark">
+
         <calcite-navigation slot="header">
-            <calcite-navigation-logo href="../" thumbnail="../images/logo.svg" alt="Application logo" slot="logo"
-                heading="Alternative Fuel Stations"></calcite-navigation-logo>
+            <calcite-navigation-logo href="../" alt="Application logo" slot="logo"
+                heading="Building Apps with Calcite Design System"
+                description="Esri User Conference 2023"></calcite-navigation-logo>
             <calcite-chip appearance="outline" slot="content-end">
                 Demo
             </calcite-chip>
@@ -44,36 +45,51 @@
                 <calcite-menu-item href="../step-4" icon-start="number-circle-4" text="Theming">
                 </calcite-menu-item>
             </calcite-menu>
-            <calcite-action slot="content-end" id="toggle-modal" text="Code" icon="code" text-enabled>
-                <calcite-tooltip close-on-click placement="bottom" slot="tooltip">View code
-                    snippets for this demo step</calcite-tooltip>
-            </calcite-action>
+            <calcite-action-pad slot="content-end" expand-disabled>
+                <calcite-action id="toggle-modal" text="Code" icon="code" text-enabled>
+                    <calcite-tooltip close-on-click placement="bottom" slot="tooltip">View code
+                        snippets for this demo step</calcite-tooltip>
+                </calcite-action>
+            </calcite-action-pad>
         </calcite-navigation>
 
-        <calcite-shell-panel slot="panel-start">
-            <calcite-panel heading="Map Filters">
-                <calcite-action slot="header-actions-end" id="toggle-instructions" text="Instructions"
-                    icon="lightbulb"></calcite-action>
-                <calcite-tooltip placement="right" overlay-positioning="fixed" reference-element="toggle-instructions"
-                    slot="header-actions-end">Use
-                    the
-                    List Items to show or hide types of alternative fuel stations and toggle displayed
-                    corridors.</calcite-tooltip>
+        <calcite-shell content-behind class="example-shell">
+            <div id="viewDiv"></div>
+            <calcite-navigation slot="header">
+                <calcite-navigation-logo thumbnail="../images/logo.svg" alt="Application logo" slot="logo"
+                    heading="Alternative Fuel Stations"></calcite-navigation-logo>
+                <calcite-tooltip placement="bottom" reference-element="toggle-modal" close-on-click
+                    slot="content-end">About
+                    this application</calcite-tooltip>
+                <calcite-navigation-user slot="user" full-name="Sample user"
+                    username="map_fan_123"></calcite-navigation-user>
+            </calcite-navigation>
 
-                <calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"
-                    collapsible>
-                    <calcite-icon slot="icon" scale="s" icon="exit-highway-right"></calcite-icon>
-                </calcite-block>
-                <calcite-block heading="Fuel Types" open collapsible>
-                    <calcite-icon slot="icon" scale="s" icon="camera-flash-on"></calcite-icon>
-                </calcite-block>
-            </calcite-panel>
-        </calcite-shell-panel>
+            <calcite-shell-panel slot="panel-start">
+                <calcite-panel heading="Map Filters">
+                    <calcite-action slot="header-actions-end" id="toggle-instructions" text="Instructions"
+                        icon="lightbulb"></calcite-action>
+                    <calcite-tooltip placement="right" overlay-positioning="fixed"
+                        reference-element="toggle-instructions" slot="header-actions-end">Use
+                        the
+                        List Items to show or hide types of alternative fuel stations and toggle displayed
+                        corridors.</calcite-tooltip>
 
-        <calcite-shell-panel display-mode="float" slot="panel-end">
-            <calcite-panel heading="Popular routes">
-            </calcite-panel>
-        </calcite-shell-panel>
+                    <calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"
+                        collapsible>
+                        <calcite-icon slot="icon" scale="s" icon="exit-highway-right"></calcite-icon>
+                    </calcite-block>
+                    <calcite-block heading="Fuel Types" open collapsible>
+                        <calcite-icon slot="icon" scale="s" icon="camera-flash-on"></calcite-icon>
+                    </calcite-block>
+                </calcite-panel>
+            </calcite-shell-panel>
+
+            <calcite-shell-panel display-mode="float" slot="panel-end">
+                <calcite-panel heading="Popular routes">
+                </calcite-panel>
+            </calcite-shell-panel>
+        </calcite-shell>
 
         <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals">
             <div slot="header" id="modal-title">

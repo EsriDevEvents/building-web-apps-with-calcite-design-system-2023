@@ -14,7 +14,7 @@ body.lavender {
   background-color: #3e3342;
 }
 
-body.lavender calcite-shell {
+body.lavender calcite-shell.example-shell {
   --calcite-ui-brand: #d6b9eb;
   --calcite-ui-brand-hover: #c59cd6;
   --calcite-ui-brand-press: #b399c4;
@@ -43,7 +43,7 @@ body.mint {
   background-color: #252927;
 }
 
-body.mint calcite-shell {
+body.mint calcite-shell.example-shell {
   --calcite-ui-brand: #00dea6;
   --calcite-ui-brand-hover: #00c997;
   --calcite-ui-brand-press: #00b386;
@@ -72,7 +72,7 @@ body.ranger {
   --calcite-ui-brand: #3cb233;
 }
 
-body.ranger calcite-shell {
+body.ranger calcite-shell.example-shell {
   --calcite-ui-brand: #3cb233;
   --calcite-ui-brand-hover: #2d8626;
   --calcite-ui-brand-press: #256f20;
@@ -152,6 +152,24 @@ pre {
   max-width: 90vw;
   font-size: 18px;
   margin: 2rem auto;
+}
+
+.example-shell {
+  margin: auto;
+  border-radius: 4px;
+  inline-size: calc(100% - 4rem);
+  block-size: calc(100% - 4rem);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.18), 0 2px 8px 0 rgba(0, 0, 0, 0.34);
+}
+
+calcite-shell {
+  background-size: 16px 16px;
+  background-color: var(--calcite-ui-background);
+  background-image: radial-gradient(
+    circle,
+    var(--calcite-ui-border-3) 1px,
+    transparent 1px
+  );
 }
 
 calcite-shell-panel[slot="panel-start"] {
