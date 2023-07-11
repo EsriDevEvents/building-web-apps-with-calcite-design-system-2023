@@ -67,7 +67,7 @@
 
         <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals">
             <div slot="header" id="modal-title">
-                Step 1
+                Step 1: Construct our Application layout
             </div>
             <calcite-stepper slot="content">
                 <calcite-stepper-item heading="Add Shell Component" description="Using Calcite Components">
@@ -86,16 +86,17 @@
                             blog article.</span>
                     </calcite-notice>
                 </calcite-stepper-item>
-                <calcite-stepper-item heading="Add Shell Component" description="Using Calcite Components">
-                    <h2>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip> and
-                        <calcite-chip appearance="outline-fill">Calcite Navigation Logo</calcite-chip>
+                <calcite-stepper-item heading="Add supporting Components" description="Using Calcite Components">
+                    <h2>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip>, <calcite-chip
+                            appearance="outline-fill">Calcite Navigation Logo</calcite-chip>, and
+                        <calcite-chip appearance="outline-fill">Calcite Navigation User</calcite-chip>
                         components.
                     </h2>
 
                     <pre><code class="language-html">&lt;calcite-shell&gt;
     &lt;calcite-navigation&gt;
-        &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
-        &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
+        &lt;calcite-navigation-logo ...&gt;&lt;/calcite-navigation-logo&gt;
+        &lt;calcite-navigation-user ...&gt;&lt;/calcite-navigation-user&gt;
     &lt;/calcite-navigation&gt;
     &lt;div id="viewDiv"&gt;&lt;/div&gt;
 &lt;/calcite-shell&gt;</code></pre>

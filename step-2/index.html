@@ -93,40 +93,59 @@
 
         <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals">
             <div slot="header" id="modal-title">
-                Step 2: Construct our application layout
+                Step 2: Add to our application layout
             </div>
-            <div slot="content">
-                <calcite-accordion scale="l" open collapsible>
-                    <calcite-accordion-item icon-start="multiple-variables" heading="Calcite Components" expanded>
-                        <ul>
-                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
-                                component to contain our application and map container.
-                                <pre><code class="language-html">&lt;calcite-shell&gt;
-    &lt;div id="viewDiv"&gt;&lt;/div&gt;
-&lt;/calcite-shell&gt;</code></pre>
-                            </li>
-                            <li>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip> and
-                                <calcite-chip appearance="outline-fill">Calcite Navigation Logo</calcite-chip>
-                                components.
-                                <pre><code class="language-html">&lt;calcite-shell&gt;
+            <calcite-stepper slot="content">
+                <calcite-stepper-item heading="Add Shell Panel components" description="Using Calcite Components">
+                    <h2>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
+                        component to contain our application and map container
+                    </h2>
+
+                    <pre><code class="language-html">&lt;calcite-shell&gt;
+                        &lt;calcite-shell-panel&gt;
+                            &lt;calcite-panel ...&gt;&lt;/calcite-panel&gt;
+                            &lt;calcite-action ...&gt;&lt;/calcite-action&gt;
+                            &lt;calcite-tooltip ...&gt;&lt;/calcite-tooltip&gt;
+                        &lt;/calcite-shell-panel&gt;&lt;calcite-shell-panel&gt;
+                        &lt;calcite-panel ...&gt;&lt;/calcite-panel&gt;
+                        &lt;calcite-action ...&gt;&lt;/calcite-action&gt;
+                        &lt;calcite-tooltip ...&gt;&lt;/calcite-tooltip&gt;
+                        &lt;/calcite-shell-panel&gt;
+                        ...
+                        &lt;div id="viewDiv"&gt;&lt;/div&gt;
+                    &lt;/calcite-shell&gt;</code></pre>
+                    <calcite-notice open width="full" icon>
+                        <span slot="title">Calcite Shell
+                        </span>
+                        <span slot="message">Calcite Shell is a foundational layout component that contains your
+                            application or experience. It can be full-screen or embedded in narrative content like a
+                            blog article.</span>
+                    </calcite-notice>
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Add Panel, Blocks, Tooltip, Action"
+                    description="Using Calcite Components">
+                    <h2>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip>, <calcite-chip
+                            appearance="outline-fill">Calcite Navigation Logo</calcite-chip>, and
+                        <calcite-chip appearance="outline-fill">Calcite Navigation User</calcite-chip>
+                        components.
+                    </h2>
+
+                    <pre><code class="language-html">&lt;calcite-shell&gt;
     &lt;calcite-navigation&gt;
-        &lt;calcite-navigation-logo&gt;&lt;/calcite-navigation-logo&gt;
-        &lt;calcite-menu slot="content-end"&gt;&lt;/calcite-menu&gt;
+        &lt;calcite-navigation-logo ...&gt;&lt;/calcite-navigation-logo&gt;
+        &lt;calcite-navigation-user ...&gt;&lt;/calcite-navigation-user&gt;
     &lt;/calcite-navigation&gt;
     &lt;div id="viewDiv"&gt;&lt;/div&gt;
 &lt;/calcite-shell&gt;</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                    <calcite-accordion-item icon-start="map" heading="Maps SDK for JavaScript">
-                        <p>
-                        <ul>
-                            <li>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
-                                    appearance="outline-fill">MapView</calcite-chip> in the
-                                default slot of <calcite-chip appearance="outline-fill">Calcite
-                                    Shell</calcite-chip>
-
-                                <pre><code class="language-js">const map = new Map({
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Add List component as placeholders"
+                    description="Using Maps SDK for Javascript">
+                    <h2>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
+                            appearance="outline-fill">MapView</calcite-chip> in the
+                        default slot of <calcite-chip appearance="outline-fill">Calcite
+                            Shell</calcite-chip>
+                    </h2>
+                    <pre><code class="language-js">const map = new Map({
     basemap: "streets-night-vector",
 });
 
@@ -136,11 +155,8 @@ const view = new MapView({
     center: [-100, 45],
     zoom: 3,
 });</code></pre>
-                            </li>
-                        </ul>
-                    </calcite-accordion-item>
-                </calcite-accordion>
-            </div>
+                </calcite-stepper-item>
+            </calcite-stepper>
         </calcite-modal>
     </calcite-shell>
 
