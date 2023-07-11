@@ -135,6 +135,7 @@ import GraphicsLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/Graphi
 import RouteLayer from "https://js.arcgis.com/4.27/@arcgis/core/layers/RouteLayer.js";
 import Home from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Home.js";
 import Locate from "https://js.arcgis.com/4.27/@arcgis/core/widgets/Locate.js";
+import { generalize } from "https://js.arcgis.com/4.27/@arcgis/core/geometry/geometryEngine.js";
 
 esriConfig.portalUrl = "https://jsapi.maps.arcgis.com/";
 esriConfig.apiKey = apiKey;
@@ -275,7 +276,7 @@ async function updateFuelTypeFilter() {
   const featureLayerView = await view.whenLayerView(stationLayer);
 
   featureLayerView.filter = {
-     where: createFuelTypeWhereClause()
+    where: createFuelTypeWhereClause()
   };
 }
 
@@ -313,14 +314,14 @@ async function highlightFuelStationsAlongRoute(routeLayer) {
   if (routeLayer) {
     featureLayerView.featureEffect = {
       filter: {
-        geometry: routeLayer.routeInfo.geometry,
+        geometry: generalize(routeLayer.routeInfo.geometry, 0.5, true),
         distance: 50,
         units: "miles"
       },
       excludedEffect: "grayscale(75%) opacity(15%)"
     };
 
-    view.goTo(routeLayer.fullExtent.clone().expand(1.75));
+    view.goTo(routeLayer.fullExtent.clone().expand(2));
   }
   else {
     featureLayerView.featureEffect =  null;
