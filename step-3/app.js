@@ -231,7 +231,7 @@ async function createPopularRoutesLayers() {
     const drive = new RouteLayer({
       name: route.name,
       stops: route.stops,
-      effect: "bloom(1, 0.15px, 0)",
+      effect: "bloom(1, 0.15px, 0)"
     });
 
     const results = await drive.solve();
