@@ -239,12 +239,7 @@ function handleRoutesListChange(event) {
       }
     });
 
-  if (selectedLayer) {
-    view.goTo(selectedLayer.fullExtent.clone().expand(2));
-  }
-  else {
-    view.goTo(initialMapViewOptions);
-  }
+  highlightFuelStationsAlongRoute(selectedLayer);
 }</code></pre>
             </calcite-accordion-item>
           </calcite-accordion>
