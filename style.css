@@ -5,7 +5,7 @@ body,
   margin: 0;
   height: 100%;
   width: 100%;
-  background-color: #353535;
+  background-color: #f8f8f8;
 }
 
 /** Setting custom core Calcite theme variables for light (default) and dark modes */
@@ -119,7 +119,7 @@ calcite-action-pad {
   margin-inline: 0.5rem;
 }
 
-calcite-navigation > calcite-chip {
+calcite-navigation>calcite-chip {
   align-self: center;
   margin: 0 0.5rem;
 }
@@ -165,11 +165,9 @@ pre {
 calcite-shell {
   background-size: 16px 16px;
   background-color: var(--calcite-ui-background);
-  background-image: radial-gradient(
-    circle,
-    var(--calcite-ui-border-3) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(circle,
+      var(--calcite-ui-border-3) 1px,
+      transparent 1px);
 }
 
 calcite-shell-panel[slot="panel-start"] {
