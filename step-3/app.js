@@ -173,7 +173,7 @@ function assignColorsToTypes() {
 
 const stationLayer = new FeatureLayer({
   url: alternativeFuelLayerURL,
-  outFields: ["*"],
+  outFields: ["Fuel_Type"],
   minScale: 0,
   maxScale: 0,
   renderer: stationRenderer,
@@ -181,7 +181,7 @@ const stationLayer = new FeatureLayer({
 
 const corridorLayer = new FeatureLayer({
   url: alternativeFuelCorridorURL,
-  outFields: ["*"],
+  outFields: ["ELECTRICVE"],
   minScale: 0,
   maxScale: 0,
 });
