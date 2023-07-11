@@ -8,6 +8,10 @@ body,
   background-color: #f8f8f8;
 }
 
+body.example-shell #viewDiv {
+  background-color: #353535;
+}
+
 /** Setting custom core Calcite theme variables for light (default) and dark modes */
 
 body.lavender {
