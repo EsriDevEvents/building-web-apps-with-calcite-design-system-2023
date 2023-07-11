@@ -220,7 +220,7 @@ function assignColorsToTypes() {
 
 const stationLayer = new FeatureLayer({
   url: alternativeFuelLayerURL,
-  outFields: ["*"],
+  outFields: ["Fuel_Type"],
   minScale: 0,
   maxScale: 0,
   renderer: stationRenderer,
@@ -228,7 +228,7 @@ const stationLayer = new FeatureLayer({
 
 const corridorLayer = new FeatureLayer({
   url: alternativeFuelCorridorURL,
-  outFields: ["*"],
+  outFields: ["ELECTRICVE"],
   minScale: 0,
   maxScale: 0,
 });
@@ -283,7 +283,7 @@ async function createPopularRoutesLayers() {
     const drive = new RouteLayer({
       name: route.name,
       stops: route.stops,
-      effect: "bloom(1, 0.15px, 0)",
+      effect: "bloom(1, 0.15px, 0)"
     });
 
     const results = await drive.solve();
@@ -357,10 +357,26 @@ function handleRoutesListChange(event) {
       }
     });
 
-  if (selectedLayer) {
-    view.goTo(selectedLayer.fullExtent.clone().expand(2));
+  highlightFuelStationsAlongRoute(selectedLayer);
+}
+
+async function highlightFuelStationsAlongRoute(routeLayer) {
+  const featureLayerView = await view.whenLayerView(stationLayer);
+
+  if (routeLayer) {
+    featureLayerView.featureEffect = {
+      filter: {
+        geometry: routeLayer.routeInfo.geometry,
+        distance: 50,
+        units: "miles"
+      },
+      excludedEffect: "grayscale(75%) opacity(15%)"
+    };
+
+    view.goTo(routeLayer.fullExtent.clone().expand(1.75));
   }
   else {
+    featureLayerView.featureEffect =  null;
     view.goTo(initialMapViewOptions);
   }
 }
