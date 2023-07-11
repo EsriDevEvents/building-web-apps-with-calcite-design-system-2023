@@ -71,8 +71,7 @@
                         icon="lightbulb"></calcite-action>
                     <calcite-tooltip placement="right" overlay-positioning="fixed"
                         reference-element="toggle-instructions" slot="header-actions-end">Use
-                        the
-                        List Items to show or hide types of alternative fuel stations and toggle displayed
+                        the List Items to show or hide types of alternative fuel stations and toggle displayed
                         corridors.</calcite-tooltip>
 
                     <calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"
@@ -91,70 +90,114 @@
             </calcite-shell-panel>
         </calcite-shell>
 
-        <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals">
+        <calcite-modal aria-labelledby="modal-title" id="modal" slot="modals" open>
             <div slot="header" id="modal-title">
                 Step 2: Add to our application layout
             </div>
             <calcite-stepper slot="content">
-                <calcite-stepper-item heading="Add Shell Panel components" description="Using Calcite Components">
+                <calcite-stepper-item heading="Add Shell Panels, Panels, Blocks" description="Using Calcite Components">
                     <h2>Add a <calcite-chip appearance="outline-fill">Calcite Shell</calcite-chip>
                         component to contain our application and map container
                     </h2>
 
                     <pre><code class="language-html">&lt;calcite-shell&gt;
-                        &lt;calcite-shell-panel&gt;
-                            &lt;calcite-panel ...&gt;&lt;/calcite-panel&gt;
-                            &lt;calcite-action ...&gt;&lt;/calcite-action&gt;
-                            &lt;calcite-tooltip ...&gt;&lt;/calcite-tooltip&gt;
-                        &lt;/calcite-shell-panel&gt;&lt;calcite-shell-panel&gt;
-                        &lt;calcite-panel ...&gt;&lt;/calcite-panel&gt;
-                        &lt;calcite-action ...&gt;&lt;/calcite-action&gt;
-                        &lt;calcite-tooltip ...&gt;&lt;/calcite-tooltip&gt;
-                        &lt;/calcite-shell-panel&gt;
-                        ...
-                        &lt;div id="viewDiv"&gt;&lt;/div&gt;
-                    &lt;/calcite-shell&gt;</code></pre>
-                    <calcite-notice open width="full" icon>
-                        <span slot="title">Calcite Shell
-                        </span>
-                        <span slot="message">Calcite Shell is a foundational layout component that contains your
-                            application or experience. It can be full-screen or embedded in narrative content like a
-                            blog article.</span>
-                    </calcite-notice>
-                </calcite-stepper-item>
-                <calcite-stepper-item heading="Add Panel, Blocks, Tooltip, Action"
-                    description="Using Calcite Components">
-                    <h2>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip>, <calcite-chip
-                            appearance="outline-fill">Calcite Navigation Logo</calcite-chip>, and
-                        <calcite-chip appearance="outline-fill">Calcite Navigation User</calcite-chip>
-                        components.
-                    </h2>
+                        
+    &lt;calcite-shell-panel slot="panel-start"&gt;
+        &lt;calcite-panel heading="Map Filters"&gt;
 
-                    <pre><code class="language-html">&lt;calcite-shell&gt;
-    &lt;calcite-navigation&gt;
-        &lt;calcite-navigation-logo ...&gt;&lt;/calcite-navigation-logo&gt;
-        &lt;calcite-navigation-user ...&gt;&lt;/calcite-navigation-user&gt;
-    &lt;/calcite-navigation&gt;
-    &lt;div id="viewDiv"&gt;&lt;/div&gt;
+            &lt;calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
+                &lt;calcite-icon slot="icon" icon="exit-highway-right" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;/calcite-block&gt;
+
+            &lt;calcite-block heading="Fuel types"&gt;
+                &lt;calcite-icon slot="icon" icon="camera-flash-on" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;/calcite-block&gt;
+
+        &lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    &lt;calcite-shell-panel slot="panel-end" display-mode="overlay"&gt;
+        &lt;calcite-panel heading="Popular Routes"&gt;&lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    ...
+
 &lt;/calcite-shell&gt;</code></pre>
                 </calcite-stepper-item>
-                <calcite-stepper-item heading="Add List component as placeholders"
-                    description="Using Maps SDK for Javascript">
-                    <h2>Place a <calcite-chip appearance="outline-fill">Map</calcite-chip> and <calcite-chip
-                            appearance="outline-fill">MapView</calcite-chip> in the
-                        default slot of <calcite-chip appearance="outline-fill">Calcite
-                            Shell</calcite-chip>
+                <calcite-stepper-item heading="Add Icons, Actions, Tooltip" description="Using Calcite Components">
+                    <h2>Add slotted <calcite-chip appearance="outline-fill">Calcite Icon</calcite-chip> components, a
+                        <calcite-chip appearance="outline-fill">Calcite Action</calcite-chip>, and a
+                        <calcite-chip appearance="outline-fill">Calcite Toolip</calcite-chip>.
                     </h2>
-                    <pre><code class="language-js">const map = new Map({
-    basemap: "streets-night-vector",
-});
+                    <pre data-line="6,7,8,9"><code class="language-html">&lt;calcite-shell&gt;
 
-const view = new MapView({
-    container: "viewDiv",
-    map,
-    center: [-100, 45],
-    zoom: 3,
-});</code></pre>
+    &lt;calcite-shell-panel slot="panel-start"&gt;
+        &lt;calcite-panel heading="Map Filters"&gt;
+
+            &lt;calcite-action slot="header-actions-end" id="toggle-instructions" text="Instructions" icon="lightbulb"&gt;&lt;/calcite-action&gt;
+            &lt;calcite-tooltip placement="right" overlay-positioning="fixed" reference-element="toggle-instructions" slot="header-actions-end"&gt;
+                ...tooltip content...
+            &lt;/calcite-tooltip&gt;
+
+            &lt;calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
+                &lt;calcite-icon slot="icon" icon="exit-highway-right" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;/calcite-block&gt;
+
+            &lt;calcite-block heading="Fuel types"&gt;
+                &lt;calcite-icon slot="icon" icon="camera-flash-on" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;/calcite-block&gt;
+
+        &lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    &lt;calcite-shell-panel slot="panel-end" display-mode="overlay"&gt;
+        &lt;calcite-panel heading="Popular Routes"&gt;&lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    ...
+
+&lt;/calcite-shell&gt;</code></pre>
+                </calcite-stepper-item>
+                </calcite-stepper-item>
+                <calcite-stepper-item heading="Add Lists to hold data" description="Using Calcite Components">
+                    <h2>Add three <calcite-chip appearance="outline-fill">Calcite List</calcite-chip> components that
+                        serve as placeholder for content added in the next step. Notice the differing
+                        <code>selection-mode</code> property value and unique
+                        <code>id</code>.
+                    </h2>
+                    <pre data-line="13,19,27"><code class="language-html">&lt;calcite-shell&gt;
+
+    &lt;calcite-shell-panel slot="panel-start"&gt;
+        &lt;calcite-panel heading="Map Filters"&gt;
+
+            &lt;calcite-action slot="header-actions-end" id="toggle-instructions" text="Instructions" icon="lightbulb"&gt;&lt;/calcite-action&gt;
+            &lt;calcite-tooltip placement="right" overlay-positioning="fixed" reference-element="toggle-instructions" slot="header-actions-end"&gt;
+                ...tooltip content...
+            &lt;/calcite-tooltip&gt;
+
+            &lt;calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
+                &lt;calcite-icon slot="icon" icon="exit-highway-right" scale="s"&gt;&lt;/calcite-icon&gt;
+                &lt;calcite-list id="corridor-list" selection-mode="single-persist"&gt;&lt;/calcite-list&gt;
+
+            &lt;/calcite-block&gt;
+
+            &lt;calcite-block heading="Fuel types"&gt;
+                &lt;calcite-icon slot="icon" icon="camera-flash-on" scale="s"&gt;&lt;/calcite-icon&gt;
+                &lt;calcite-list id="fuel-type-list" selection-mode="multiple"&gt;&lt;/calcite-list&gt;
+            &lt;/calcite-block&gt;
+
+        &lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    &lt;calcite-shell-panel slot="panel-end" display-mode="overlay"&gt;
+        &lt;calcite-panel heading="Popular Routes"&gt;
+            &lt;calcite-list id="route-list" selection-mode="border"&gt;&lt;/calcite-list&gt;
+        &lt;/calcite-panel&gt;
+    &lt;/calcite-shell-panel&gt;
+
+    ...
+
+&lt;/calcite-shell&gt;</code></pre>
                 </calcite-stepper-item>
             </calcite-stepper>
         </calcite-modal>

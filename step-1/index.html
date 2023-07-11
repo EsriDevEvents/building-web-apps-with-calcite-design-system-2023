@@ -78,13 +78,6 @@
                     <pre><code class="language-html">&lt;calcite-shell&gt;
     &lt;div id="viewDiv"&gt;&lt;/div&gt;
 &lt;/calcite-shell&gt;</code></pre>
-                    <calcite-notice open width="full" icon>
-                        <span slot="title">Calcite Shell
-                        </span>
-                        <span slot="message">Calcite Shell is a foundational layout component that contains your
-                            application or experience. It can be full-screen or embedded in narrative content like a
-                            blog article.</span>
-                    </calcite-notice>
                 </calcite-stepper-item>
                 <calcite-stepper-item heading="Add supporting Components" description="Using Calcite Components">
                     <h2>Add a <calcite-chip appearance="outline-fill">Calcite Navigation</calcite-chip>, <calcite-chip
@@ -92,12 +85,13 @@
                         <calcite-chip appearance="outline-fill">Calcite Navigation User</calcite-chip>
                         components.
                     </h2>
+                    <pre data-line="3,4,5,6"><code class="language-html">&lt;calcite-shell&gt;
 
-                    <pre><code class="language-html">&lt;calcite-shell&gt;
     &lt;calcite-navigation&gt;
-        &lt;calcite-navigation-logo ...&gt;&lt;/calcite-navigation-logo&gt;
-        &lt;calcite-navigation-user ...&gt;&lt;/calcite-navigation-user&gt;
+        &lt;calcite-navigation-logo heading="Alternative Fuel Stations" thumbnail="./logo.svg"&gt;&lt;/calcite-navigation-logo&gt;
+        &lt;calcite-navigation-user full-name="Sample user" username="map_fan_123" &gt;&lt;/calcite-navigation-user&gt;
     &lt;/calcite-navigation&gt;
+    
     &lt;div id="viewDiv"&gt;&lt;/div&gt;
 &lt;/calcite-shell&gt;</code></pre>
                 </calcite-stepper-item>

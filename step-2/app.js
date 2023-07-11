@@ -49,3 +49,9 @@ const homeWidget = new Home({ view });
 
 view.ui.add([homeWidget, locateWidget], "top-left");
 view.padding.left = 340;
+
+function updatePrism() {
+  window.setTimeout(() => Prism?.highlightAll(), 500);
+}
+document.body.addEventListener("calciteStepperItemChange", updatePrism);
+window.onload = () => updatePrism();
