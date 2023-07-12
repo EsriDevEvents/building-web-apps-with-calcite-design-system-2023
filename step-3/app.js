@@ -5,7 +5,7 @@
  **/
 
 /** Declare expected type values */
-const corridors = ["None", "Signage Pending", "Signage Ready"];
+const corridors = ["None", "All Signage", "Signage Pending", "Signage Ready"];
 
 /** Declare expected type values */
 const allTypes = [
@@ -262,7 +262,9 @@ async function updateCorridorFilter() {
 
 function createCorridorWhereClause() {
   const corridorType = appState.corridors;
-  return corridorType === "None" ? "1 = 0" : `ELECTRICVE = '${corridorType}'`
+  return corridorType === "None" ? "1 = 0" :
+         corridorType === "All Signage" ? "1 = 1" :
+         `ELECTRICVE = '${corridorType}'`
 }
 
 function handleFuelTypeListChange(event) {
