@@ -123,7 +123,7 @@ calcite-action-pad {
   margin-inline: 0.5rem;
 }
 
-calcite-navigation>calcite-chip {
+calcite-navigation > calcite-chip {
   align-self: center;
   margin: 0 0.5rem;
 }
@@ -169,9 +169,11 @@ pre {
 calcite-shell {
   background-size: 16px 16px;
   background-color: var(--calcite-ui-background);
-  background-image: radial-gradient(circle,
-      var(--calcite-ui-border-3) 1px,
-      transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    var(--calcite-ui-border-3) 1px,
+    transparent 1px
+  );
 }
 
 calcite-shell-panel[slot="panel-start"] {
@@ -187,6 +189,9 @@ calcite-shell-panel[slot="panel-start"] {
   --calcite-modal-width: 60vw;
 }
 
+#modal {
+  font-size: 1rem;
+}
 calcite-accordion {
   --calcite-ui-foreground-1: transparent;
   --calcite-block-padding: 0;
