@@ -95,11 +95,11 @@
                 Step 2: Add to our application layout
             </div>
             <calcite-stepper slot="content">
-                <calcite-stepper-item heading="Add Shell Panels, Blocks, Icons" description="Using Calcite Components">
+                <calcite-stepper-item heading="Add Shell Panels, Panel, Block" description="Using Calcite Components">
                     <h2>Add <calcite-chip appearance="outline-fill">Calcite Shell Panel</calcite-chip>, <calcite-chip
                             appearance="outline-fill">Calcite Panel</calcite-chip>, and <calcite-chip
                             appearance="outline-fill">Calcite Block</calcite-chip>
-                        components. Use the Icon Search to find assets.
+                        components.
                     </h2>
 
                     <pre><code class="language-html">&lt;calcite-shell&gt;
@@ -107,12 +107,10 @@
     &lt;calcite-shell-panel slot="panel-start"&gt;
         &lt;calcite-panel heading="Map Filters"&gt;
 
-            &lt;calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
-                &lt;calcite-icon slot="icon" icon="exit-highway-right" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;calcite-block collapsible heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
             &lt;/calcite-block&gt;
 
-            &lt;calcite-block heading="Fuel types"&gt;
-                &lt;calcite-icon slot="icon" icon="camera-flash-on" scale="s"&gt;&lt;/calcite-icon&gt;
+            &lt;calcite-block collapsible open heading="Fuel types"&gt;
             &lt;/calcite-block&gt;
 
         &lt;/calcite-panel&gt;
@@ -131,7 +129,14 @@
                         <calcite-chip appearance="outline-fill">Calcite Action</calcite-chip>, and a
                         <calcite-chip appearance="outline-fill">Calcite Toolip</calcite-chip>.
                     </h2>
-                    <pre data-line="6,7,8,9"><code class="language-html">&lt;calcite-shell&gt;
+                    <calcite-notice width="full" open icon>
+                        <div slot="message">Use the <calcite-link
+                                href="https://developers.arcgis.com/calcite-design-system/icons/"
+                                target="_blank">Calcite Icon Search</calcite-link> to find the perfect icon concept for
+                            your needs.
+                        </div>
+                    </calcite-notice>
+                    <pre data-line="6,7,8,9,12,16"><code class="language-html">&lt;calcite-shell&gt;
 
     &lt;calcite-shell-panel slot="panel-start"&gt;
         &lt;calcite-panel heading="Map Filters"&gt;
@@ -167,7 +172,7 @@
                         <code>selection-mode</code> property value and unique
                         <code>id</code>.
                     </h2>
-                    <pre data-line="13,19,27"><code class="language-html">&lt;calcite-shell&gt;
+                    <pre data-line="13,18,26"><code class="language-html">&lt;calcite-shell&gt;
 
     &lt;calcite-shell-panel slot="panel-start"&gt;
         &lt;calcite-panel heading="Map Filters"&gt;
@@ -180,7 +185,6 @@
             &lt;calcite-block heading="Alternative Fuel Corridors" description="Nationally designated motorways"&gt;
                 &lt;calcite-icon slot="icon" icon="exit-highway-right" scale="s"&gt;&lt;/calcite-icon&gt;
                 &lt;calcite-list id="corridor-list" selection-mode="single-persist"&gt;&lt;/calcite-list&gt;
-
             &lt;/calcite-block&gt;
 
             &lt;calcite-block heading="Fuel types"&gt;
