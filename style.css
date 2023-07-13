@@ -186,7 +186,7 @@ calcite-shell-panel[slot="panel-start"] {
   --calcite-modal-content-background: var(--calcite-ui-background);
   --calcite-modal-scrim-background: rgba(75, 75, 75, 0.9);
   --calcite-modal-height: 70vh;
-  --calcite-modal-width: 60vw;
+  --calcite-modal-width: 70vw;
 }
 
 #modal {
